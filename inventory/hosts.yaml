@@ -1,0 +1,62 @@
+---
+linux_servers:
+   hosts:
+       SD-HQ-LIN1: 10.0.70.10
+
+windows_servers:
+   hosts:
+       SD-HQ-WIN1: 10.0.70.20
+
+cisco:
+   children:
+       routers:
+           hosts:
+               HQ-R1: 82.136.79.1
+               HQ-R2: 82.136.79.2
+       mls:
+           hosts:
+               HQ-MLS1: 10.0.252.1
+               HQ-MLS2: 10.0.252.2
+
+       switches:
+           hosts:
+               HQ-OFFICE-S1: 10.0.254.1
+               HQ-OFFICE-S2: 10.0.254.2
+               HQ-WS-S1: 10.0.254.3
+               HQ-WS-S2: 10.0.254.4
+
+               SzF_SW: 110.1.252.2
+               SzF_SW2: 10.1.252.3
+
+               TB-EM2-IRODA: 10.3.252.3
+               TB-EM1-LOGI: 10.3.252.2
+               TB-EM3-PARTNER: 10.3.252.4
+
+hq:
+   hosts:
+       HQ-R1: 82.136.79.1
+       HQ-R2: 82.136.79.2
+       HQ-MLS1: 10.0.252.1
+       HQ-MLS2: 10.0.252.2
+       HQ-OFFICE-S1: 10.0.254.1
+       HQ-OFFICE-S2: 10.0.254.2
+       HQ-WS-S1: 10.0.254.3
+       HQ-WS-S2: 10.0.254.4
+
+szf:
+   hosts: # Management IPs don't follow the scheme
+       SzF_R: 10.1.252.1
+       SzF_SW: 110.1.252.2
+       SzF_SW2: 10.1.252.3
+       SzF_WR: 10.1.110.2 # AP
+
+
+tb: # Management IPs don't follow the scheme
+   hosts:
+       TB-RT: 10.3.252.1
+       TB-EM2-IRODA: 10.3.252.3
+       TB-EM1-LOGI: 10.3.252.2
+       TB-EM3-PARTNER: 10.3.252.4
+       TB-WIFI-VARO: 10.3.150.2 # AP
+
+...
