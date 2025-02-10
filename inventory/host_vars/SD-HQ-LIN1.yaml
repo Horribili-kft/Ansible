@@ -1,4 +1,5 @@
 ---
 ansible_connection: local
+machine_type: "Linux Debian 12"
 
 ...

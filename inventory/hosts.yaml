@@ -1,6 +1,7 @@
 ---
 all:
     vars:
+        company_name: "Solar Dynamics"
         domain_name: solardynamics.eu
 
     children:
