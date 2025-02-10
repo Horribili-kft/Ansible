@@ -3,103 +3,104 @@ all:
     vars:
         domain_name: solardynamics.eu
 
-    linux_servers:
+    children:
+        linux_servers:
+            hosts:
+                SD-HQ-LIN1:
+                # Variables in ./host_vars/SD-HQ-LIN1.yaml
+
+        windows_servers:
+            hosts:
+                SD-HQ-WIN1:
+                # Variables in ./host_vars/SD-HQ-WIN1.yaml
+
+        cisco:
+            children:
+                routers:
+                    hosts:
+                        HQ-R1:
+                            ansible_host: 82.136.79.1
+                        HQ-R2:
+                            ansible_host: 82.136.79.2
+                mls:
+                    hosts:
+                        HQ-MLS1:
+                            ansible_host: 10.0.252.1
+                        HQ-MLS2:
+                            ansible_host: 10.0.252.2
+                switches:
+                    hosts:
+                        HQ-OFFICE-S1:
+                            ansible_host: 10.0.254.1
+                        HQ-OFFICE-S2:
+                            ansible_host: 10.0.254.2
+                        HQ-WS-S1:
+                            ansible_host: 10.0.254.3
+                        HQ-WS-S2:
+                            ansible_host: 10.0.254.4
+                        SzF_SW:
+                            ansible_host: 110.1.252.2
+                        SzF_SW2:
+                            ansible_host: 10.1.252.3
+                        TB-EM2-IRODA:
+                            ansible_host: 10.3.252.3
+                        TB-EM1-LOGI:
+                            ansible_host: 10.3.252.2
+                        TB-EM3-PARTNER:
+                            ansible_host: 10.3.252.4
+
+        hq:
+            vars:
+                domain_name: hq.solardynamics.eu
+
         hosts:
             SD-HQ-LIN1:
-            # Variables in ./host_vars/SD-HQ-LIN1.yaml
-
-    windows_servers:
-        hosts:
             SD-HQ-WIN1:
-            # Variables in ./host_vars/SD-HQ-WIN1.yaml
+            HQ-R1:
+                ansible_host: 82.136.79.1
+            HQ-R2:
+                ansible_host: 82.136.79.2
+            HQ-MLS1:
+                ansible_host: 10.0.252.1
+            HQ-MLS2:
+                ansible_host: 10.0.252.2
+            HQ-OFFICE-S1:
+                ansible_host: 10.0.254.1
+            HQ-OFFICE-S2:
+                ansible_host: 10.0.254.2
+            HQ-WS-S1:
+                ansible_host: 10.0.254.3
+            HQ-WS-S2:
+                ansible_host: 10.0.254.4
 
-    cisco:
-        children:
-            routers:
-                hosts:
-                    HQ-R1:
-                        ansible_host: 82.136.79.1
-                    HQ-R2:
-                        ansible_host: 82.136.79.2
-            mls:
-                hosts:
-                    HQ-MLS1:
-                        ansible_host: 10.0.252.1
-                    HQ-MLS2:
-                        ansible_host: 10.0.252.2
-            switches:
-                hosts:
-                    HQ-OFFICE-S1:
-                        ansible_host: 10.0.254.1
-                    HQ-OFFICE-S2:
-                        ansible_host: 10.0.254.2
-                    HQ-WS-S1:
-                        ansible_host: 10.0.254.3
-                    HQ-WS-S2:
-                        ansible_host: 10.0.254.4
-                    SzF_SW:
-                        ansible_host: 110.1.252.2
-                    SzF_SW2:
-                        ansible_host: 10.1.252.3
-                    TB-EM2-IRODA:
-                        ansible_host: 10.3.252.3
-                    TB-EM1-LOGI:
-                        ansible_host: 10.3.252.2
-                    TB-EM3-PARTNER:
-                        ansible_host: 10.3.252.4
+        szf:
+            vars:
+                domain_name: hq.solardynamics.eu
 
-    hq:
-        vars:
-            domain_name: hq.solardynamics.eu
+            hosts:
+                SzF_R:
+                    ansible_host: 10.1.252.1
+                SzF_SW:
+                    ansible_host: 110.1.252.2
+                SzF_SW2:
+                    ansible_host: 10.1.252.3
+                SzF_WR:
+                    ansible_host: 10.1.110.2
 
-    hosts:
-        SD-HQ-LIN1:
-        SD-HQ-WIN1:
-        HQ-R1:
-            ansible_host: 82.136.79.1
-        HQ-R2:
-            ansible_host: 82.136.79.2
-        HQ-MLS1:
-            ansible_host: 10.0.252.1
-        HQ-MLS2:
-            ansible_host: 10.0.252.2
-        HQ-OFFICE-S1:
-            ansible_host: 10.0.254.1
-        HQ-OFFICE-S2:
-            ansible_host: 10.0.254.2
-        HQ-WS-S1:
-            ansible_host: 10.0.254.3
-        HQ-WS-S2:
-            ansible_host: 10.0.254.4
+        tb:
 
-    szf:
-        vars:
-            domain_name: hq.solardynamics.eu
+            vars:
+                domain_name: hq.solardynamics.eu
 
-        hosts:
-            SzF_R:
-                ansible_host: 10.1.252.1
-            SzF_SW:
-                ansible_host: 110.1.252.2
-            SzF_SW2:
-                ansible_host: 10.1.252.3
-            SzF_WR:
-                ansible_host: 10.1.110.2
-
-    tb:
-
-        vars:
-            domain_name: hq.solardynamics.eu
-
-        hosts:
-            TB-RT:
-                ansible_host: 10.3.252.1
-            TB-EM2-IRODA:
-                ansible_host: 10.3.252.3
-            TB-EM1-LOGI:
-                ansible_host: 10.3.252.2
-            TB-EM3-PARTNER:
-                ansible_host: 10.3.252.4
-            TB-WIFI-VARO:
-                ansible_host: 10.3.150.2
+            hosts:
+                TB-RT:
+                    ansible_host: 10.3.252.1
+                TB-EM2-IRODA:
+                    ansible_host: 10.3.252.3
+                TB-EM1-LOGI:
+                    ansible_host: 10.3.252.2
+                TB-EM3-PARTNER:
+                    ansible_host: 10.3.252.4
+                TB-WIFI-VARO:
+                    ansible_host: 10.3.150.2
 ...
