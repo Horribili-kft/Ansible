@@ -53,25 +53,25 @@ all:
             vars:
                 domain_name: hq.solardynamics.eu
 
-        hosts:
-            SD-HQ-LIN1:
-            SD-HQ-WIN1:
-            HQ-R1:
-                ansible_host: 82.136.79.1
-            HQ-R2:
-                ansible_host: 82.136.79.2
-            HQ-MLS1:
-                ansible_host: 10.0.252.1
-            HQ-MLS2:
-                ansible_host: 10.0.252.2
-            HQ-OFFICE-S1:
-                ansible_host: 10.0.254.1
-            HQ-OFFICE-S2:
-                ansible_host: 10.0.254.2
-            HQ-WS-S1:
-                ansible_host: 10.0.254.3
-            HQ-WS-S2:
-                ansible_host: 10.0.254.4
+            hosts:
+                SD-HQ-LIN1:
+                SD-HQ-WIN1:
+                HQ-R1:
+                    ansible_host: 82.136.79.1
+                HQ-R2:
+                    ansible_host: 82.136.79.2
+                HQ-MLS1:
+                    ansible_host: 10.0.252.1
+                HQ-MLS2:
+                    ansible_host: 10.0.252.2
+                HQ-OFFICE-S1:
+                    ansible_host: 10.0.254.1
+                HQ-OFFICE-S2:
+                    ansible_host: 10.0.254.2
+                HQ-WS-S1:
+                    ansible_host: 10.0.254.3
+                HQ-WS-S2:
+                    ansible_host: 10.0.254.4
 
         szf:
             vars:
@@ -88,7 +88,6 @@ all:
                     ansible_host: 10.1.110.2
 
         tb:
-
             vars:
                 domain_name: hq.solardynamics.eu
 
