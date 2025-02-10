@@ -1,4 +1,5 @@
 ---
+# Connections to Windows servers *MUST* use these rules to work.
 ansible_connection: winrm
 ansible_winrm_server_cert_validation: ignore
 ansible_winrm_transport: ntlm

@@ -6,12 +6,12 @@ all:
     linux_servers:
         hosts:
             SD-HQ-LIN1:
-                ansible_connection: local
+            # Variables in ./host_vars/SD-HQ-LIN1.yaml
 
     windows_servers:
         hosts:
             SD-HQ-WIN1:
-                ansible_host: 10.0.70.20
+            # Variables in ./host_vars/SD-HQ-WIN1.yaml
 
     cisco:
         children:
@@ -53,6 +53,8 @@ all:
             domain_name: hq.solardynamics.eu
 
     hosts:
+        SD-HQ-LIN1:
+        SD-HQ-WIN1:
         HQ-R1:
             ansible_host: 82.136.79.1
         HQ-R2:

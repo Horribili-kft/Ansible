@@ -1,0 +1,6 @@
+---
+ansible_host: 10.0.70.20
+ansible_user: Ansible
+# You should execute this host with the --ask-pass flag
+# We should not save passwords as clear text. Never.
+...
