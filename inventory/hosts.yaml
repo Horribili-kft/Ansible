@@ -1,18 +1,20 @@
 ---
 linux_servers:
    hosts:
-       SD-HQ-LIN1: 10.0.70.10
+       SD-HQ-LIN1:
 
 windows_servers:
    hosts:
-       SD-HQ-WIN1: 10.0.70.20
+       SD-HQ-WIN1:
 
 cisco:
    children:
        routers:
            hosts:
-               HQ-R1: 82.136.79.1
-               HQ-R2: 82.136.79.2
+               HQ-R1:
+                ansible_host: 82.136.79.1
+               HQ-R2:
+                ansible_host: 82.136.79.2
        mls:
            hosts:
                HQ-MLS1: 10.0.252.1
