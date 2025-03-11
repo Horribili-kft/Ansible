@@ -9,7 +9,7 @@
 # --- Variables ---
 ANSIBLE_USER="ansible"  
 # IMPORTANT! This password will be removed after Ansible copies over the SSH keys for secure remote management.       
-DEFAULT_PASSWORD="ansibletemporarypassword"  # The default password for the ansible user
+DEFAULT_PASSWORD="Solar-Dynamics-2025"  # The default password for the ansible user
 
 # --- Script ---
 # Function to check if a package is installed
