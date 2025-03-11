@@ -3,6 +3,7 @@ all:
     vars:
         company_name: "Solar Dynamics"
         domain_name: solardynamics.eu
+        admin_name: "solaire"
 
     children:
         linux_servers:

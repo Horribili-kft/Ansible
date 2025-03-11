@@ -1,22 +1,60 @@
 ---
-- name: Install sudo
-  hosts: linux_servers
+# Playbook: debian-basic-setup.yaml
+# Description: Basic setup for Debian systems, including installing essential packages, configuring sudo, and other base configurations.
+
+- hosts: localhost
+  become: yes  # Run with elevated privileges
+  vars:
+    # Pulled from the hosts.yaml file
+    admin_username: "{{admin_name}}"
   tasks:
-    - name: Ping Linux servers
-      ping:
 
-- name: Install sudo
-  hosts: linux_servers
-  tasks:
-    - name: Ping Linux servers
-      ping:
+    - name: Update APT package cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600  # 1 hour
 
-- name: Install sudo
-  hosts: linux_servers
-  tasks:
-    - name: Ping Linux servers
-      ping:
+    - name: Upgrade all packages to the latest version
+      apt:
+        upgrade: dist
+        autoremove: yes
 
-  
+    - name: Install essential packages (SSH, sudo, curl, vim)
+      apt:
+        name:
+          - sudo
+        state: present
 
-...
+    - name: Ensure the firewall (UFW) is installed
+      apt:
+        name: ufw
+        state: present
+
+    - name: Enable SSH service
+      service:
+        name: ssh
+        state: started
+        enabled: yes
+
+    - name: Enable UFW and allow OpenSSH
+      ufw:
+        rule: allow
+        name: OpenSSH
+    # Right now we are not using the firewall
+    - name: Disable the firewall (UFW)
+      ufw:
+        state: disabled
+
+    - name: Add the user to the sudo group
+      user:
+        name: "{{ admin_name }}"
+        groups: sudo
+        append: yes
+
+    - name: Verify user is part of the sudo group
+      command: id "{{ admin_name }}"
+      register: user_check
+
+    - name: Display user group information
+      debug:
+        msg: "User '{{ admin_name }}' is in groups: {{ user_check.stdout }}"
