@@ -19,7 +19,7 @@
         upgrade: dist
         autoremove: yes
 
-    - name: Install essential packages (SSH, sudo, curl, vim)
+    - name: Install essential packages
       apt:
         name:
           - sudo

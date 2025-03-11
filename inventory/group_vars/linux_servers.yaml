@@ -1,5 +1,8 @@
 ---
 ansible_connection: ssh
-ansible_user: solaire
-ansible_temp_pass: "a"
+
+# For the initial SSH key copying
+# These should match the variables in PrepareForAnsible.sh
+ansible_user: ansible
+ansible_temp_pass: "ansibletemporarypassword"
 ...
