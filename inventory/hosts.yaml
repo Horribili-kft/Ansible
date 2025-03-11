@@ -6,6 +6,9 @@ all:
         admin_name: "solaire"
 
     children:
+        localhost:
+            ansible_connection: local
+            
         linux_servers:
             hosts:
                 SD-HQ-LIN1:
