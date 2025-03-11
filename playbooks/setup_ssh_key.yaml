@@ -1,0 +1,78 @@
+---
+- name: Set up SSH key-based authentication and configure password
+  hosts: linux_servers
+  become: yes
+  vars:
+    remote_user: "ansible"  # The user for whom we are setting up SSH key-based authentication
+    ssh_key_path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"  # Path to the SSH private key
+    ssh_key_pub_path: "{{ ssh_key_path }}.pub"  # Path to the SSH public key
+    user_password: "{{ ansible_temp_pass }}"  # Initial password for the ansible user (set this to your desired password)
+
+  tasks:
+
+    # Step 1: Ensure the SSH private key exists
+    - name: Check if the SSH private key exists
+      stat:
+        path: "{{ ssh_key_path }}"
+      register: private_key_stat
+
+    # Step 2: Generate SSH key pair if not already present
+    - name: Generate SSH key pair if not already present
+      command:
+        cmd: "ssh-keygen -t rsa -b 4096 -f {{ ssh_key_path }} -N ''"
+      when: not private_key_stat.stat.exists
+      become_user: "{{ ansible_user }}"  # Generate the key for the user defined in ansible_user
+
+    # Step 3: Ensure the SSH directory exists for the remote user
+    - name: Ensure the SSH directory exists for the remote user
+      file:
+        path: "/home/{{ remote_user }}/.ssh"
+        state: directory
+        mode: '0700'
+        owner: "{{ remote_user }}"
+        group: "{{ remote_user }}"
+
+    # Step 4: Copy the SSH public key to the remote user's authorized_keys
+    - name: Copy the SSH public key to the remote user's authorized_keys
+      authorized_key:
+        user: "{{ remote_user }}"
+        state: present
+        key: "{{ lookup('file', ssh_key_pub_path) }}"
+        path: "/home/{{ remote_user }}/.ssh/authorized_keys"
+
+    # Step 5: Ensure the authorized_keys file has the correct permissions
+    - name: Ensure correct permissions for authorized_keys
+      file:
+        path: "/home/{{ remote_user }}/.ssh/authorized_keys"
+        state: file
+        mode: '0600'
+        owner: "{{ remote_user }}"
+        group: "{{ remote_user }}"
+
+    # Step 6: Set an initial password for the ansible user (if required)
+    - name: Set an initial password for the ansible user
+      user:
+        name: "{{ remote_user }}"
+        password: "{{ user_password | password_hash('sha512') }}"
+        update_password: always
+
+    # Step 7: Disable password authentication (optional, for security)
+    - name: Disable password authentication for SSH
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+      notify: restart sshd
+
+    # Step 8: Remove the password from the ansible user after SSH key setup
+    - name: Remove the password for ansible user after SSH key setup
+      user:
+        name: "{{ remote_user }}"
+        password: ""
+      when: private_key_stat.stat.exists
+
+  handlers:
+    - name: restart sshd
+      service:
+        name: ssh
+        state: restarted

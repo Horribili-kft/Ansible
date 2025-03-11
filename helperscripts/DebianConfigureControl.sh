@@ -36,12 +36,12 @@ else
     echo "Ansible is already installed."
 fi
 
-# Step 3.1: Install sshpass if not already installed
-if ! is_installed "ansible"; then
-    echo "sshpass is not installed. Installing sshpass..."
-    apt install -y sshpass
+# Step 3.1: Install sudo if not already installed
+if ! is_installed "sudo"; then
+    echo "sudo is not installed. Installing sudo..."
+    apt install -y sudo
 else
-    echo "sshpass is already installed."
+    echo "sudo is already installed."
 fi
 
 # Step 4: Check if the basic setup playbook exists
