@@ -9,6 +9,8 @@ all:
             hosts:
                 SD-HQ-LIN1:
                 # Variables in ./host_vars/SD-HQ-LIN1.yaml
+                SD-HQ-NMS:
+                # Variables in ./host_vars/SD-HQ-NMS.yaml
 
         windows_servers:
             hosts:

@@ -1,0 +1,5 @@
+---
+ansible_host: 10.0.70.70
+machine_type: "Proxmox VE 8"
+
+...
