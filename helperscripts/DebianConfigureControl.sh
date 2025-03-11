@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Run the following commands as root to install this script
+# apt update -y
+# apt install git -y
+# git clone https://github.com/Horribili-kft/Ansible
+# chmod +x ./Ansible/helperscripts/DebianConfigureControl.sh
+# ./Ansible/helperscripts/DebianConfigureControl.sh
+
 # Variables
 BASIC_SETUP_PLAYBOOK="../playbooks/debian-basic-setup.yaml"
 NMS_SETUP_PLAYBOOK="../playbooks/nms-setup.yaml"
