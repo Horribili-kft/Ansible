@@ -12,7 +12,6 @@ ANSIBLE_USER="ansible"
 DEFAULT_PASSWORD="ansibletemporarypassword"  # The default password for the ansible user
 
 # --- Script ---
-
 # Function to check if a package is installed
 function is_installed() {
     dpkg -l | grep -i "$1" >/dev/null 2>&1
@@ -46,24 +45,15 @@ fi
 
 # Step 4: Create or modify the Ansible user
 if id "$ANSIBLE_USER" &>/dev/null; then
-    echo "User '$ANSIBLE_USER' already exists."
-    # Set the password for the existing user
+    echo "User exists. Resetting password."
     echo "$ANSIBLE_USER:$DEFAULT_PASSWORD" | chpasswd
 else
-    echo "Creating user '$ANSIBLE_USER'..."
-    adduser --gecos "" --disabled-password "$ANSIBLE_USER"
-    # Set the default password for the ansible user
+    echo "Creating user..."
+    adduser --gecos "" "$ANSIBLE_USER"
     echo "$ANSIBLE_USER:$DEFAULT_PASSWORD" | chpasswd
 fi
 
-
-echo "$ANSIBLE_USER:$DEFAULT_PASSWORD" | chpasswd
-# Configure passwordless sudo
-echo "$ANSIBLE_USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$ANSIBLE_USER
-chmod 440 /etc/sudoers.d/$ANSIBLE_USER
-
-# Step 5: Set up passwordless sudo for the Ansible user
-echo "Setting up passwordless sudo for '$ANSIBLE_USER'..."
+# Passwordless sudo
 echo "$ANSIBLE_USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$ANSIBLE_USER
 chmod 440 /etc/sudoers.d/$ANSIBLE_USER
 
