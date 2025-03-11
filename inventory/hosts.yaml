@@ -10,22 +10,34 @@ all:
             hosts:
                 SD-HQ-LIN1:
                 # Variables in ./host_vars/SD-HQ-LIN1.yaml
+                
                 SD-HQ-NMS:
                 # Variables in ./host_vars/SD-HQ-NMS.yaml
 
+                SD-HQ-PVE1:
+                # Variables in /inventory/host_vars/SD-HQ-PVE1.yaml
+
         windows_servers:
+            # Group-wide variables in /inventory/group_vars/windows_servers.yaml
             hosts:
                 SD-HQ-WIN1:
-                # Variables in ./host_vars/SD-HQ-WIN1.yaml
+                # Variables in /inventory/host_vars/SD-HQ-WIN1.yaml
+
+        proxmox_servers:
+            hosts:
+                SD-HQ-PVE1:
+                # Variables in /inventory/host_vars/SD-HQ-PVE1.yaml
 
         cisco:
+            # Group-wide variables in /inventory/group_vars/cisco.yaml
             children:
                 routers:
                     hosts:
                         HQ-R1:
                             ansible_host: 82.136.79.1
                         HQ-R2:
-                            ansible_host: 82.136.79.2
+                            # ansible_host: 82.136.79.2
+                            ansible_host: 85.16.100.3
                 mls:
                     hosts:
                         HQ-MLS1:
@@ -79,7 +91,7 @@ all:
 
         szf:
             vars:
-                domain_name: hq.solardynamics.eu
+                domain_name: szf.solardynamics.eu
 
             hosts:
                 SzF_R:
@@ -93,7 +105,7 @@ all:
 
         tb:
             vars:
-                domain_name: hq.solardynamics.eu
+                domain_name: tb.solardynamics.eu
 
             hosts:
                 TB-RT:
@@ -106,4 +118,9 @@ all:
                     ansible_host: 10.3.252.4
                 TB-WIFI-VARO:
                     ansible_host: 10.3.150.2
+
+
+        bp:
+            vars:
+                domain_name: bp.solardynamics.eu
 ...

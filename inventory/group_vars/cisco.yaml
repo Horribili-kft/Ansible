@@ -1,0 +1,3 @@
+ansible_user: solaire
+ansible_password: Solar-Dynamics-2025
+ansible_network_os: ios
