@@ -52,7 +52,7 @@ fi
 
 # Step 5: Run the basic environment setup playbook
 echo "Running the basic environment setup playbook..."
-ansible-playbook "$BASIC_SETUP_PLAYBOOK" --limit 10.0.70.11 -i "$INVENTORY"
+ansible-playbook "$BASIC_SETUP_PLAYBOOK" --limit localhost -i "$INVENTORY"
 
 # Step 6: Check if the NMS setup playbook exists
 if [ ! -f "$NMS_SETUP_PLAYBOOK" ]; then
@@ -62,6 +62,6 @@ fi
 
 # Step 7: Run the NMS setup playbook
 echo "Running the NMS software installation playbook..."
-ansible-playbook "$NMS_SETUP_PLAYBOOK" --limit 10.0.70.11 -i "$INVENTORY"
+ansible-playbook "$NMS_SETUP_PLAYBOOK" --limit localhost -i "$INVENTORY"
 
 echo "Setup complete. Your NMS should be fully configured."
