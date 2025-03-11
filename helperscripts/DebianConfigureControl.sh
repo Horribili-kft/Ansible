@@ -36,6 +36,14 @@ else
     echo "Ansible is already installed."
 fi
 
+# Step 3.1: Install sshpass if not already installed
+if ! is_installed "ansible"; then
+    echo "sshpass is not installed. Installing sshpass..."
+    apt install -y sshpass
+else
+    echo "sshpass is already installed."
+fi
+
 # Step 4: Check if the basic setup playbook exists
 if [ ! -f "$BASIC_SETUP_PLAYBOOK" ]; then
     echo "Error: Basic setup playbook ($BASIC_SETUP_PLAYBOOK) not found!"
@@ -44,7 +52,7 @@ fi
 
 # Step 5: Run the basic environment setup playbook
 echo "Running the basic environment setup playbook..."
-ansible-playbook "$BASIC_SETUP_PLAYBOOK" -i "$INVENTORY" --ask-pass
+ansible-playbook "$BASIC_SETUP_PLAYBOOK" --limit localhost
 
 # Step 6: Check if the NMS setup playbook exists
 if [ ! -f "$NMS_SETUP_PLAYBOOK" ]; then
@@ -54,6 +62,6 @@ fi
 
 # Step 7: Run the NMS setup playbook
 echo "Running the NMS software installation playbook..."
-ansible-playbook "$NMS_SETUP_PLAYBOOK" -i "$INVENTORY" --ask-pass
+ansible-playbook "$NMS_SETUP_PLAYBOOK" --limit localhost
 
 echo "Setup complete. Your NMS should be fully configured."

@@ -1,19 +1,22 @@
 ---
-- name: Ping all Linux servers
+- name: Install sudo
   hosts: linux_servers
   tasks:
     - name: Ping Linux servers
       ping:
 
-- name: Ping all Windows servers
-  hosts: windows_servers
+- name: Install sudo
+  hosts: linux_servers
   tasks:
-    - name: Ping Windows servers
-      win_ping:
-
-- name: Ping all Cisco devices
-  hosts: cisco
-  tasks:
-    - name: Ping Cisco devices
+    - name: Ping Linux servers
       ping:
+
+- name: Install sudo
+  hosts: linux_servers
+  tasks:
+    - name: Ping Linux servers
+      ping:
+
+  
+
 ...
