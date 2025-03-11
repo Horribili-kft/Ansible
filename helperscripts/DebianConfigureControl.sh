@@ -4,12 +4,14 @@
 # apt update -y
 # apt install git -y
 # git clone https://github.com/Horribili-kft/Ansible
-# chmod +x ./Ansible/helperscripts/DebianConfigureControl.sh
-# ./Ansible/helperscripts/DebianConfigureControl.sh
+# cd ./Ansible/helperscripts/
+# chmod +x ./DebianConfigureControl.sh
+# ./DebianConfigureControl.sh
 
 # Variables
 BASIC_SETUP_PLAYBOOK="../playbooks/debian-basic-setup.yaml"
 NMS_SETUP_PLAYBOOK="../playbooks/nms-setup.yaml"
+INVENTORY="../inventory/hosts.yaml"
 
 # Function to check if a package is installed
 function is_installed() {
@@ -42,7 +44,7 @@ fi
 
 # Step 5: Run the basic environment setup playbook
 echo "Running the basic environment setup playbook..."
-ansible-playbook "$BASIC_SETUP_PLAYBOOK"
+ansible-playbook "$BASIC_SETUP_PLAYBOOK" -i "$INVENTORY" --ask-pass
 
 # Step 6: Check if the NMS setup playbook exists
 if [ ! -f "$NMS_SETUP_PLAYBOOK" ]; then
@@ -52,6 +54,6 @@ fi
 
 # Step 7: Run the NMS setup playbook
 echo "Running the NMS software installation playbook..."
-ansible-playbook "$NMS_SETUP_PLAYBOOK"
+ansible-playbook "$NMS_SETUP_PLAYBOOK" -i "$INVENTORY" --ask-pass
 
 echo "Setup complete. Your NMS should be fully configured."
