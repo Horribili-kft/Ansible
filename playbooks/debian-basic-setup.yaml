@@ -2,7 +2,7 @@
 # Playbook: debian-basic-setup.yaml
 # Description: Basic setup for Debian systems, including installing essential packages, configuring sudo, and other base configurations.
 
-- hosts: localhost
+- hosts: linux_servers
   become: yes  # Run with elevated privileges
   vars:
     # Pulled from the hosts.yaml file
