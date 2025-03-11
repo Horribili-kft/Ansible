@@ -2,7 +2,7 @@
 
 # Run the following commands as root to install this script
 # apt update -y
-# apt install git -y
+# apt install -y git 
 # git clone https://github.com/Horribili-kft/Ansible
 # cd ./Ansible/helperscripts/
 # chmod +x ./DebianConfigureControl.sh

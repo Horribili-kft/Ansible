@@ -2,9 +2,9 @@
 # You must run this as root
 
 # To run this:
-# wget https://github.com/Horribili-kft/
+# wget https://raw.githubusercontent.com/Horribili-kft/Ansible/refs/heads/main/helperscripts/PrepareForAnsible.sh
 # chmod +x ./DebianConfigureControl.sh
-# ./DebianConfigureControl.sh
+# (sudo) ./DebianConfigureControl.sh
 
 # --- Variables ---
 ANSIBLE_USER="ansible"  
@@ -46,11 +46,11 @@ fi
 # Step 4: Create or modify the Ansible user
 if id "$ANSIBLE_USER" &>/dev/null; then
     echo "User exists. Resetting password."
-    echo "$ANSIBLE_USER:$DEFAULT_PASSWORD" | chpasswd
+    echo "$ANSIBLE_USER:$DEFAULT_PASSWORD" | /sbin/chpasswd
 else
     echo "Creating user..."
-    adduser --gecos "" "$ANSIBLE_USER"
-    echo "$ANSIBLE_USER:$DEFAULT_PASSWORD" | chpasswd
+    /sbin/adduser --gecos "" "$ANSIBLE_USER"
+    echo "$ANSIBLE_USER:$DEFAULT_PASSWORD" | /sbin/chpasswd
 fi
 
 # Passwordless sudo
@@ -65,7 +65,7 @@ systemctl restart ssh
 
 # Step 9: Test SSH connection (optional)
 echo "Testing SSH connection as '$ANSIBLE_USER'..."
-su - $ANSIBLE_USER -c "ssh -o StrictHostKeyChecking=no -T localhost echo 'SSH connection test successful.'"
+su - $ANSIBLE_USER -c "sudo ssh -o StrictHostKeyChecking=no -T localhost echo 'SSH connection test successful.'"
 
 
 # Completion message
