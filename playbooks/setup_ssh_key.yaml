@@ -1,34 +1,38 @@
 ---
 - name: Set up SSH key-based authentication and configure password
   hosts: linux_servers
+  become: yes
+  gather_facts: yes
+
   vars:
-    remote_user: "{{ ansible_user }}"  # The user for whom we are setting up SSH key-based authentication linux_servers group vars.
-    user_password: "{{ ansible_temp_pass }}"  # Initial password for the ansible user (set this to your desired password)
+    remote_user: "{{ ansible_user }}"
+    user_password: "{{ ansible_temp_pass }}"
     ansible_password: "{{ ansible_temp_pass }}"
     control_node_ssh_pub_key: "{{ lookup('env', 'HOME') + '/.ssh/id_rsa.pub' }}"
+
   tasks:
-    - name: Ensure .ssh directory exists
+    - name: Ensure .ssh directory exists on remote
       file:
-        path: "/home/{{ remote_user }}/.ssh"
+        path: "{{ ansible_env.HOME }}/.ssh"
         state: directory
         mode: '0700'
         owner: "{{ remote_user }}"
         group: "{{ remote_user }}"
 
-    - name: Copy control node's public key to target
+    - name: Copy control node's public key to the target user's authorized_keys
       authorized_key:
         user: "{{ remote_user }}"
         state: present
         key: "{{ lookup('file', control_node_ssh_pub_key) }}"
 
-    - name: Disable password authentication (after key is deployed)
+    - name: Disable password authentication in SSH daemon config (after key is deployed)
       lineinfile:
         path: /etc/ssh/sshd_config
         regexp: '^#?PasswordAuthentication'
         line: 'PasswordAuthentication no'
-      notify: restart ssh
+      notify: restart sshd
 
-    - name: Remove password for ansible user
+    - name: Remove password for the remote user
       user:
         name: "{{ remote_user }}"
         password: ""
