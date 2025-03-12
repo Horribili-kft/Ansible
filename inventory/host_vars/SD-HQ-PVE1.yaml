@@ -1,0 +1,6 @@
+---
+ansible_host: 10.0.70.70
+ansible_user: Ansible
+machine_type: "Proxmox Virtual Environment"
+
+...
