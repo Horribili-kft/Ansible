@@ -3,7 +3,7 @@
   hosts: linux_servers
   become: yes
   vars:
-    remote_user: {{ ansible_user }}  # The user for whom we are setting up SSH key-based authentication linux_servers group vars.
+    remote_user: "{{ ansible_user }}"  # The user for whom we are setting up SSH key-based authentication linux_servers group vars.
     user_password: "{{ ansible_temp_pass }}"  # Initial password for the ansible user (set this to your desired password)
     ansible_password: "{{ ansible_temp_pass }}"
     control_node_ssh_pub_key: "{{ lookup('env', 'HOME') + '/.ssh/id_rsa.pub' }}"
