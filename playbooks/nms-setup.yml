@@ -1,19 +1,30 @@
 ---
-- name: Ping all Linux servers
+- name: NMS configuration
   hosts: linux_servers
+  gather_facts: no
+  become: yes  # Run with elevated privileges
   tasks:
-    - name: Ping Linux servers
-      ping:
+    - name: Check if SSH key pair already exists
+      stat:
+        path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+      register: ssh_key_status
 
-- name: Ping all Windows servers
-  hosts: windows_servers
-  tasks:
-    - name: Ping Windows servers
-      win_ping:
+    - name: Generate SSH key pair if not present
+      openssh_keypair:
+        path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+        type: rsa
+        size: 2048
+        mode: '0600'
+      when: not ssh_key_status.stat.exists
+      register: ssh_keypair_result
 
-- name: Ping all Cisco devices
-  hosts: cisco
-  tasks:
-    - name: Ping Cisco devices
-      ping:
+    - name: Show message if SSH key already exists
+      debug:
+        msg: "SSH key pair already exists at {{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+      when: ssh_key_status.stat.exists
+
+    - name: Display public key content
+      debug:
+        msg: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
+      when: ssh_key_status.stat.exists or ssh_keypair_result is changed
 ...
