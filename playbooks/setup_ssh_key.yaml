@@ -16,8 +16,6 @@
         owner: "{{ remote_user }}"
         group: "{{ remote_user }}"
 
-    - name: Ensure SSH keys exist
-
     - name: Copy control node's public key to target
       authorized_key:
         user: "{{ remote_user }}"
