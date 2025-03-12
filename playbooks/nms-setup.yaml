@@ -16,6 +16,7 @@
         size: 2048
         mode: '0600'
       when: not ssh_key_status.stat.exists
+      become: no
       register: ssh_keypair_result
 
     - name: Show message if SSH key already exists
