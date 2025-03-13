@@ -52,11 +52,13 @@
       when: nessus_check_deb.rc == 1
 
     - name: Enable nessus
+      become: true
       service:
         name: nessusd
-        state: enabled
+        enabled: yes
 
     - name: Start nessus
+      become: true
       service:
         name: nessusd
         state: started
