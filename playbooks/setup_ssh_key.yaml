@@ -31,7 +31,7 @@
         regexp: '^#?PasswordAuthentication'
         line: 'PasswordAuthentication no'
       become: yes
-      notify: restart sshd
+      notify: restart ssh
 
     - name: Remove password for the remote user
       user:
