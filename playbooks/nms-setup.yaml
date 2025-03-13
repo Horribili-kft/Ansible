@@ -3,6 +3,12 @@
   hosts: linux_servers
   gather_facts: no
   become: no  # Run with elevated privileges
+  vars:
+    # Vars for installing Nessus
+    nessus_download_url: ""
+    nessus_download_name: "nessus"
+
+
   tasks:
     - name: Check if SSH key pair already exists
       stat:
@@ -27,4 +33,23 @@
       debug:
         msg: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
       when: ssh_key_status.stat.exists or ssh_keypair_result is changed
+
+    - name: Download nessus
+      get_url: 
+        url="{{ nessus_download_url }}"
+        dest="/home/{{ ansible_env.USER }}/{{ nessus_download_name }}.deb"
+      when: nessus_check_deb.rc == 1
+
+    - name: Install nessus
+      apt: deb="/home/{{ ansible_env.USER }}/{{ nessus_download_name }}.deb"
+      become: true
+      when: nessus_check_deb.rc == 1
+
+
+    - name: Install essential packages
+      apt:
+        name:
+          - sudo
+          - 
+        state: present
 ...
