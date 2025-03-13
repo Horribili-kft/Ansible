@@ -1,7 +1,7 @@
 ---
 - name: Set up SSH key-based authentication and configure password
   hosts: linux_servers
-  become: yes
+  become: no
   gather_facts: yes
 
   vars:
@@ -30,15 +30,18 @@
         path: /etc/ssh/sshd_config
         regexp: '^#?PasswordAuthentication'
         line: 'PasswordAuthentication no'
+      become: yes
       notify: restart sshd
 
     - name: Remove password for the remote user
       user:
         name: "{{ remote_user }}"
         password: ""
+      become: yes
 
   handlers:
     - name: restart ssh
+      become: yes
       service:
         name: ssh
         state: restarted
