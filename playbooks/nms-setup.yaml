@@ -51,6 +51,15 @@
       become: true
       when: nessus_check_deb.rc == 1
 
+    - name: Enable nessus
+      service:
+        name: nessusd
+        state: enabled
+
+    - name: Start nessus
+      service:
+        name: nessusd
+        state: started
 
     - name: Install essential packages
       apt:
