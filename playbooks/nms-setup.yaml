@@ -34,6 +34,12 @@
         msg: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
       when: ssh_key_status.stat.exists or ssh_keypair_result is changed
 
+    - name: Check if nessus is installed
+      command: dpkg-query -W nessus
+      register: nessus_check_deb
+      failed_when: nessus_check_deb.rc > 1
+      changed_when: nessus_check_deb.rc == 1
+
     - name: Download nessus
       get_url: 
         url="{{ nessus_download_url }}"
