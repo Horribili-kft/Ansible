@@ -2,7 +2,7 @@
 - name: NMS configuration
   hosts: linux_servers
   gather_facts: no
-  become: yes  # Run with elevated privileges
+  become: no  # Run with elevated privileges
   tasks:
     - name: Check if SSH key pair already exists
       stat:
@@ -16,7 +16,6 @@
         size: 2048
         mode: '0600'
       when: not ssh_key_status.stat.exists
-      become: no
       register: ssh_keypair_result
 
     - name: Show message if SSH key already exists
