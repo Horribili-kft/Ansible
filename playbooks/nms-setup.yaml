@@ -43,11 +43,11 @@
     - name: Download nessus
       get_url: 
         url="{{ nessus_download_url }}"
-        dest="/home/{{ lookup('env', 'HOME') }}/{{ nessus_download_name }}.deb"
+        dest="{{ lookup('env', 'HOME') }}/{{ nessus_download_name }}.deb"
       when: nessus_check_deb.rc == 1
 
     - name: Install nessus
-      apt: deb="/home/{{ lookup('env', 'HOME') }}/{{ nessus_download_name }}.deb"
+      apt: deb="{{ lookup('env', 'HOME') }}/{{ nessus_download_name }}.deb"
       become: true
       when: nessus_check_deb.rc == 1
 
