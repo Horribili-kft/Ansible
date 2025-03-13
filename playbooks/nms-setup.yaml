@@ -5,7 +5,7 @@
   become: no  # Run with elevated privileges
   vars:
     # Vars for installing Nessus
-    nessus_download_url: ""
+    nessus_download_url: "https://www.tenable.com/downloads/api/v2/pages/nessus/files/Nessus-10.8.3-debian10_amd64.deb"
     nessus_download_name: "nessus"
 
 
@@ -43,11 +43,11 @@
     - name: Download nessus
       get_url: 
         url="{{ nessus_download_url }}"
-        dest="/home/{{ ansible_env.USER }}/{{ nessus_download_name }}.deb"
+        dest="/home/{{ lookup('env', 'HOME') }}/{{ nessus_download_name }}.deb"
       when: nessus_check_deb.rc == 1
 
     - name: Install nessus
-      apt: deb="/home/{{ ansible_env.USER }}/{{ nessus_download_name }}.deb"
+      apt: deb="/home/{{ lookup('env', 'HOME') }}/{{ nessus_download_name }}.deb"
       become: true
       when: nessus_check_deb.rc == 1
 
