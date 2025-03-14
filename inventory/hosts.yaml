@@ -34,18 +34,38 @@ all:
                 routers:
                     hosts:
                         HQ-R1:
-                            ansible_host: 82.136.79.1
+                            # Publikus cím:
+                            # ansible_host: 82.136.79.1
+                            ansible_host: 172.16.0.0
                         HQ-R2:
-                            # ansible_host: 82.136.79.2
-                            ansible_host: 85.16.100.3
+                            # Publikus cím
+                            # ansible_host: 85.16.100.3
+                            ansible_host: 172.16.0.4
+
+                        SzF_R:
+                            ansible_host: 10.1.252.1
+                        
+                        BP-R:
+                            ansible_host: 172.16.2.0
+
+                        TB-R:
+                            ansible_host: 10.3.252.1
+
                 mls:
                     hosts:
                         HQ-MLS1:
-                            ansible_host: 10.0.252.1
+                            ansible_host: 10.0.253.1
                         HQ-MLS2:
-                            ansible_host: 10.0.252.2
+                            ansible_host: 10.0.253.2
+
+                        BP-MLS1:
+                            ansible_host: 10.2.253.2
+                        BP-MLS2:
+                            ansible_host: 10.2.253.3
+                            
                 switches:
                     hosts:
+                        # HQ
                         HQ-OFFICE-S1:
                             ansible_host: 10.0.254.1
                         HQ-OFFICE-S2:
@@ -54,17 +74,29 @@ all:
                             ansible_host: 10.0.254.3
                         HQ-WS-S2:
                             ansible_host: 10.0.254.4
-                        SzF_SW:
-                            ansible_host: 110.1.252.2
-                        SzF_SW2:
-                            ansible_host: 10.1.252.3
-                        TB-EM2-IRODA:
-                            ansible_host: 10.3.252.3
-                        TB-EM1-LOGI:
-                            ansible_host: 10.3.252.2
-                        TB-EM3-PARTNER:
-                            ansible_host: 10.3.252.4
 
+                        # SzF
+                        SzF_SW:
+                            ansible_host: 10.1.254.1
+                        SzF_SW2:
+                            ansible_host: 10.1.254.2
+
+                        # BP
+                        BP-EM1-SW:
+                            ansible_host: 10.2.254.1
+                        BP-EM2-SW:
+                            ansible_host: 10.2.254.2
+                        BP-EM3-SW:
+                            ansible_host: 10.2.254.3
+
+                        # TB
+                        TB-EM2-IRODA:
+                            ansible_host: 10.3.254.1
+                        TB-EM1-LOGI:
+                            ansible_host: 10.3.254.2
+                        TB-EM3-PARTNER:
+                            ansible_host: 10.3.254.3
+                        
         hq:
             vars:
                 domain_name: hq.solardynamics.eu
@@ -72,22 +104,19 @@ all:
             hosts:
                 SD-HQ-LIN1:
                 SD-HQ-WIN1:
+                SD-HQ-NMS:
+                SD-HQ-PVE1:
+
                 HQ-R1:
-                    ansible_host: 82.136.79.1
                 HQ-R2:
-                    ansible_host: 82.136.79.2
+
                 HQ-MLS1:
-                    ansible_host: 10.0.252.1
                 HQ-MLS2:
-                    ansible_host: 10.0.252.2
+                
                 HQ-OFFICE-S1:
-                    ansible_host: 10.0.254.1
                 HQ-OFFICE-S2:
-                    ansible_host: 10.0.254.2
                 HQ-WS-S1:
-                    ansible_host: 10.0.254.3
                 HQ-WS-S2:
-                    ansible_host: 10.0.254.4
 
         szf:
             vars:
@@ -95,13 +124,10 @@ all:
 
             hosts:
                 SzF_R:
-                    ansible_host: 10.1.252.1
+
                 SzF_SW:
-                    ansible_host: 110.1.252.2
                 SzF_SW2:
-                    ansible_host: 10.1.252.3
                 SzF_WR:
-                    ansible_host: 10.1.110.2
 
         tb:
             vars:
@@ -109,18 +135,27 @@ all:
 
             hosts:
                 TB-RT:
-                    ansible_host: 10.3.252.1
+
                 TB-EM2-IRODA:
-                    ansible_host: 10.3.252.3
                 TB-EM1-LOGI:
-                    ansible_host: 10.3.252.2
                 TB-EM3-PARTNER:
-                    ansible_host: 10.3.252.4
+
                 TB-WIFI-VARO:
-                    ansible_host: 10.3.150.2
 
 
         bp:
             vars:
                 domain_name: bp.solardynamics.eu
+
+            hosts:
+                BP-R:
+                    
+                BP-MLS1:
+                BP-MLS2:
+
+                BP-EM1-SW:
+                BP-EM2-SW:
+                BP-EM3-SW:
+                    
+
 ...
