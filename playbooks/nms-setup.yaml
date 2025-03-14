@@ -1,6 +1,6 @@
 ---
 - name: NMS configuration
-  hosts: linux_servers
+  hosts: SD-HQ-NMS
   gather_facts: no
   become: no  # Run with elevated privileges
   vars:
@@ -48,25 +48,35 @@
 
     - name: Install nessus
       apt: deb="{{ lookup('env', 'HOME') }}/{{ nessus_download_name }}.deb"
-      become: true
+      become: yes
       when: nessus_check_deb.rc == 1
 
     - name: Enable nessus
-      become: true
+      become: yes
       service:
         name: nessusd
         enabled: yes
 
     - name: Start nessus
-      become: true
+      become: yes
       service:
         name: nessusd
         state: started
 
     - name: Install essential packages
+      become: yes
       apt:
         name:
           - sudo
-          - 
+          - pip
         state: present
+
+    - name: Install Paramiko
+      hosts: all
+      become: yes
+      tasks:
+        - name: Install Paramiko
+          pip:
+            name: paramiko
+            state: latest
 ...
