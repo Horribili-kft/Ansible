@@ -13,11 +13,5 @@
 
 - name: Ping control node from all Cisco devices
   cisco.ios.ios_ping:
-    dest: 10.0.70.11   
-    count: 5             
-  register: ping_result
-
-- name: Display if Cisco pings were successful
-  debug:
-    msg: "Ping {{ 'successful' if ping_result.ping.packets_rx|int > 0 else 'failed' }} on {{ inventory_hostname }}"
+    dest: 10.0.70.11
 ...
