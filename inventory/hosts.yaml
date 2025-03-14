@@ -17,9 +17,12 @@ all:
                 SD-HQ-PVE1:
                 # Variables in /inventory/host_vars/SD-HQ-PVE1.yaml
 
+                # SD-BP-LIN1:
+                # Variables in /inventory/host_vars/SD-BP-LIN1.yaml
+
         windows_servers:
             # Group-wide variables in /inventory/group_vars/windows_servers.yaml
-            hosts:
+            hosts: 
                 SD-HQ-WIN1:
                 # Variables in /inventory/host_vars/SD-HQ-WIN1.yaml
 
@@ -112,7 +115,7 @@ all:
 
                 HQ-MLS1:
                 HQ-MLS2:
-                
+
                 HQ-OFFICE-S1:
                 HQ-OFFICE-S2:
                 HQ-WS-S1:
