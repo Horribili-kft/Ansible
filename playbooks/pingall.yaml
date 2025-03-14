@@ -12,6 +12,9 @@
       win_ping:
 
 - name: Ping control node from all Cisco devices
-  cisco.ios.ios_ping:
-    dest: 10.0.70.11
+  hosts: cisco
+  tasks:
+    - name: Ping control node by IP
+      cisco.ios.ios_ping:
+        dest: 10.0.70.11
 ...
