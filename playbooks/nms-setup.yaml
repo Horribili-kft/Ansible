@@ -69,11 +69,6 @@
         name:
           - sudo
           - pip
+          - python3-paramiko
         state: present
-
-    - name: Install Paramiko
-      become: yes
-      pip:
-        name: paramiko
-        state: latest
 ...
