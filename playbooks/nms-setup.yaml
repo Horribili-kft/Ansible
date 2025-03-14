@@ -70,5 +70,6 @@
           - sudo
           - pip
           - python3-paramiko
+          - ansible-pylibssh
         state: present
 ...
