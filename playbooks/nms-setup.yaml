@@ -72,11 +72,8 @@
         state: present
 
     - name: Install Paramiko
-      hosts: all
       become: yes
-      tasks:
-        - name: Install Paramiko
-          pip:
-            name: paramiko
-            state: latest
+      pip:
+        name: paramiko
+        state: latest
 ...
