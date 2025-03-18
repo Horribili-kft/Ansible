@@ -142,8 +142,16 @@
         state: present
 
     # --- Zabbix Database Configuration ---
+    - name: Configure postgres user has a password
+      become: yes
+      user:
+        name: postgres
+        password: "{{ 'a' | password_hash('sha512') }}"
+
+
     # !!! We need to install: pip install psycopg2-binary
     - name: Configure Zabbix server database
+      become: yes
       become_user: postgres
       postgresql_db:
         name: zabbix
@@ -152,6 +160,8 @@
         lc_ctype: en_US.UTF-8
 
     - name: Create Zabbix database user
+      become: yes
+      become_user: postgres
       postgresql_user:
         name: zabbix
         password: zabbix_password
