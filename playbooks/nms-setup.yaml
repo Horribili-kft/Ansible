@@ -88,11 +88,18 @@
         name: postgresql
         state: started
 
+    - name: Check if PostgreSQL is installed
+      command: dpkg-query -W postgresql
+      register: postgresql_check
+      failed_when: postgresql_check.rc > 1
+      changed_when: postgresql_check.rc == 1
+
     - name: Enable PostgreSQL
       become: yes
       service:
         name: postgresql
         enabled: yes
+      when: postgresql_check.rc == 0
 
     - name: Download Zabbix release package
       become: yes
