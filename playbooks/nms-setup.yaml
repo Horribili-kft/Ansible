@@ -184,8 +184,7 @@
         db: zabbix
         type: database
         privs: ALL
-        roles:
-          - zabbix
+        role: zabbix
         state: present
 
     - name: Check if Zabbix schema is in the database
