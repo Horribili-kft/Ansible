@@ -7,6 +7,7 @@
     # Vars for installing Nessus
     nessus_download_url: "https://www.tenable.com/downloads/api/v2/pages/nessus/files/Nessus-10.8.3-debian10_amd64.deb"
     nessus_download_name: "nessus"
+    postgresql_version: "15"
 
 
   tasks:
@@ -88,15 +89,21 @@
       failed_when: postgresql_check.rc > 1
       changed_when: postgresql_check.rc == 1
 
-
-
     - name: Configure PostgreSQL to use password authentication
       become: yes
-      lineinfile:
-        path: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
-        regexp: '^host'
-        line: 'host    all             all             127.0.0.1/32            md5'
-        state: present
+      tasks:
+        - name: Configure for IPv4
+          lineinfile:
+            path: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+            regexp: '^host'
+            line: 'host    all             all             127.0.0.1/32            md5'
+            state: present
+        - name: Configure for IPv6
+          lineinfile:
+            path: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+            regexp: '^host'
+            line: 'host    all             all             ::1/128            md5'
+            state: present
 
     - name: Start PostgreSQL
       become: yes
