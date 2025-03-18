@@ -100,6 +100,13 @@
         name: postgresql
         enabled: yes
       when: postgresql_check.rc == 0
+      
+      # --- Zabbix repo configuration
+    - name: Check if Zabbix is installed
+      command: dpkg-query -W zabbix-server-pgsql
+      register: zabbix_check_deb
+      failed_when: zabbix_check_deb.rc > 1
+      changed_when: zabbix_check_deb.rc == 1
 
     - name: Download Zabbix release package
       become: yes
