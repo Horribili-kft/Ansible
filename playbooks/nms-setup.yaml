@@ -14,6 +14,8 @@
 
 
   tasks:
+    # === BASIC SETUP ===
+    
     # --- SSH Key Management configuration ---
     - name: Check if SSH key pair already exists
       stat:
@@ -44,6 +46,8 @@
           - pip
         state: present
 
+    # === NESSUS ===
+
     # --- Nessus Installation ---
     - name: Check if nessus is installed
       command: dpkg-query -W nessus
@@ -63,6 +67,8 @@
       become: yes
       when: nessus_check_deb.rc == 1
       notify: Enable and start nessus
+
+    # === ZABBIX ===
 
     # --- PostgreSQL Installation and Configuration ---
     - name: Install PostgreSQL
@@ -101,7 +107,7 @@
         enabled: yes
       when: postgresql_check.rc == 0
 
-    # --- Zabbix repo configuration
+    # --- Zabbix repo configuration ---
     - name: Check if Zabbix is installed
       command: dpkg-query -W zabbix-server-pgsql
       register: zabbix_check_deb
@@ -128,14 +134,13 @@
       when: zabbix_check_deb.rc == 1
 
     # --- Zabbix Installation ---
-    - name: Install Zabbix server, frontend, and agent
+    - name: Install Zabbix server and frontend
       become: yes
       apt:
         name:
           - zabbix-server-pgsql
           - zabbix-frontend-php
           - zabbix-nginx-conf
-          - zabbix-agent
           - zabbix-sql-scripts
         state: present
 
@@ -206,15 +211,12 @@
         state: started
         enabled: yes
 
-    - name: Enable and start Zabbix server and agent
+    - name: Enable and start Zabbix server
       become: yes
       service:
-        name: "{{ item }}"
+        name: zabbix-server
         state: started
         enabled: yes
-      loop:
-        - zabbix-server
-        - zabbix-agent
 
   handlers:
     - name: Display public key content
