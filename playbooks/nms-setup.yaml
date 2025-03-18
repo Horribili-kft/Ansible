@@ -8,8 +8,6 @@
     nessus_download_url: "https://www.tenable.com/downloads/api/v2/pages/nessus/files/Nessus-10.8.3-debian10_amd64.deb"
     nessus_download_name: "nessus"
     postgresql_version: "15"
-    
-
 
   tasks:
     # --- SSH Key Management configuration ---
@@ -26,6 +24,7 @@
         mode: '0600'
       when: not ssh_key_status.stat.exists
       register: ssh_keypair_result
+      notify: Display public key content
 
     - name: Show message if SSH key already exists
       debug:
@@ -58,24 +57,14 @@
         url="{{ nessus_download_url }}"
         dest="{{ lookup('env', 'HOME') }}/{{ nessus_download_name }}.deb"
       when: nessus_check_deb.rc == 1
+      notify: Install nessus
 
     - name: Install nessus
       apt:
         deb: "{{ lookup('env', 'HOME') }}/{{ nessus_download_name }}.deb"
       become: yes
       when: nessus_check_deb.rc == 1
-
-    - name: Enable nessus
-      become: yes
-      service:
-        name: nessusd
-        enabled: yes
-
-    - name: Start nessus
-      become: yes
-      service:
-        name: nessusd
-        state: started
+      notify: Enable and start nessus
 
     # --- PostgreSQL Installation and Configuration ---
     - name: Install PostgreSQL
@@ -99,12 +88,7 @@
           local   all             zabbix                                  trust
         marker: "# {mark} ANSIBLE MANAGED BLOCK"
         state: present
-
-    - name: Restart PostgreSQL to apply changes
-      become: yes
-      service:
-        name: postgresql
-        state: restarted
+      notify: Restart PostgreSQL
 
     - name: Start PostgreSQL
       become: yes
@@ -119,7 +103,6 @@
         enabled: yes
       when: postgresql_check.rc == 0
 
-      
     # --- Zabbix repo configuration
     - name: Check if Zabbix is installed
       command: dpkg-query -W zabbix-server-pgsql
@@ -133,6 +116,7 @@
         url: "https://repo.zabbix.com/zabbix/7.2/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.2+debian12_all.deb"
         dest: "/tmp/zabbix-release_latest_7.2+debian12_all.deb"
       when: zabbix_check_deb.rc == 1
+      notify: Install Zabbix release package
 
     - name: Install Zabbix release package
       become: yes
@@ -233,4 +217,29 @@
       loop:
         - zabbix-server
         - zabbix-agent
-...
+
+  handlers:
+    - name: Display public key content
+      debug:
+        msg: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
+
+    - name: Install nessus
+      apt:
+        deb: "{{ lookup('env', 'HOME') }}/{{ nessus_download_name }}.deb"
+      become: yes
+
+    - name: Enable and start nessus
+      service:
+        name: nessusd
+        enabled: yes
+        state: started
+
+    - name: Restart PostgreSQL
+      service:
+        name: postgresql
+        state: restarted
+
+    - name: Install Zabbix release package
+      become: yes
+      apt:
+        deb: "/tmp/zabbix-release_latest_7.2+debian12_all.deb"
