@@ -109,13 +109,13 @@
       get_url:
         url: "{{ zabbix_release_url }}"
         dest: "/tmp/zabbix-release.deb"
-      when: not zabbix_installed.installed
+      when: not zabbix_installed is not defined 
 
     - name: Install Zabbix release package
       become: yes
       apt:
         deb: "/tmp/zabbix-release.deb"
-      when: not zabbix_installed.installed
+      when: not zabbix_installed is not defined 
 
     # --- Zabbix Installation ---
     - name: Install Zabbix server and frontend
