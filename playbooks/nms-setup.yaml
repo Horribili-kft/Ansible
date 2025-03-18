@@ -8,6 +8,7 @@
     nessus_download_url: "https://www.tenable.com/downloads/api/v2/pages/nessus/files/Nessus-10.8.3-debian10_amd64.deb"
     nessus_download_name: "nessus"
     postgresql_version: "15"
+    
 
 
   tasks:
@@ -89,12 +90,12 @@
       failed_when: postgresql_check.rc > 1
       changed_when: postgresql_check.rc == 1
 
-    - name: Configure PostgreSQL to use md5 authentication
+    - name: Configure PostgreSQL to use trust authentication for localhost
       become: yes
       lineinfile:
         path: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
         regexp: '^local\s+all\s+postgres\s+peer'
-        line: 'local   all             postgres                                md5'
+        line: 'local   all             postgres                                trust'
 
     - name: Restart PostgreSQL to apply changes
       become: yes
