@@ -173,7 +173,17 @@
         name: zabbix
         password: zabbix_password
         db: zabbix
-        role_attr_flags: CREATEDB
+        role_attr_flags: CREATEDB,CREATEROLE
+
+    - name: Grant all privileges on zabbix database to zabbix user
+      become: yes
+      postgresql_privs:
+        db: zabbix
+        type: database
+        privs: ALL
+        roles:
+          - zabbix
+        state: present
 
     - name: Check if Zabbix schema is in the database
       become: yes
