@@ -82,14 +82,6 @@
         name: postgresql
         state: present
 
-    - name: Change PostgreSQL authentication method to md5
-      become: yes
-      lineinfile:
-        path: /etc/postgresql/12/main/pg_hba.conf
-        regexp: '^host'
-        line: 'host all all 0.0.0.0/0 md5'
-        state: present
-
     - name: Start PostgreSQL
       become: yes
       service:
