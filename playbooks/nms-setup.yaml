@@ -157,7 +157,7 @@
     # --- Zabbix Database Configuration ---
 
     # !!! We need to install: pip install psycopg2-binary
-    - name: Configure Zabbix server database
+    - name: Create Zabbix server database
       become: yes
       postgresql_db:
         name: zabbix
@@ -170,7 +170,8 @@
       postgresql_user:
         name: zabbix
         password: zabbix_password
-        priv: "zabbix:ALL"
+        db: zabbix
+        role_attr_flags: CREATEDB
 
     - name: Import initial schema and data
       become: yes
