@@ -73,7 +73,6 @@
         name:
           - sudo
           - pip
-          - ansible-pylibssh
         state: present
 
     # --- PostgreSQL Installation and Configuration ---
