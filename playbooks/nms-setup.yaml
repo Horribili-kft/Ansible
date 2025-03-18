@@ -95,22 +95,30 @@
         state: started
     
     # --- Zabbix Repository Configuration ---
-    - name: Add Zabbix repository
-      become: yes
-      apt_repository:
-        repo: "deb http://repo.zabbix.com/zabbix/5.0/ubuntu $(lsb_release -sc) main"
-        state: present
+    - name: Check if Zabbix is installed
+      command: dpkg-query -W zabbix-server-pgsql
+      register: zabbix_check_deb
+      failed_when: zabbix_check_deb.rc > 1
+      changed_when: zabbix_check_deb.rc == 1
 
-    - name: Add Zabbix repository key
+    - name: Download Zabbix release package
       become: yes
-      apt_key:
-        url: "https://repo.zabbix.com/zabbix-official-repo.key"
-        state: present
+      get_url:
+        url: "https://repo.zabbix.com/zabbix/7.2/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.2+debian12_all.deb"
+        dest: "/tmp/zabbix-release_latest_7.2+debian12_all.deb"
+      when: zabbix_check_deb.rc == 1
+
+    - name: Install Zabbix release package
+      become: yes
+      apt:
+        deb: "/tmp/zabbix-release_latest_7.2+debian12_all.deb"
+      when: zabbix_check_deb.rc == 1
 
     - name: Update APT package cache
       become: yes
       apt:
         update_cache: yes
+      when: zabbix_check_deb.rc == 1
 
     # --- Zabbix Installation ---
     - name: Install Zabbix server, frontend, and agent
