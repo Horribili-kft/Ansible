@@ -89,21 +89,6 @@
       failed_when: postgresql_check.rc > 1
       changed_when: postgresql_check.rc == 1
 
-    - name: Configure PostgreSQL to use password authentication
-      become: yes
-      lineinfile:
-        path: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
-        regexp: '^host'
-        line: 'host    all             all             127.0.0.1/32            md5'
-        state: present
-
-    - name: Configure PostgreSQL to use password authentication
-      become: yes
-      lineinfile:
-        path: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
-        regexp: '^local'
-        line: 'local   all             all             127.0.0.1/32                 md5'
-        state: present
 
     - name: Start PostgreSQL
       become: yes
@@ -159,6 +144,7 @@
     # --- Zabbix Database Configuration ---
     # !!! We need to install: pip install psycopg2-binary
     - name: Configure Zabbix server database
+      become_user: postgres
       postgresql_db:
         name: zabbix
         encoding: UTF8
