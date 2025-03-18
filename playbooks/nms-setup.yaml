@@ -96,6 +96,14 @@
         regexp: '^host'
         line: 'host    all             all             127.0.0.1/32            md5'
         state: present
+        
+    - name: Configure PostgreSQL to use password authentication for IPv6
+      become: yes
+      lineinfile:
+        path: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+        regexp: '^host'
+        line: 'host    all             all             ::1/128                 md5'
+        state: present
 
     - name: Start PostgreSQL
       become: yes
