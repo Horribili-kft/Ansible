@@ -173,23 +173,19 @@
         password: zabbix_password
         db: zabbix
         role_attr_flags: CREATEDB
-K
+
+    - name: Import initial schema and data
+      become: yes
+      command: "zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix "
+      environment:
+        PGPASSWORD: zabbix_password
+
     - name: Configure Zabbix server to use PostgreSQL
       become: yes
       lineinfile:
         path: /etc/zabbix/zabbix_server.conf
         regexp: '^# DBPassword='
         line: 'DBPassword=zabbix_password'
-
-    - name: Enable and start Zabbix server and agent
-      become: yes
-      service:
-        name: "{{ item }}"
-        state: started
-        enabled: yes
-      loop:
-        - zabbix-server
-        - zabbix-agent
 
     # --- NGINX Configuration for Zabbix ---
     - name: Configure NGINX for Zabbix frontend
@@ -207,4 +203,13 @@ K
         state: started
         enabled: yes
 
+    - name: Enable and start Zabbix server and agent
+      become: yes
+      service:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      loop:
+        - zabbix-server
+        - zabbix-agent
 ...
