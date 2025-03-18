@@ -173,14 +173,7 @@
         password: zabbix_password
         db: zabbix
         role_attr_flags: CREATEDB
-
-    - name: Import initial schema and data
-      become: yes
-      command: "zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix "
-      environment:
-        PGPASSWORD: zabbix_password
-      when: zabbix_db_creation.changed
-
+K
     - name: Configure Zabbix server to use PostgreSQL
       become: yes
       lineinfile:
