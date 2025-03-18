@@ -1,13 +1,17 @@
 ---
 - name: NMS configuration
   hosts: SD-HQ-NMS
-  gather_facts: no
-  become: no  # Run with elevated privileges
+  gather_facts: no # localhoston fut, úgyhogy nem kell.
+  become: no # Alapból a futtató felhasználóval (nálunk ez solaire) futtatjuk a taskokat, ahol root kell ott expliciten megadjuk
   vars:
-    # Vars for installing Nessus
+    # Globális változók, frissítések esetén kell ezeket változtatni
+    # Itt frissíthető:
     nessus_download_url: "https://www.tenable.com/downloads/api/v2/pages/nessus/files/Nessus-10.8.3-debian10_amd64.deb"
-    nessus_download_name: "nessus"
+    # Itt található újabb link:
+    zabbix_release_url: "https://repo.zabbix.com/zabbix/7.2/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.2+debian12_all.deb"
+    # Ezt manuálisan érdemes ellenőrizni, hogy mi töltődött le a repo-ból
     postgresql_version: "15"
+
 
   tasks:
     # --- SSH Key Management configuration ---
@@ -26,15 +30,10 @@
       register: ssh_keypair_result
       notify: Display public key content
 
-    - name: Show message if SSH key already exists
-      debug:
-        msg: "SSH key pair already exists at {{ lookup('env', 'HOME') }}/.ssh/id_rsa"
-      when: ssh_key_status.stat.exists
-
     - name: Display public key content
       debug:
         msg: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
-      when: ssh_key_status.stat.exists or ssh_keypair_result is changed
+      when: ssh_keypair_result is changed
 
     # --- Essential Packages Installation ---
     - name: Install essential packages
@@ -55,13 +54,12 @@
     - name: Download nessus
       get_url: 
         url="{{ nessus_download_url }}"
-        dest="{{ lookup('env', 'HOME') }}/{{ nessus_download_name }}.deb"
+        dest="{{ lookup('env', 'HOME') }}/nessus.deb"
       when: nessus_check_deb.rc == 1
-      notify: Install nessus
 
     - name: Install nessus
       apt:
-        deb: "{{ lookup('env', 'HOME') }}/{{ nessus_download_name }}.deb"
+        deb: "{{ lookup('env', 'HOME') }}/nessus.deb"
       become: yes
       when: nessus_check_deb.rc == 1
       notify: Enable and start nessus
@@ -113,15 +111,14 @@
     - name: Download Zabbix release package
       become: yes
       get_url:
-        url: "https://repo.zabbix.com/zabbix/7.2/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.2+debian12_all.deb"
-        dest: "/tmp/zabbix-release_latest_7.2+debian12_all.deb"
+        url: "{{ zabbix_release_url }}"
+        dest: "/tmp/zabbix-release.deb"
       when: zabbix_check_deb.rc == 1
-      notify: Install Zabbix release package
 
     - name: Install Zabbix release package
       become: yes
       apt:
-        deb: "/tmp/zabbix-release_latest_7.2+debian12_all.deb"
+        deb: "/tmp/zabbix-release.deb"
       when: zabbix_check_deb.rc == 1
 
     - name: Update APT package cache
@@ -178,6 +175,7 @@
         query: "SELECT to_regclass('public.users');"
       register: zabbix_users_table_check
 
+      # Ez csak akkor fut le, ha még nincs meg a Zabbix séma
     - name: Import initial schema and data
       become: yes
       command: "zcat /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix"
@@ -223,11 +221,6 @@
       debug:
         msg: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
 
-    - name: Install nessus
-      apt:
-        deb: "{{ lookup('env', 'HOME') }}/{{ nessus_download_name }}.deb"
-      become: yes
-
     - name: Enable and start nessus
       service:
         name: nessusd
@@ -238,8 +231,3 @@
       service:
         name: postgresql
         state: restarted
-
-    - name: Install Zabbix release package
-      become: yes
-      apt:
-        deb: "/tmp/zabbix-release_latest_7.2+debian12_all.deb"
