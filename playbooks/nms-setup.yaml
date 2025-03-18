@@ -176,7 +176,7 @@
         name: zabbix
         password: zabbix_password
         db: zabbix
-        role_attr_flags: CREATEDB,CREATER
+        role_attr_flags: CREATEDB
 
     - name: Grant all privileges on zabbix database to zabbix user
       become: yes
