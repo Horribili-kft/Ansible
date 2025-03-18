@@ -152,6 +152,7 @@
           - zabbix-frontend-php
           - zabbix-nginx-conf
           - zabbix-agent
+          - zabbix-sql-scripts
         state: present
 
     # --- Zabbix Database Configuration ---
@@ -176,7 +177,7 @@
 
     - name: Import initial schema and data
       become: yes
-      command: "zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | psql zabbix "
+      command: "zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix "
       environment:
         PGPASSWORD: zabbix_password
 
