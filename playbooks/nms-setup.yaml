@@ -82,24 +82,24 @@
         name: postgresql
         state: present
 
-    - name: Ensure PostgreSQL service is enabled
+    - name: Change PostgreSQL authentication method to md5
       become: yes
-      service:
-        name: postgresql
-        enabled: yes
+      lineinfile:
+        path: /etc/postgresql/12/main/pg_hba.conf
+      failed_when: zabbix_check_deb.rc > 1
+      changed_when: zabbix_check_deb.rc == 1
 
-    - name: Start PostgreSQL service
+    - name: Start PostgreSQL
       become: yes
       service:
         name: postgresql
         state: started
-    
-    # --- Zabbix Repository Configuration ---
-    - name: Check if Zabbix is installed
-      command: dpkg-query -W zabbix-server-pgsql
-      register: zabbix_check_deb
-      failed_when: zabbix_check_deb.rc > 1
-      changed_when: zabbix_check_deb.rc == 1
+
+    - name: Enable PostgreSQL
+      become: yes
+      service:
+        name: postgresql
+        enabled: yes
 
     - name: Download Zabbix release package
       become: yes
@@ -132,6 +132,7 @@
         state: present
 
     # --- Zabbix Database Configuration ---
+    # !!! We need to install: pip install psycopg2-binary
     - name: Configure Zabbix server database
       become: yes
       postgresql_db:
