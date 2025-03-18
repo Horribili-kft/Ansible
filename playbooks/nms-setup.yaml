@@ -10,6 +10,7 @@
 
 
   tasks:
+    # --- SSH Key Management configuration ---
     - name: Check if SSH key pair already exists
       stat:
         path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
@@ -34,6 +35,7 @@
         msg: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
       when: ssh_key_status.stat.exists or ssh_keypair_result is changed
 
+    # --- Nessus Installation ---
     - name: Check if nessus is installed
       command: dpkg-query -W nessus
       register: nessus_check_deb
@@ -47,7 +49,8 @@
       when: nessus_check_deb.rc == 1
 
     - name: Install nessus
-      apt: deb="{{ lookup('env', 'HOME') }}/{{ nessus_download_name }}.deb"
+      apt:
+        deb: "{{ lookup('env', 'HOME') }}/{{ nessus_download_name }}.deb"
       become: yes
       when: nessus_check_deb.rc == 1
 
@@ -63,6 +66,7 @@
         name: nessusd
         state: started
 
+    # --- Essential Packages Installation ---
     - name: Install essential packages
       become: yes
       apt:
@@ -71,4 +75,89 @@
           - pip
           - ansible-pylibssh
         state: present
+
+    # --- PostgreSQL Installation and Configuration ---
+    - name: Install PostgreSQL
+      become: yes
+      apt:
+        name: postgresql
+        state: present
+
+    - name: Ensure PostgreSQL service is enabled
+      become: yes
+      service:
+        name: postgresql
+        enabled: yes
+
+    - name: Start PostgreSQL service
+      become: yes
+      service:
+        name: postgresql
+        state: started
+
+    # --- Zabbix Installation and Configuration ---
+    - name: Install Zabbix server, frontend, and agent
+      become: yes
+      apt:
+        name:
+          - zabbix-server-pgsql
+          - zabbix-frontend-php
+          - zabbix-nginx-conf
+          - zabbix-agent
+        state: present
+
+    - name: Configure Zabbix server database
+      become: yes
+      postgresql_db:
+        name: zabbix
+        encoding: UTF8
+        lc_collate: en_US.UTF-8
+        lc_ctype: en_US.UTF-8
+
+    - name: Create Zabbix database user
+      become: yes
+      postgresql_user:
+        name: zabbix
+        password: zabbix_password
+        priv: "zabbix:ALL"
+
+    - name: Import initial schema and data
+      become: yes
+      command: "zcat /usr/share/doc/zabbix-server-pgsql/create.sql.gz | psql -U zabbix -d zabbix"
+      environment:
+        PGPASSWORD: zabbix_password
+
+    - name: Configure Zabbix server to use PostgreSQL
+      become: yes
+      lineinfile:
+        path: /etc/zabbix/zabbix_server.conf
+        regexp: '^# DBPassword='
+        line: 'DBPassword=zabbix_password'
+
+    - name: Enable and start Zabbix server and agent
+      become: yes
+      service:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      loop:
+        - zabbix-server
+        - zabbix-agent
+
+    # --- NGINX Configuration for Zabbix ---
+    - name: Configure NGINX for Zabbix frontend
+      become: yes
+      lineinfile:
+        path: /etc/zabbix/nginx.conf
+        regexp: '^#listen 80;'
+        line: 'listen 80;'
+        state: present
+
+    - name: Enable and start NGINX
+      become: yes
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
 ...
