@@ -176,7 +176,7 @@
 
     - name: Import initial schema and data
       become: yes
-      command: "zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | zabbix psql zabbix "
+      command: "zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | psql zabbix "
       environment:
         PGPASSWORD: zabbix_password
 
