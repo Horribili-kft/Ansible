@@ -175,9 +175,17 @@
         db: zabbix
         role_attr_flags: CREATEDB
 
+    - name: Check if Zabbix schema is in the database
+      become: yes
+      postgresql_query:
+        db: zabbix
+        query: "SELECT to_regclass('public.users');"
+      register: zabbix_users_table_check
+
     - name: Import initial schema and data
       become: yes
-      command: "zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix "
+      command: "zcat /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix"
+      when: zabbix_users_table_check.query is not defined
       environment:
         PGPASSWORD: zabbix_password
 
