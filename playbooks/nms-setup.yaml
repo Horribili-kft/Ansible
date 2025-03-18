@@ -98,24 +98,23 @@
     # === ZABBIX ===
     # --- Zabbix repo configuration ---
     - name: Check if Zabbix is installed
-      apt:
-        name: zabbix-server-pgsql
-        state: present
+      command: dpkg-query -W zabbix-server-pgsql
       register: zabbix_installed
-      changed_when: False
+      failed_when: zabbix_installed.rc > 1
+      changed_when: zabbix_installed.rc == 1
 
     - name: Download Zabbix release package
       become: yes
       get_url:
         url: "{{ zabbix_release_url }}"
         dest: "/tmp/zabbix-release.deb"
-      when: not zabbix_installed is not defined 
+      when: zabbix_installed.rc == 1
 
     - name: Install Zabbix release package
       become: yes
       apt:
         deb: "/tmp/zabbix-release.deb"
-      when: not zabbix_installed is not defined 
+      when: zabbix_installed.rc == 1
 
     # --- Zabbix Installation ---
     - name: Install Zabbix server and frontend
