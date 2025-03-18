@@ -86,8 +86,9 @@
       become: yes
       lineinfile:
         path: /etc/postgresql/12/main/pg_hba.conf
-      failed_when: zabbix_check_deb.rc > 1
-      changed_when: zabbix_check_deb.rc == 1
+        regexp: '^host'
+        line: 'host all all 0.0.0.0/0 md5'
+        state: present
 
     - name: Start PostgreSQL
       become: yes
