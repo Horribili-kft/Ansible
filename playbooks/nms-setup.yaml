@@ -35,6 +35,15 @@
         msg: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
       when: ssh_key_status.stat.exists or ssh_keypair_result is changed
 
+    # --- Essential Packages Installation ---
+    - name: Install essential packages
+      become: yes
+      apt:
+        name:
+          - sudo
+          - pip
+        state: present
+
     # --- Nessus Installation ---
     - name: Check if nessus is installed
       command: dpkg-query -W nessus
@@ -66,15 +75,6 @@
         name: nessusd
         state: started
 
-    # --- Essential Packages Installation ---
-    - name: Install essential packages
-      become: yes
-      apt:
-        name:
-          - sudo
-          - pip
-        state: present
-
     # --- PostgreSQL Installation and Configuration ---
     - name: Install PostgreSQL
       become: yes
@@ -93,8 +93,26 @@
       service:
         name: postgresql
         state: started
+    
+    # --- Zabbix Repository Configuration ---
+    - name: Add Zabbix repository
+      become: yes
+      apt_repository:
+        repo: "deb http://repo.zabbix.com/zabbix/5.0/ubuntu $(lsb_release -sc) main"
+        state: present
 
-    # --- Zabbix Installation and Configuration ---
+    - name: Add Zabbix repository key
+      become: yes
+      apt_key:
+        url: "https://repo.zabbix.com/zabbix-official-repo.key"
+        state: present
+
+    - name: Update APT package cache
+      become: yes
+      apt:
+        update_cache: yes
+
+    # --- Zabbix Installation ---
     - name: Install Zabbix server, frontend, and agent
       become: yes
       apt:
@@ -105,6 +123,7 @@
           - zabbix-agent
         state: present
 
+    # --- Zabbix Database Configuration ---
     - name: Configure Zabbix server database
       become: yes
       postgresql_db:
