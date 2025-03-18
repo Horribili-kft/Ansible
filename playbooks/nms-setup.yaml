@@ -10,8 +10,7 @@
     # Itt található újabb link:
     zabbix_release_url: "https://repo.zabbix.com/zabbix/7.2/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.2+debian12_all.deb"
     # Ezt manuálisan érdemes ellenőrizni, hogy mi töltődött le a repo-ból
-    postgresql_version: "15"
-
+    postgresql_version_number: "15"
 
   tasks:
     # === BASIC SETUP ===
@@ -29,13 +28,7 @@
         size: 2048
         mode: '0600'
       when: not ssh_key_status.stat.exists
-      register: ssh_keypair_result
       notify: Display public key content
-
-    - name: Display public key content
-      debug:
-        msg: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
-      when: ssh_keypair_result is changed
 
     # --- Essential Packages Installation ---
     - name: Install essential packages
@@ -49,44 +42,51 @@
     # === NESSUS ===
 
     # --- Nessus Installation ---
+    # DPKG-t kell használni, mert alapból nincs a repositorykban a nessus, és .deb fileból telepítjük
     - name: Check if nessus is installed
       command: dpkg-query -W nessus
-      register: nessus_check_deb
-      failed_when: nessus_check_deb.rc > 1
-      changed_when: nessus_check_deb.rc == 1
+      register: nessus_missing
+      failed_when: nessus_missing.rc > 1
+      changed_when: nessus_missing.rc == 1
 
     - name: Download nessus
       get_url: 
         url="{{ nessus_download_url }}"
         dest="{{ lookup('env', 'HOME') }}/nessus.deb"
-      when: nessus_check_deb.rc == 1
+      when: nessus_missing.rc == 1
 
     - name: Install nessus
       apt:
-        deb: "{{ lookup('env', 'HOME') }}/nessus.deb"
+        deb: "/tmp/nessus.deb"
       become: yes
-      when: nessus_check_deb.rc == 1
-      notify: Enable and start nessus
+      when: nessus_missing.rc == 1
 
-    # === ZABBIX ===
+    - name: Enable and start nessus
+      become: yes
+      service:
+        name: nessusd
+        enabled: yes
+        state: started
 
-    # --- PostgreSQL Installation and Configuration ---
+
+    # === PostgreSQL ===
     - name: Install PostgreSQL
       become: yes
       apt:
         name: postgresql
         state: present
 
-    - name: Check if PostgreSQL is installed
-      command: dpkg-query -W postgresql
-      register: postgresql_check
-      failed_when: postgresql_check.rc > 1
-      changed_when: postgresql_check.rc == 1
+    - name: Start and enable postgresql
+      become: yes
+      service:
+        name: postgresql
+        state: started
+        enabled: yes
 
     - name: Configure PostgreSQL to use trust authentication for localhost and zabbix user
       become: yes
       blockinfile:
-        path: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+        path: /etc/postgresql/{{ postgresql_version_number }}/main/pg_hba.conf
         block: |
           local   all             postgres                                trust
           local   all             zabbix                                  trust
@@ -94,44 +94,28 @@
         state: present
       notify: Restart PostgreSQL
 
-    - name: Start PostgreSQL
-      become: yes
-      service:
-        name: postgresql
-        state: started
 
-    - name: Enable PostgreSQL
-      become: yes
-      service:
-        name: postgresql
-        enabled: yes
-      when: postgresql_check.rc == 0
-
+    # === ZABBIX ===
     # --- Zabbix repo configuration ---
     - name: Check if Zabbix is installed
-      command: dpkg-query -W zabbix-server-pgsql
-      register: zabbix_check_deb
-      failed_when: zabbix_check_deb.rc > 1
-      changed_when: zabbix_check_deb.rc == 1
+      apt:
+        name: zabbix-server-pgsql
+        state: present
+      register: zabbix_installed
+      changed_when: False
 
     - name: Download Zabbix release package
       become: yes
       get_url:
         url: "{{ zabbix_release_url }}"
         dest: "/tmp/zabbix-release.deb"
-      when: zabbix_check_deb.rc == 1
+      when: not zabbix_installed.installed
 
     - name: Install Zabbix release package
       become: yes
       apt:
         deb: "/tmp/zabbix-release.deb"
-      when: zabbix_check_deb.rc == 1
-
-    - name: Update APT package cache
-      become: yes
-      apt:
-        update_cache: yes
-      when: zabbix_check_deb.rc == 1
+      when: not zabbix_installed.installed
 
     # --- Zabbix Installation ---
     - name: Install Zabbix server and frontend
@@ -145,7 +129,6 @@
         state: present
 
     # --- Zabbix Database Configuration ---
-
     # !!! We need to install: pip install psycopg2-binary
     - name: Create Zabbix server database
       become: yes
@@ -173,7 +156,7 @@
         role: zabbix
         state: present
 
-    - name: Check if Zabbix schema is in the database
+    - name: Check if Zabbix schema exists in the database
       become: yes
       postgresql_query:
         db: zabbix
@@ -181,7 +164,7 @@
       register: zabbix_users_table_check
 
       # Ez csak akkor fut le, ha még nincs meg a Zabbix séma
-    - name: Import initial schema and data
+    - name: Import Zabbix schema if not present
       become: yes
       command: "zcat /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix"
       when: zabbix_users_table_check.query is not defined
@@ -192,7 +175,7 @@
       become: yes
       lineinfile:
         path: /etc/zabbix/zabbix_server.conf
-        regexp: '^# DBPassword='
+        regexp: '^#?\s*DBPassword='
         line: 'DBPassword=zabbix_password'
 
     # --- NGINX Configuration for Zabbix ---
@@ -200,7 +183,7 @@
       become: yes
       lineinfile:
         path: /etc/zabbix/nginx.conf
-        regexp: '^#listen 80;'
+        regexp: '^\s*#?\s*listen\s+80;'
         line: 'listen 80;'
         state: present
 
@@ -223,13 +206,8 @@
       debug:
         msg: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
 
-    - name: Enable and start nessus
-      service:
-        name: nessusd
-        enabled: yes
-        state: started
-
     - name: Restart PostgreSQL
       service:
         name: postgresql
         state: restarted
+
