@@ -1,6 +1,6 @@
 ---
-# Install Nginx and PHP packages
-- name: Install Nginx and PHP packages
+# Install Nginx
+- name: Install Nginx
   become: true
   apt:
     name:
@@ -22,7 +22,7 @@
   become: true
   lineinfile:
     path: /etc/zabbix/nginx.conf
-    regexp: '^(# )?(listen|server_name)'
+    regexp: '^(#\s*)?(listen|server_name)'
     line: "{{ item }}"
     state: present
   loop:
