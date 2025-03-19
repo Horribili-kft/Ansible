@@ -1,0 +1,88 @@
+# --- Zabbix repo configuration ---
+- name: Check if Zabbix is installed
+  command: dpkg-query -W zabbix-server-pgsql
+  register: zabbix_installed
+  failed_when: zabbix_installed.rc > 1
+  changed_when: zabbix_installed.rc == 1
+
+- name: Download Zabbix release package
+  become: true
+  get_url:
+    url: "{{ zabbix_release_url }}"
+    dest: "{{ zabbix_release_deb_path }}"
+  when: zabbix_installed.rc == 1
+
+- name: Install Zabbix release package
+  become: true
+  apt:
+    deb: "{{ zabbix_release_deb_path }}"
+  when: zabbix_installed.rc == 1
+
+# --- Zabbix Installation ---
+- name: Install Zabbix server and frontend
+  become: true
+  apt:
+    name:
+      - zabbix-server-pgsql
+      - zabbix-frontend-php
+      - php8.2-pgsql
+      - zabbix-nginx-conf
+      - zabbix-sql-scripts
+      - zabbix-agent
+    state: present
+
+
+# --- Zabbix Database Configuration ---
+- name: Create Zabbix user in PostgreSQL
+  become_user: postgres
+  postgresql_user:
+    name: "{{ zabbix_db_user }}"
+    password: "{{ zabbix_db_password }}"
+    state: present
+
+- name: Create Zabbix server database
+  become_user: postgres
+  postgresql_db:
+    name: "{{ zabbix_db_name }}"
+    encoding: UTF8
+    lc_collate: en_US.UTF-8
+    lc_ctype: en_US.UTF-8
+    owner: "{{ zabbix_db_user }}"
+  register: zabbix_db_creation
+
+- name: Grant all privileges on zabbix database to zabbix user
+  become_user: postgres
+  postgresql_privs:
+    db: "{{ zabbix_db_name }}"
+    type: database
+    privs: ALL
+    role: "{{ zabbix_db_user }}"
+    state: present
+
+- name: Import Zabbix schema into PostgreSQL
+  ansible.builtin.shell: |
+    zcat /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz | sudo -u {{ zabbix_db_user }} psql {{ zabbix_db_name }}
+  changed_when: false
+
+- name: Update Zabbix Server Configuration with Database Credentials
+  blockinfile:
+    path: /etc/zabbix/zabbix_server.conf
+    marker: "# {mark} MANAGED BLOCK"
+    block: |
+      DBPassword={{ zabbix_db_password }}
+    state: present
+
+# Configure PostgreSQL to Allow Database Connections
+- name: Modify PostgreSQL configuration for Zabbix
+  ansible.builtin.shell: |
+    sed -i 's/ident/md5/' /var/lib/pgsql/data/pg_hba.conf
+  changed_when: false
+
+# Configure PostgreSQL to Allow Database Connections
+- name: Ensure pg_hba.conf allows connections from localhost
+  lineinfile:
+    path: /var/lib/pgsql/data/pg_hba.conf
+    regexp: '^host\s+zabbix\s+zabbix\s+127.0.0.1/32\s+md5'
+    line: 'host    zabbix          zabbix          127.0.0.1/32            md5'
+    state: present
+  notify: Reload PostgreSQL

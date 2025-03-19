@@ -1,0 +1,57 @@
+---
+# Install Nginx and PHP packages
+- name: Install Nginx and PHP packages
+  apt:
+    name:
+      - nginx
+      - php
+      - php-pgsql
+    state: present
+
+# Start and enable Nginx and PHP-FPM services
+- name: Start and enable nginx and PHP-FPM services
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - nginx
+    - php-fpm
+
+# Update Zabbix.conf for PHP-FPM
+- name: Update Zabbix Configuration for PHP-FPM
+  lineinfile:
+    path: /etc/php-fpm.d/zabbix.conf
+    regexp: '^php_value\[date.timezone\]'
+    line: 'php_value[date.timezone] = {{ timezone }}'
+    state: present
+
+# Configure PHP timezone for Zabbix
+- name: Configure PHP timezone for Zabbix
+  template:
+    src: php.ini.j2
+    dest: /etc/php.ini
+  notify: Restart PHP-FPM
+
+- name: Configure nginx for Zabbix frontend
+  lineinfile:
+    path: /etc/zabbix/nginx.conf
+    regexp: '^(# )?(listen|server_name)'
+    line: "{{ item }}"
+    state: present
+  loop:
+    - 'listen 8080;'
+    - 'server_name example.com;'
+  notify: Restart nginx
+  
+# Ensure all Zabbix Services are Started and Enabled
+- name: Ensure all Zabbix Services are Started and Enabled
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - zabbix-server
+    - zabbix-agent
+    - nginx
+    - php-fpm

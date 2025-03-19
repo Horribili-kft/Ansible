@@ -1,0 +1,8 @@
+---
+# tasks file for ansible-zabbix-install
+- include_tasks: postgresql.yaml
+- include_tasks: zabbix.yaml
+# - include_tasks: network.yaml
+- include_tasks: ssl.yaml
+# - include_tasks: selinux.yaml
+- include_tasks: frontend.yaml

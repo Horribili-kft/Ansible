@@ -1,0 +1,35 @@
+---
+# === PostgreSQL ===
+- name: Install PostgreSQL
+  become: true
+  apt:
+    name: postgresql
+    state: present
+
+- name: Start and enable postgresql
+  become: true
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+
+# Set PostgreSQL password for user 'postgres'
+- name: Set PostgreSQL password for 'postgres' user
+  become_user: postgres
+  postgresql_user:
+    name: postgres
+    password: "{{ postgresql_password }}"
+
+# Unused as of now pretty much
+- name: Configure PostgreSQL to use trust authentication for localhost and zabbix user
+  become: true
+  blockinfile:
+    path: "{{ pg_hba_conf_path }}"
+    block: |
+      local   all             postgres                                trust
+      local   all             {{ zabbix_db_user }}                    trust
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    state: present
+  notify: Restart PostgreSQL
+
+

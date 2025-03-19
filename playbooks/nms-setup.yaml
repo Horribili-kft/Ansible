@@ -3,6 +3,8 @@
   hosts: SD-HQ-NMS
   gather_facts: no # localhoston fut, úgyhogy nem kell.
   become: no # Alapból a futtató felhasználóval (nálunk ez solaire) futtatjuk a taskokat, ahol root kell ott expliciten megadjuk
+  roles:
+    - zabbix-install
   vars:
   # Globális változók, frissítések esetén kell ezeket változtatni
 
@@ -86,6 +88,7 @@
         enabled: yes
         state: started
 
+
     # === PostgreSQL ===
     - name: Install PostgreSQL
       become: yes
@@ -162,14 +165,7 @@
         owner: "{{ zabbix_db_user }}"
       register: zabbix_db_creation
 
-    - name: Grant all privileges on zabbix database to zabbix user
-      become: yes
-      postgresql_privs:
-        db: "{{ zabbix_db_name }}"
-        type: database
-        privs: ALL
-        role: "{{ zabbix_db_user }}"
-        state: present
+
 
     - name: Import Zabbix schema into PostgreSQL
       ansible.builtin.shell: |

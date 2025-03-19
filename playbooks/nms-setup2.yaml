@@ -1,0 +1,80 @@
+---
+- name: NMS configuration
+  hosts: SD-HQ-NMS
+  gather_facts: no # localhoston fut, úgyhogy nem kell.
+  become: no # Alapból a futtató felhasználóval (nálunk ez solaire) futtatjuk a taskokat, ahol root kell ott expliciten megadjuk
+  roles:
+    - zabbix-install
+  vars:
+  # Globális változók, frissítések esetén kell ezeket változtatni
+
+    # Ezt manuálisan érdemes ellenőrizni, hogy mi töltődött le a repo-ból
+    ssh_key_path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+    
+  # Letöltések
+    # Itt frissíthető:
+    nessus_download_url: "https://www.tenable.com/downloads/api/v2/pages/nessus/files/Nessus-10.8.3-debian10_amd64.deb"
+    # Itt található újabb link:
+    nessus_deb_path: "/tmp/nessus.deb"
+
+  tasks:
+    # === BASIC SETUP ===
+    
+    # --- SSH Key Management configuration ---
+    - name: Check if SSH key pair already exists
+      stat:
+        path: "{{ ssh_key_path }}"
+      register: ssh_key_status
+
+    - name: Generate SSH key pair if not present
+      openssh_keypair:
+        path: "{{ ssh_key_path }}"
+        type: rsa
+        size: 2048
+        mode: '0600'
+      when: not ssh_key_status.stat.exists
+      notify: Display public key content
+
+    # --- Essential Packages Installation ---
+    - name: Install essential packages
+      become: yes
+      apt:
+        name:
+          - sudo
+          - pip
+        state: present
+
+
+    # === NESSUS ===
+
+    # --- Nessus Installation ---
+    # DPKG-t kell használni, mert alapból nincs a repositorykban a nessus, és .deb fileból telepítjük
+    - name: Check if nessus is installed
+      command: dpkg-query -W nessus
+      register: nessus_missing
+      failed_when: nessus_missing.rc > 1
+      changed_when: nessus_missing.rc == 1
+
+    - name: Download nessus
+      get_url: 
+        url="{{ nessus_download_url }}"
+        dest="{{ nessus_deb_path }}"
+      when: nessus_missing.rc == 1
+
+    - name: Install nessus
+      apt:
+        deb: "{{ nessus_deb_path }}"
+      become: yes
+      when: nessus_missing.rc == 1
+
+    - name: Enable and start nessus
+      become: yes
+      service:
+        name: nessusd
+        enabled: yes
+        state: started
+
+  handlers:
+    - name: Display public key content
+      debug:
+        msg: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
