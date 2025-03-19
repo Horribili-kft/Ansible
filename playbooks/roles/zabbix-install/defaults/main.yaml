@@ -1,10 +1,11 @@
 ---
-playbook_dir: "~/Ansible/ansible-zabbix-install"
 zabbix_version: 7.2
 debian_version: 12
+zabbix_repo_url: "https://repo.zabbix.com/zabbix/{{ zabbix_version }}/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.2+debian{{ debian_version }}_all.deb"
+pg_hba_conf_path: "/etc/postgresql/{{ postgresql_version_number }}/main/pg_hba.conf"
+# Database
 postgresql_password: postgres
 zabbix_db_user: zabbix
 zabbix_db_name: zabbix
 zabbix_db_password: zabbix_password
 timezone: Europe/Budapest
-zabbix_repo_url: "https://repo.zabbix.com/zabbix/{{ zabbix_version }}/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.2+debian{{ debian_version }}_all.deb"
