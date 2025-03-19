@@ -1,26 +1,32 @@
 ---
+
 - name: Ensure SSL directories exist
+  become: true
   file:
     path: "{{ item }}"
     state: directory
     mode: '0700'
-  with_items:
+  loop:
     - /etc/pki/tls/private
     - /etc/pki/tls/certs
 
 - name: Check if SSL key exists
+  become: true
   stat:
     path: /etc/pki/tls/private/self_signed.key
   register: ssl_key_stat
 
 - name: Check if SSL certificate exists
+  become: true
   stat:
     path: /etc/pki/tls/certs/self_signed.crt
   register: ssl_crt_stat
 
 - name: Generate self-signed SSL certificate if cert and key don't exist
+  become: true
   command: openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/pki/tls/private/self_signed.key -out /etc/pki/tls/certs/self_signed.crt -subj "/C=US/ST=State/L=City/O=Organization/OU=OrgUnit/CN=localhost"
   when: not (ssl_key_stat.stat.exists and ssl_crt_stat.stat.exists)
+  changed_when: true
 
 - name: Output a message if the SSL certificate and key already exist
   debug:
