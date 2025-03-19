@@ -9,28 +9,13 @@
   # Globális változók, frissítések esetén kell ezeket változtatni
 
     # Ezt manuálisan érdemes ellenőrizni, hogy mi töltődött le a repo-ból
-    postgresql_version_number: "15"
     ssh_key_path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
     
   # Letöltések
-  
     # Itt frissíthető:
     nessus_download_url: "https://www.tenable.com/downloads/api/v2/pages/nessus/files/Nessus-10.8.3-debian10_amd64.deb"
     # Itt található újabb link:
-    zabbix_release_url: "https://repo.zabbix.com/zabbix/7.2/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.2+debian12_all.deb"
-
     nessus_deb_path: "/tmp/nessus.deb"
-    zabbix_release_deb_path: "/tmp/zabbix-release.deb"
-
-  # Zabbix DB specific things
-    zabbix_db_name: "zabbix"
-    zabbix_db_user: "zabbix"
-    zabbix_db_password: "zabbix_password"
-
-   # Configuration paths
-    zabbix_server_conf_path: "/etc/zabbix/zabbix_server.conf"
-    nginx_conf_path: "/etc/zabbix/nginx.conf"
-    pg_hba_conf_path: "/etc/postgresql/{{ postgresql_version_number }}/main/pg_hba.conf"
 
   tasks:
     # === BASIC SETUP ===
@@ -58,6 +43,7 @@
           - sudo
           - pip
         state: present
+
 
     # === NESSUS ===
 
@@ -88,126 +74,7 @@
         enabled: yes
         state: started
 
-
-    # === PostgreSQL ===
-    - name: Install PostgreSQL
-      become: yes
-      apt:
-        name: postgresql
-        state: present
-
-    - name: Start and enable postgresql
-      become: yes
-      service:
-        name: postgresql
-        state: started
-        enabled: yes
-
-    - name: Configure PostgreSQL to use trust authentication for localhost and zabbix user
-      become: yes
-      blockinfile:
-        path: "{{ pg_hba_conf_path }}"
-        block: |
-          local   all             postgres                                trust
-          local   all             {{ zabbix_db_user }}                                  trust
-        marker: "# {mark} ANSIBLE MANAGED BLOCK"
-        state: present
-      notify: Restart PostgreSQL
-
-    # === ZABBIX ===
-    # --- Zabbix repo configuration ---
-    - name: Check if Zabbix is installed
-      command: dpkg-query -W zabbix-server-pgsql
-      register: zabbix_installed
-      failed_when: zabbix_installed.rc > 1
-      changed_when: zabbix_installed.rc == 1
-
-    - name: Download Zabbix release package
-      become: yes
-      get_url:
-        url: "{{ zabbix_release_url }}"
-        dest: "{{ zabbix_release_deb_path }}"
-      when: zabbix_installed.rc == 1
-
-    - name: Install Zabbix release package
-      become: yes
-      apt:
-        deb: "{{ zabbix_release_deb_path }}"
-      when: zabbix_installed.rc == 1
-
-    # --- Zabbix Installation ---
-    - name: Install Zabbix server and frontend
-      become: yes
-      apt:
-        name:
-          - zabbix-server-pgsql
-          - zabbix-frontend-php
-          - zabbix-nginx-conf
-          - zabbix-sql-scripts
-        state: present
-
-    # --- Zabbix Database Configuration ---
-    # !!! We need to install: pip install psycopg2-binary
-    - name: Create Zabbix database user
-      become: yes
-      postgresql_user:
-        name: "{{ zabbix_db_user }}"
-        password: "{{ zabbix_db_password }}"
-        role_attr_flags: CREATEDB
-
-    - name: Create Zabbix server database
-      become: yes
-      postgresql_db:
-        name: "{{ zabbix_db_name }}"
-        encoding: UTF8
-        lc_collate: en_US.UTF-8
-        lc_ctype: en_US.UTF-8
-        owner: "{{ zabbix_db_user }}"
-      register: zabbix_db_creation
-
-
-
-    - name: Import Zabbix schema into PostgreSQL
-      ansible.builtin.shell: |
-        zcat /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz | sudo -u {{ zabbix_db_user }} psql {{ zabbix_db_name }}
-      changed_when: false
-
-    - name: Configure Zabbix server to use PostgreSQL
-      become: yes
-      lineinfile:
-        path: "{{ zabbix_server_conf_path }}"
-        regexp: '^#?\s*DBPassword='
-        line: 'DBPassword={{ zabbix_db_password }}'
-
-    # --- NGINX Configuration for Zabbix ---
-    - name: Configure NGINX for Zabbix frontend
-      become: yes
-      lineinfile:
-        path: "{{ nginx_conf_path }}"
-        regexp: '^\s*#?\s*listen\s+80;'
-        line: 'listen 80;'
-        state: present
-
-    - name: Enable and start NGINX
-      become: yes
-      service:
-        name: nginx
-        state: started
-        enabled: yes
-
-    - name: Enable and start Zabbix server
-      become: yes
-      service:
-        name: zabbix-server
-        state: started
-        enabled: yes
-
   handlers:
     - name: Display public key content
       debug:
         msg: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
-
-    - name: Restart PostgreSQL
-      service:
-        name: postgresql
-        state: restarted
