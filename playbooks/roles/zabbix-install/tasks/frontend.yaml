@@ -17,7 +17,7 @@
     enabled: yes
   loop:
     - nginx
-    
+
 - name: Configure nginx for Zabbix frontend
   become: true
   lineinfile:
@@ -27,7 +27,7 @@
     state: present
   loop:
     - 'listen 8080;'
-    - 'server_name zabbix.solardynamics.eu;'
+    - 'server_name {{ zabbix_server_name }};'
   notify: Restart nginx
   
 # Ensure all Zabbix Services are Started and Enabled
