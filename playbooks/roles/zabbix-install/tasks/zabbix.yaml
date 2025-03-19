@@ -76,14 +76,15 @@
 # Configure PostgreSQL to Allow Database Connections
 #- name: Modify PostgreSQL configuration for Zabbix
 #  ansible.builtin.shell: |
-#    sed -i 's/ident/md5/' /var/lib/pgsql/data/pg_hba.conf
+#    sed -i 's/ident/md5/' {{ pg_hba_conf_path }}
+
 #  changed_when: false
 
 # Configure PostgreSQL to Allow Database Connections
 - name: Ensure pg_hba.conf allows connections from localhost
   become: true
   lineinfile:
-    path: /var/lib/pgsql/data/pg_hba.conf
+    path: "{{ pg_hba_conf_path }}"
     regexp: '^host\s+zabbix\s+zabbix\s+127.0.0.1/32\s+md5'
     line: 'host    zabbix          zabbix          127.0.0.1/32            md5'
     state: present
