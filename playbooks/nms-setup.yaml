@@ -157,7 +157,7 @@
 
     - name: Import Zabbix schema if database was created
       become: yes
-      command: "zcat /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz | psql -U zabbix zabbix"
+      command: "zcat /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix"
       when: zabbix_db_creation.changed
       environment:
         PGPASSWORD: zabbix_password
