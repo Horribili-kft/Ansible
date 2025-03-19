@@ -65,6 +65,7 @@
   changed_when: false
 
 - name: Update Zabbix Server Configuration with Database Credentials
+  become: true
   blockinfile:
     path: /etc/zabbix/zabbix_server.conf
     marker: "# {mark} MANAGED BLOCK"
