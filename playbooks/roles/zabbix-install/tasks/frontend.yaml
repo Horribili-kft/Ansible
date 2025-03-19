@@ -9,17 +9,24 @@
       - php-pgsql
     state: present
 
-- name: Configure nginx for Zabbix frontend
+- name: Configure listen directive for Zabbix frontend
   become: true
   lineinfile:
     path: /etc/zabbix/nginx.conf
-    regexp: '^(#\s*)?(listen|server_name)'
-    line: "{{ item }}"
+    regexp: '^\s*(#\s*)?listen'
+    line: 'listen 8080;'
     state: present
-  loop:
-    - 'listen 8080;'
-    - 'server_name {{ zabbix_server_name }};'
   notify: Restart nginx
+
+- name: Configure server_name directive for Zabbix frontend
+  become: true
+  lineinfile:
+    path: /etc/zabbix/nginx.conf
+    regexp: '^\s*(#\s*)?server_name'
+    line: 'server_name {{ zabbix_server_name }};'
+    state: present
+  notify: Restart nginx
+
 
 # Start and enable Nginx
 - name: Start and enable nginx
