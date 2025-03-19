@@ -4,13 +4,31 @@
   gather_facts: no # localhoston fut, úgyhogy nem kell.
   become: no # Alapból a futtató felhasználóval (nálunk ez solaire) futtatjuk a taskokat, ahol root kell ott expliciten megadjuk
   vars:
-    # Globális változók, frissítések esetén kell ezeket változtatni
+  # Globális változók, frissítések esetén kell ezeket változtatni
+
+    # Ezt manuálisan érdemes ellenőrizni, hogy mi töltődött le a repo-ból
+    postgresql_version_number: "15"
+    ssh_key_path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+    
+  # Letöltések
+  
     # Itt frissíthető:
     nessus_download_url: "https://www.tenable.com/downloads/api/v2/pages/nessus/files/Nessus-10.8.3-debian10_amd64.deb"
     # Itt található újabb link:
     zabbix_release_url: "https://repo.zabbix.com/zabbix/7.2/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.2+debian12_all.deb"
-    # Ezt manuálisan érdemes ellenőrizni, hogy mi töltődött le a repo-ból
-    postgresql_version_number: "15"
+
+    nessus_deb_path: "/tmp/nessus.deb"
+    zabbix_release_deb_path: "/tmp/zabbix-release.deb"
+
+  # Zabbix DB specific things
+    zabbix_db_name: "zabbix"
+    zabbix_db_user: "zabbix"
+    zabbix_db_password: "zabbix_password"
+
+   # Configuration paths
+    zabbix_server_conf_path: "/etc/zabbix/zabbix_server.conf"
+    nginx_conf_path: "/etc/zabbix/nginx.conf"
+    pg_hba_conf_path: "/etc/postgresql/{{ postgresql_version_number }}/main/pg_hba.conf"
 
   tasks:
     # === BASIC SETUP ===
@@ -18,12 +36,12 @@
     # --- SSH Key Management configuration ---
     - name: Check if SSH key pair already exists
       stat:
-        path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+        path: "{{ ssh_key_path }}"
       register: ssh_key_status
 
     - name: Generate SSH key pair if not present
       openssh_keypair:
-        path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+        path: "{{ ssh_key_path }}"
         type: rsa
         size: 2048
         mode: '0600'
@@ -52,12 +70,12 @@
     - name: Download nessus
       get_url: 
         url="{{ nessus_download_url }}"
-        dest="{{ lookup('env', 'HOME') }}/nessus.deb"
+        dest="{{ nessus_deb_path }}"
       when: nessus_missing.rc == 1
 
     - name: Install nessus
       apt:
-        deb: "/tmp/nessus.deb"
+        deb: "{{ nessus_deb_path }}"
       become: yes
       when: nessus_missing.rc == 1
 
@@ -67,7 +85,6 @@
         name: nessusd
         enabled: yes
         state: started
-
 
     # === PostgreSQL ===
     - name: Install PostgreSQL
@@ -86,14 +103,13 @@
     - name: Configure PostgreSQL to use trust authentication for localhost and zabbix user
       become: yes
       blockinfile:
-        path: /etc/postgresql/{{ postgresql_version_number }}/main/pg_hba.conf
+        path: "{{ pg_hba_conf_path }}"
         block: |
           local   all             postgres                                trust
-          local   all             zabbix                                  trust
+          local   all             {{ zabbix_db_user }}                                  trust
         marker: "# {mark} ANSIBLE MANAGED BLOCK"
         state: present
       notify: Restart PostgreSQL
-
 
     # === ZABBIX ===
     # --- Zabbix repo configuration ---
@@ -107,13 +123,13 @@
       become: yes
       get_url:
         url: "{{ zabbix_release_url }}"
-        dest: "/tmp/zabbix-release.deb"
+        dest: "{{ zabbix_release_deb_path }}"
       when: zabbix_installed.rc == 1
 
     - name: Install Zabbix release package
       become: yes
       apt:
-        deb: "/tmp/zabbix-release.deb"
+        deb: "{{ zabbix_release_deb_path }}"
       when: zabbix_installed.rc == 1
 
     # --- Zabbix Installation ---
@@ -132,46 +148,46 @@
     - name: Create Zabbix database user
       become: yes
       postgresql_user:
-        name: zabbix
-        password: zabbix_password
+        name: "{{ zabbix_db_user }}"
+        password: "{{ zabbix_db_password }}"
         role_attr_flags: CREATEDB
 
     - name: Create Zabbix server database
       become: yes
       postgresql_db:
-        name: zabbix
+        name: "{{ zabbix_db_name }}"
         encoding: UTF8
         lc_collate: en_US.UTF-8
         lc_ctype: en_US.UTF-8
-        owner: zabbix
+        owner: "{{ zabbix_db_user }}"
       register: zabbix_db_creation
 
     - name: Grant all privileges on zabbix database to zabbix user
       become: yes
       postgresql_privs:
-        db: zabbix
+        db: "{{ zabbix_db_name }}"
         type: database
         privs: ALL
-        role: zabbix
+        role: "{{ zabbix_db_user }}"
         state: present
 
     - name: Import Zabbix schema into PostgreSQL
       ansible.builtin.shell: |
-        zcat /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
+        zcat /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz | sudo -u {{ zabbix_db_user }} psql {{ zabbix_db_name }}
       changed_when: false
 
     - name: Configure Zabbix server to use PostgreSQL
       become: yes
       lineinfile:
-        path: /etc/zabbix/zabbix_server.conf
+        path: "{{ zabbix_server_conf_path }}"
         regexp: '^#?\s*DBPassword='
-        line: 'DBPassword=zabbix_password'
+        line: 'DBPassword={{ zabbix_db_password }}'
 
     # --- NGINX Configuration for Zabbix ---
     - name: Configure NGINX for Zabbix frontend
       become: yes
       lineinfile:
-        path: /etc/zabbix/nginx.conf
+        path: "{{ nginx_conf_path }}"
         regexp: '^\s*#?\s*listen\s+80;'
         line: 'listen 80;'
         state: present
