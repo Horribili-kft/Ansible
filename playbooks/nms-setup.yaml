@@ -155,12 +155,10 @@
         role: zabbix
         state: present
 
-    - name: Import Zabbix schema
-      become: yes
-      command: "zcat /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix"
-      environment:
-        PGPASSWORD: zabbix_password
-
+    - name: Import Zabbix schema into PostgreSQL
+      ansible.builtin.shell: |
+        zcat /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
+      changed_when: false
 
     - name: Configure Zabbix server to use PostgreSQL
       become: yes
