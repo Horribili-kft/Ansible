@@ -159,8 +159,10 @@
       become: yes
       postgresql_query:
         db: zabbix
-        query: "SELECT to_regclass('public.users');"
+        query: "SELECT 1 FROM information_schema.tables WHERE table_name='users';"
       register: zabbix_users_table_check
+      failed_when: zabbix_users_table_check.query is not defined
+      changed_when: false
 
       # Ez csak akkor fut le, ha még nincs meg a Zabbix séma
     - name: Import Zabbix schema if not present
