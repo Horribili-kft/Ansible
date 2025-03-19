@@ -9,16 +9,14 @@
       - php-pgsql
     state: present
 
-# Start and enable Nginx and PHP-FPM services
-- name: Start and enable nginx and PHP-FPM services
-  become: true
+# Start and enable Nginx
+- name: Start and enable nginx
   systemd:
     name: "{{ item }}"
     state: started
     enabled: yes
   loop:
     - nginx
-    - php-fpm
 
 # Update Zabbix.conf for PHP-FPM
 - name: Update Zabbix Configuration for PHP-FPM
