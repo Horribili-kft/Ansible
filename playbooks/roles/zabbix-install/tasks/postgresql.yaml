@@ -13,12 +13,24 @@
     state: started
     enabled: yes
 
-# This is needed for the following task
-- name: Ensure ACL package is installed on Debian/Ubuntu
+# Set up the permissions in the file
+- name: Switch local 'postgres' user from peer to trust
   become: true
-  apt:
-    name: acl
-    state: present
+  lineinfile:
+    path: /etc/postgresql/12/main/pg_hba.conf
+    regexp: '^local\s+all\s+postgres\s+peer'
+    line: 'local   all   postgres                 trust'
+    backup: yes
+  notify: Reload PostgreSQL
+
+- name: Switch local 'all' from peer to trust (optional)
+  become: true  
+  lineinfile:
+    path: /etc/postgresql/12/main/pg_hba.conf
+    regexp: '^local\s+all\s+all\s+peer'
+    line: 'local   all   zabbix                       trust'
+    backup: yes
+  notify: Reload PostgreSQL
 
 # Set PostgreSQL password for user 'postgres'
 - name: Set PostgreSQL password for 'postgres' user
