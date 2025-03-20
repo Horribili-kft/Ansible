@@ -18,7 +18,7 @@
   become: true
   become_user: "postgres"
   environment: 
-    HOME: /var/lib/pgsql
+    HOME: /tmp/psql
   postgresql_user:
     name: postgres
     password: "{{ postgresql_password }}"
