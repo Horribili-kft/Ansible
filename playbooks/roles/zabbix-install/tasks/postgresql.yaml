@@ -13,6 +13,13 @@
     state: started
     enabled: yes
 
+# This is needed for the following task
+- name: Ensure ACL package is installed on Debian/Ubuntu
+  become: true
+  apt:
+    name: acl
+    state: present
+
 # Set PostgreSQL password for user 'postgres'
 - name: Set PostgreSQL password for 'postgres' user
   become: true
