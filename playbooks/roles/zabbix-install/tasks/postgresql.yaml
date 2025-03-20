@@ -23,7 +23,7 @@
     backup: yes
   notify: Reload PostgreSQL
 
-- name: Switch local 'all' from peer to trust (optional)
+- name: Switch local zabbix from peer to trust )
   become: true  
   lineinfile:
     path: /etc/postgresql/{{ postgresql_version_number }}/main/pg_hba.conf
