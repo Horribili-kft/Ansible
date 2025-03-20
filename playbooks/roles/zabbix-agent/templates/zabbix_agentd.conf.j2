@@ -1,0 +1,12 @@
+# Managed by Ansible:
+# /Ansible/playbooks/roles/zabbix-agent-install/templates/zabbix_agentd.conf.j2
+
+# Zabbix Agent configuration file
+
+# Server connection
+Server={{ zabbix_server }}
+ServerActive={{ zabbix_server }}
+Hostname={{ zabbix_hostname }}
+
+# Useful
+LogFile=/var/log/zabbix/zabbix_agentd.log

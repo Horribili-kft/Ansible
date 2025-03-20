@@ -1,0 +1,37 @@
+---
+- name: Install Zabbix Agent on Debian-based systems
+  apt:
+    name: "{{ zabbix_agent_package }}"
+    state: present
+
+- name: Deploy Zabbix Agent configuration file
+  template:
+    src: zabbix_agentd.conf.j2
+    dest: "{{ zabbix_agent_conf_file }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Zabbix Agent
+
+- name: Ensure Zabbix Agent service is started and enabled
+  service:
+    name: zabbix-agent
+    state: started
+    enabled: yes
+
+- name: Register host in Zabbix
+  community.zabbix.zabbix_host:
+    server_url: "{{ zabbix_api_url }}"
+    login_user: "{{ zabbix_api_user }}"
+    login_password: "{{ zabbix_api_pass }}"
+    host_name: "{{ zabbix_hostname }}"
+    interfaces:
+      - type: 1
+        main: 1
+        useip: 1
+        ip: "{{ ansible_default_ipv4.address }}"
+        dns: ""
+        port: 10050
+    groups:
+      - "Linux servers"
+    state: present

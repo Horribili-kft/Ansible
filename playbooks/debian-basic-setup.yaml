@@ -58,3 +58,7 @@
     - name: Display user group information
       debug:
         msg: "User '{{ admin_name }}' is in groups: {{ user_check.stdout }}"
+  # This is run after the rest of the playbook
+  roles:
+  # All Linux servers will have zabbix-agent installed.
+  - zabbix-agent 

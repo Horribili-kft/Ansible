@@ -1,0 +1,13 @@
+---
+zabbix_agent_package: zabbix-agent
+
+zabbix_agent_conf_file: /etc/zabbix/zabbix_agentd.conf
+
+zabbix_server: "zabbix.solardynamics.eu"
+zabbix_server_ip: "10.0.70.11"
+zabbix_hostname: "{{ inventory_hostname }}"
+
+# Zabbix API connection details
+zabbix_api_url: "http://{{ zabbix_server }}/api_jsonrpc.php"
+zabbix_api_user: "Admin"
+zabbix_api_pass: "zabbix"
