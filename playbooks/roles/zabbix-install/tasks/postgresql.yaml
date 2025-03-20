@@ -32,6 +32,12 @@
     backup: yes
   notify: Restart postgresql
 
+- name: Restart postgresql
+  become: true
+  service:
+    name: postgresql
+    state: restarted
+
 # Set PostgreSQL password for user 'postgres'
 - name: Set PostgreSQL password for 'postgres' user
   become: true
