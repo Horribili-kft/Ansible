@@ -17,6 +17,10 @@
 - name: Set PostgreSQL password for 'postgres' user
   become: true
   become_user: "postgres"
+  become_flags: '-H'
+  environment:
+    HOME: /var/lib/pgsql  # or the correct postgres home directory
+    TMPDIR: /tmp
   postgresql_user:
     name: postgres
     password: "{{ postgresql_password }}"
