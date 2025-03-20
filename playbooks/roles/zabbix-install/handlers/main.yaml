@@ -1,30 +1,30 @@
 ---
 - name: Restart Zabbix Server
   become: true
-  systemd:
+  service:
     name: zabbix-server
     state: restarted
 
 - name: Restart Zabbix Agent
   become: true
-  systemd:
+  service:
     name: zabbix-agent
     state: restarted
 
 - name: Restart nginx
   become: true
-  systemd:
+  service:
     name: nginx
     state: restarted
 
 - name: Reload PostgreSQL
   become: true
-  systemd:
+  service:
     name: postgresql
     state: reloaded
 
 - name: Restart PostgreSQL
   become: true
-  systemd:
+  service:
     name: postgresql
     state: restarted
