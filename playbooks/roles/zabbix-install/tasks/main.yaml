@@ -4,6 +4,6 @@
 - include_tasks: zabbix.yaml
 # - include_tasks: network.yaml
 # SSL might be enabled in the future
-# - include_tasks: ssl.yaml
+- include_tasks: ssl.yaml
 # - include_tasks: selinux.yaml
 - include_tasks: frontend.yaml
