@@ -14,6 +14,7 @@
       ansible_connection: httpapi
       ansible_httpapi_port: 8080
       ansible_httpapi_validate_certs: false
+      ansible_zabbix_url_path: ""
       ansible_host: 10.0.70.11
     become: false
     delegate_to: SD-HQ-NMS
