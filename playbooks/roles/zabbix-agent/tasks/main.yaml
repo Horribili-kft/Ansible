@@ -1,10 +1,12 @@
 ---
 - name: Install Zabbix Agent on Debian-based systems
+  become: true
   apt:
     name: "{{ zabbix_agent_package }}"
     state: present
 
 - name: Deploy Zabbix Agent configuration file
+  become: true
   template:
     src: zabbix_agentd.conf.j2
     dest: "{{ zabbix_agent_conf_file }}"
@@ -14,12 +16,14 @@
   notify: Restart Zabbix Agent
 
 - name: Ensure Zabbix Agent service is started and enabled
+  become: true
   service:
     name: zabbix-agent
     state: started
     enabled: yes
 
 - name: Register host in Zabbix
+  become: true
   community.zabbix.zabbix_host:
     server_url: "{{ zabbix_api_url }}"
     login_user: "{{ zabbix_api_user }}"
