@@ -20,7 +20,7 @@
         ansible_network_os: community.zabbix.zabbix
         ansible_connection: httpapi
         ansible_httpapi_port: 8080
-        ansible_zabbix_url_path: {{ zabbix_api_url }}
+        ansible_zabbix_url_path: "{{ zabbix_api_url }}"
         ansible_httpsapi_validate_certs: false
       become: false
       delegate_to: SD-HQ-NMS
