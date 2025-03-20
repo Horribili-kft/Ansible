@@ -6,7 +6,6 @@
     zabbix_template_name: "Template OS Linux"
     zabbix_username: "Admin"
     zabbix_password: "zabbix"
-    zabbix_api_url: "http://zabbix.solardynamics.eu/api_jsonrpc.php"
     zabbix_port: 8080
   tasks:
     - name: Set credentials for Zabbix API
@@ -15,12 +14,10 @@
         ansible_httpapi_pass: "{{ zabbix_password }}"
 
     - name: Register each host from inventory in Zabbix
-
       vars:
         ansible_network_os: community.zabbix.zabbix
         ansible_connection: httpapi
         ansible_httpapi_port: 8080
-        ansible_zabbix_url_path: "{{ zabbix_api_url }}"
         ansible_httpsapi_validate_certs: false
       become: false
       delegate_to: SD-HQ-NMS
@@ -40,5 +37,4 @@
             port: "10050"
         status: enabled
         state: present
-
       loop: "{{ groups['linux_servers'] }}"
