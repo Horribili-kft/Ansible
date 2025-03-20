@@ -11,9 +11,9 @@
   tasks:
     - name: Register hosts in Zabbix
       community.zabbix.zabbix_host:
-        server_url: "{{ zabbix_api_url }}"
-        login_user: "{{ zabbix_username }}"
-        login_password: "{{ zabbix_password }}"
+        ansible_zabbix_url_path: "{{ zabbix_api_url }}"
+        http_login_user: "{{ zabbix_username }}"
+        http_login_password: "{{ zabbix_password }}"
         host_name: "{{ item }}"
         visible_name: "{{ item }}"
         host_groups:
