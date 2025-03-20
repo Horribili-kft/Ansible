@@ -45,4 +45,4 @@
       status: enabled
       state: present
       
-    loop: "{{ groups['linux_servers'] }}"
+    loop: "{{ groups['linux_servers'] | difference(['SD-HQ-NMS']) }}"
