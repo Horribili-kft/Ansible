@@ -1,14 +1,21 @@
 ---
-zabbix_version: 7.2
+# Host
 debian_version: 12
-postgresql_version_number: 15
+
+# Zabbix
+zabbix_version: 7.2
 zabbix_release_url: "https://repo.zabbix.com/zabbix/{{ zabbix_version }}/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.2+debian{{ debian_version }}_all.deb"
-pg_hba_conf_path: "/etc/postgresql/{{ postgresql_version_number }}/main/pg_hba.conf"
+zabbix_release_deb_path: /tmp/zabbix.deb
+zabbix_server_name: zabbix.solardynamics.eu
+
 # Database
+postgresql_version_number: 15
+pg_hba_conf_path: "/etc/postgresql/{{ postgresql_version_number }}/main/pg_hba.conf"
 postgresql_password: postgres
 zabbix_db_user: zabbix
 zabbix_db_name: zabbix
 zabbix_db_password: zabbix_password
 
-zabbix_server_name: zabbix.solardynamics.eu
 timezone: Europe/Budapest
+
+
