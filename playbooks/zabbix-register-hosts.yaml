@@ -32,7 +32,6 @@
         - "Linux servers"
         - "Ansible"
       link_templates:
-        - "Linux by Zabbix agent"
         - "Linux by Zabbix agent active"
       inventory_mode: manual
       inventory_zabbix:
