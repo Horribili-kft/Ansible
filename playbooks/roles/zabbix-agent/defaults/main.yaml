@@ -11,4 +11,7 @@ zabbix_hostname: "{{ inventory_hostname }}"
 # Zabbix API connection details
 zabbix_api_url: "http://{{ zabbix_server }}/api_jsonrpc.php"
 
-zabbix_api_key: "8bcddfb1672d63ed31830fc61dc9fcdc64962ec68e540448d46ded1211e9c99c"
+zabbix_username: Zabbix
+zabbix_password: Solar-Dynamics-2025
+
+# zabbix_api_key: "8bcddfb1672d63ed31830fc61dc9fcdc64962ec68e540448d46ded1211e9c99c"
