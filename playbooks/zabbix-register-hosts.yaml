@@ -12,12 +12,13 @@
     ansible_zabbix_url_path: ''
 
   tasks:
-  - name: Create host groups
-    zabbix.zabbix.zabbix_group:
-      state: present
-      host_groups:
-        - Ansible
-        - Cisco
+  # Currently not available because of major version upgrade
+#  - name: Create host groups
+#    zabbix.zabbix.zabbix_group:
+#      state: present
+#      host_groups:
+#        - Ansible
+#        - Cisco
 
   - name: Add Linux hosts to Ansible
     become: false
