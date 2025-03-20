@@ -87,4 +87,4 @@
     regexp: '^host\s+zabbix\s+zabbix\s+127.0.0.1/32\s+md5'
     line: 'host    zabbix          zabbix          127.0.0.1/32            md5'
     state: present
-  notify: Reload PostgreSQL
+  notify: Reload postgresql
