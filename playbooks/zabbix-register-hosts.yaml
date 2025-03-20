@@ -14,10 +14,10 @@
   tasks:
   - name: Create host groups
     zabbix.zabbix.zabbix.zabbix_group:
-    state: present
-    host_groups:
-      - Ansible
-      - Cisco
+      state: present
+      host_groups:
+        - Ansible
+        - Cisco
 
   - name: Add Linux hosts to Ansible
     become: false
