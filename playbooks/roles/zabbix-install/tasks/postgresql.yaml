@@ -16,7 +16,7 @@
 # Set PostgreSQL password for user 'postgres'
 - name: Set PostgreSQL password for 'postgres' user
   become_method: ansible.builtin.sudo
-  become_user: "{{ postgresql_user }}"
+  become_user: "postgres"
   postgresql_user:
     name: postgres
     password: "{{ postgresql_password }}"
