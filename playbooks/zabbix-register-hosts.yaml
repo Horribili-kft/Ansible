@@ -2,16 +2,14 @@
   hosts: SD-HQ-NMS
   gather_facts: no
   vars:
-    zabbix_api_url: "http://zabbix.solardynamics.eu:8080/api_jsonrpc.php"
+    ansible_zabbix_url_path: "http://zabbix.solardynamics.eu:8080/api_jsonrpc.php"
     zabbix_username: "Admin"
     zabbix_password: "zabbix"
     zabbix_host_group: "Linux servers"
     zabbix_template_name: "Template OS Linux"
-
   tasks:
     - name: Register hosts in Zabbix
       community.zabbix.zabbix_host:
-        ansible_zabbix_url_path: "{{ zabbix_api_url }}"
         http_login_user: "{{ zabbix_username }}"
         http_login_password: "{{ zabbix_password }}"
         host_name: "{{ item }}"
