@@ -6,7 +6,7 @@
     zabbix_template_name: "Template OS Linux"
     zabbix_username: "Zabbix"
     zabbix_password: "Solar-Dynamics-2025"
-    zabbix_api_url: "http://zabbix.solardynamics.eu/api_jsonrpc.php"
+    zabbix_api_url: "http://zabbix.solardynamics.eu:8080/api_jsonrpc.php"
   tasks:
     - name: Set credentials for Zabbix API
       ansible.builtin.set_fact:
