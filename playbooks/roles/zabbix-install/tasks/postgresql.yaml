@@ -21,6 +21,8 @@
   postgresql_user:
     name: postgres
     password: "{{ postgresql_password }}"
+  environment: 
+    HOME: /var/lib/pgsql
 
 # Unused as of now pretty much
 - name: Configure PostgreSQL to use trust authentication for localhost and zabbix user
