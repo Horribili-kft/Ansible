@@ -16,13 +16,13 @@
 # Set PostgreSQL password for user 'postgres'
 - name: Set PostgreSQL password for 'postgres' user
   become: true
-  become_method: ansible.builtin.sudo
   become_user: "postgres"
+  environment: 
+    HOME: /var/lib/pgsql
   postgresql_user:
     name: postgres
     password: "{{ postgresql_password }}"
-  environment: 
-    HOME: /var/lib/pgsql
+
 
 # Unused as of now pretty much
 - name: Configure PostgreSQL to use trust authentication for localhost and zabbix user
