@@ -31,9 +31,9 @@
       - zabbix-agent
     state: present
 
-
 # --- Zabbix Database Configuration ---
 - name: Create Zabbix user in PostgreSQL
+  become: true
   become_user: postgres
   postgresql_user:
     name: "{{ zabbix_db_user }}"
@@ -41,6 +41,7 @@
     state: present
 
 - name: Create Zabbix server database
+  become: true
   become_user: postgres
   postgresql_db:
     name: "{{ zabbix_db_name }}"
@@ -51,6 +52,7 @@
   register: zabbix_db_creation
 
 - name: Grant all privileges on zabbix database to zabbix user
+  become: true
   become_user: postgres
   postgresql_privs:
     db: "{{ zabbix_db_name }}"
