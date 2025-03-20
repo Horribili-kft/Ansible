@@ -2,18 +2,11 @@
   hosts: SD-HQ-NMS
   gather_facts: no
   vars:
-    # zabbix_username: "Admin"
-    # zabbix_password: "zabbix"
     ansible_httpapi_validate_certs: false
     zabbix_host_group: "Linux servers"
     zabbix_template_name: "Template OS Linux"
-    zabbix_api_key: "8bcddfb1672d63ed31830fc61dc9fcdc64962ec68e540448d46ded1211e9c99c"
+    zabbix_api_token: "8bcddfb1672d63ed31830fc61dc9fcdc64962ec68e540448d46ded1211e9c99c"
   tasks:
-
-  - name: Set API token
-    ansible.builtin.set_fact:
-      ansible_zabbix_auth_key: "{{ zabbix_api_key }}"
-
   - name: Add inventory hosts to Ansible
     vars:
       ansible_network_os: community.zabbix.zabbix
@@ -21,8 +14,6 @@
       ansible_httpapi_port: 8080
       ansible_httpapi_validate_certs: false
       ansible_zabbix_url_path: ''
-      http_login_user: "Admin"
-      http_login_password: "zabbix"
     become: false
     delegate_to: SD-HQ-NMS
     community.zabbix.zabbix_host:
