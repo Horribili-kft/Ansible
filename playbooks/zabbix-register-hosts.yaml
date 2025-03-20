@@ -7,15 +7,20 @@
     zabbix_password: "zabbix"
     zabbix_host_group: "Linux servers"
     zabbix_template_name: "Template OS Linux"
+    zabbix_api_key: "8bcddfb1672d63ed31830fc61dc9fcdc64962ec68e540448d46ded1211e9c99c"
   tasks:
-  - name: Create a new host or rewrite an existing host's info (Zabbix <= 7.0)
+
+  - name: Set API token
+    ansible.builtin.set_fact:
+      ansible_zabbix_auth_key: "{{ zabbix_api_key }}"
+
+  - name: Add inventory hosts to Ansible
     vars:
       ansible_network_os: community.zabbix.zabbix
       ansible_connection: httpapi
       ansible_httpapi_port: 8080
       ansible_httpapi_validate_certs: false
-      ansible_zabbix_url_path: ""
-      ansible_host: 10.0.70.11
+      ansible_zabbix_url_path: ''
     become: false
     delegate_to: SD-HQ-NMS
     community.zabbix.zabbix_host:
@@ -26,6 +31,9 @@
         - "Ansible"
       link_templates:
         - "{{ zabbix_template_name }}"
+      inventory_mode: manual
+      inventory_zabbix:
+        location: "{{ location }}"
       status: enabled
       state: present
       interfaces:
