@@ -21,7 +21,7 @@
     regexp: '^local\s+all\s+postgres\s+peer'
     line: 'local   all   postgres                 trust'
     backup: yes
-  notify: Restart PostgreSQL
+  notify: Restart postgresql
 
 - name: Switch local zabbix from peer to trust )
   become: true  
@@ -30,7 +30,7 @@
     regexp: '^local\s+all\s+all\s+peer'
     line: 'local   all   {{ zabbix_db_user }}                       trust'
     backup: yes
-  notify: Restart PostgreSQL
+  notify: Restart postgresql
 
 # Set PostgreSQL password for user 'postgres'
 - name: Set PostgreSQL password for 'postgres' user
@@ -50,6 +50,6 @@
       local   all             {{ zabbix_db_user }}                    trust
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
     state: present
-  notify: Restart PostgreSQL
+  notify: Restart postgresql
 
 

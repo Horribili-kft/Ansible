@@ -17,14 +17,14 @@
     name: nginx
     state: restarted
 
-- name: Reload PostgreSQL
+- name: Reload postgresql
   become: true
   service:
-    name: postgres
+    name: postgresql
     state: reloaded
 
-- name: Restart PostgreSQL
+- name: Restart postgresql
   become: true
   service:
-    name: postgres
+    name: postgresql
     state: restarted
