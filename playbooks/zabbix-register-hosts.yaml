@@ -30,7 +30,7 @@
       status: enabled
       state: present
       interfaces:
-        - type: 1
+        - type: agent
           main: 1
           useip: 1
           ip: "{{ hostvars[item].ansible_host }}"
