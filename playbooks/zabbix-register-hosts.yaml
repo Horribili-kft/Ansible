@@ -4,8 +4,8 @@
   vars:
     zabbix_host_group: "Linux servers"
     zabbix_template_name: "Template OS Linux"
-    zabbix_username: "Zabbix"
-    zabbix_password: "Solar-Dynamics-2025"
+    zabbix_username: "Admin"
+    zabbix_password: "zabbix"
     zabbix_api_url: "http://zabbix.solardynamics.eu/api_jsonrpc.php"
     zabbix_port: 8080
   tasks:
