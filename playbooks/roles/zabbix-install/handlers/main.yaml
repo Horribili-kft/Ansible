@@ -20,11 +20,11 @@
 - name: Reload PostgreSQL
   become: true
   service:
-    name: postgresql
+    name: postgres
     state: reloaded
 
 - name: Restart PostgreSQL
   become: true
   service:
-    name: postgresql
+    name: postgres
     state: restarted
