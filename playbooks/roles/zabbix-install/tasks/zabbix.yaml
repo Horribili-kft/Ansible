@@ -71,7 +71,7 @@
     block: |
       DBPassword={{ zabbix_db_password }}
     state: present
-
+  notify: Restart Zabbix Server
 # Configure PostgreSQL to Allow Database Connections
 #- name: Modify PostgreSQL configuration for Zabbix
 #  ansible.builtin.shell: |
