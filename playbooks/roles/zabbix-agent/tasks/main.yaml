@@ -1,34 +1,19 @@
----
-- name: Install and configure Zabbix Agent on target hosts
-  hosts: linux_servers
-  gather_facts: yes
-  become: true
-  vars:
-    zabbix_agent_package: "zabbix-agent"
-    zabbix_agent_conf_file: "/etc/zabbix/zabbix_agentd.conf"
-  tasks:
-    - name: Install Zabbix Agent on all systems
-      package:
-        name: "{{ zabbix_agent_package }}"
-        state: present
+- name: Install Zabbix Agent
+  apt:
+    name: "{{ zabbix_agent_package }}"
+    state: present
 
-    - name: Deploy Zabbix Agent configuration file
-      template:
-        src: zabbix_agentd.conf.j2
-        dest: "{{ zabbix_agent_conf_file }}"
-        owner: root
-        group: root
-        mode: '0644'
-      notify: Restart Zabbix Agent
+- name: Deploy Zabbix Agent configuration file
+  template:
+    src: zabbix_agentd.conf.j2
+    dest: "{{ zabbix_agent_conf_file }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Zabbix Agent
 
-    - name: Ensure Zabbix Agent service is started and enabled
-      service:
-        name: zabbix-agent
-        state: started
-        enabled: true
-
-  handlers:
-    - name: Restart Zabbix Agent
-      service:
-        name: zabbix-agent
-        state: restarted
+- name: Ensure Zabbix Agent service is started and enabled
+  service:
+    name: zabbix-agent
+    state: started
+    enabled: yes
