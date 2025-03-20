@@ -29,12 +29,10 @@
     regexp: '^local\s+all\s+all\s+peer'
     line: 'local   all   {{ zabbix_db_user }}                       trust'
     backup: yes
+  notify: Restart postgresql
 
-- name: Restart postgresql
-  become: true
-  service:
-    name: postgresql
-    state: restarted
+- name: Execute pending handlers
+  meta: flush_handlers
 
 # Set PostgreSQL password for user 'postgres'
 - name: Set PostgreSQL password for 'postgres' user
