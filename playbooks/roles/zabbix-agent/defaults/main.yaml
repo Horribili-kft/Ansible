@@ -5,6 +5,7 @@ zabbix_agent_conf_file: /etc/zabbix/zabbix_agentd.conf
 
 zabbix_server: "zabbix.solardynamics.eu"
 zabbix_server_ip: "10.0.70.11"
+zabbix_server_port: "8080"
 zabbix_hostname: "{{ inventory_hostname }}"
 
 # Zabbix API connection details
