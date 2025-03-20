@@ -1,40 +1,35 @@
-- name: Register inventory hosts to Ansible
+- name: Register inventory hosts to Zabbix
   hosts: SD-HQ-NMS
   gather_facts: no
   vars:
-    zabbix_host_group: "Linux servers"
-    zabbix_template_name: "Template OS Linux"
+    zabbix_api_url: "http://zabbix.solardynamics.eu:8080/api_jsonrpc.php"
     zabbix_username: "Admin"
     zabbix_password: "zabbix"
-    zabbix_port: 8080
+    zabbix_host_group: "Linux servers"
+    zabbix_template_name: "Template OS Linux"
+
   tasks:
-    - name: Set credentials for Zabbix API
-      ansible.builtin.set_fact:
-        ansible_user: "{{ zabbix_username }}"
-        ansible_httpapi_pass: "{{ zabbix_password }}"
-
-    - name: Register each host from inventory in Zabbix
-      vars:
-        ansible_network_os: community.zabbix.zabbix
-        ansible_connection: httpapi
-        ansible_httpapi_port: 8080
-        ansible_httpsapi_validate_certs: false
-      become: false
-      delegate_to: SD-HQ-NMS
-
+    - name: Register hosts in Zabbix
       community.zabbix.zabbix_host:
+        server_url: "{{ zabbix_api_url }}"
+        login_user: "{{ zabbix_username }}"
+        login_password: "{{ zabbix_password }}"
         host_name: "{{ item }}"
-        visible_name: "{{ hostvars[item].ansible_hostname | default(item) }}"
-        host_groups: "{{ hostvars[item].group_names }}"
+        visible_name: "{{ item }}"
+        host_groups:
+          - "{{ zabbix_host_group }}"
         link_templates:
           - "{{ zabbix_template_name }}"
         interfaces:
           - type: 1
             main: 1
             useip: 1
-            # Assumes fact gathering has been done on the target hosts. Adjust as needed.
-            ip: "{{ hostvars[item].ansible_default_ipv4.address | default('') }}"
+            ip: "{{ hostvars[item].ansible_host }}"
+            dns: ""
             port: "10050"
         status: enabled
         state: present
+        timeout: 30
+        validate_certs: false
       loop: "{{ groups['linux_servers'] }}"
+      delegate_to: localhost  # Run from Ansible control node
