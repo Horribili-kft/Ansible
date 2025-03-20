@@ -1,4 +1,4 @@
-- name: Register hosts in Zabbix
+- name: Register inventory hosts to Ansible
   hosts: SD-HQ-NMS
   gather_facts: no
   vars:
@@ -8,29 +8,28 @@
     zabbix_password: "Solar-Dynamics-2025"
     zabbix_api_url: "http://zabbix.solardynamics.eu/api_jsonrpc.php"
   tasks:
-    - name: Set credentials to access Zabbix Server API
+    - name: Set credentials for Zabbix API
       ansible.builtin.set_fact:
         ansible_user: "{{ zabbix_username }}"
         ansible_httpapi_pass: "{{ zabbix_password }}"
 
-
-    - name: Register each host in Zabbix
+    - name: Register each host from inventory in Zabbix
+      vars:
+        ansible_network_os: community.zabbix.zabbix
+        ansible_connection: httpapi
       community.zabbix.zabbix_host:
-        server_url: "{{ zabbix_api_url }}"
-        auth: "{{ zabbix_auth.auth }}"
         host_name: "{{ item }}"
-        visible_name: "{{ item }}"
-        host_groups:
-          - "{{ zabbix_host_group }}"
+        visible_name: "{{ hostvars[item].ansible_hostname | default(item) }}"
+        host_groups: "{{ hostvars[item].group_names }}"
         link_templates:
           - "{{ zabbix_template_name }}"
-        status: enabled
-        state: present
         interfaces:
           - type: 1
             main: 1
             useip: 1
-            ip: "{{ hostvars[item].ansible_host }}"
-            dns: ""
+            # Assumes fact gathering has been done on the target hosts. Adjust as needed.
+            ip: "{{ hostvars[item].ansible_default_ipv4.address | default('') }}"
             port: "10050"
+        state: present
       loop: "{{ groups['linux_servers'] }}"
+      delegate_to: localhost
