@@ -30,11 +30,12 @@
   vars:
     ansible_network_os: community.zabbix.zabbix
     ansible_connection: httpapi
-    ansible_httpapi_port: 443
-    ansible_httpapi_use_ssl: true
+    ansible_httpapi_port: 8080
+    ansible_httpapi_use_ssl: false
     ansible_httpapi_validate_certs: false
   become: false
   community.zabbix.zabbix_host:
+    
     host_name: "{{ zabbix_hostname }}"  # Hostname in Zabbix
     visible_name: "{{ zabbix_hostname }}"  # Optional: Friendly name for the host in Zabbix UI
     host_groups:
