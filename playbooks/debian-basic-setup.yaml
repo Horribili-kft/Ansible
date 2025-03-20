@@ -3,8 +3,6 @@
 # Description: Basic setup for Debian systems, including installing essential packages, configuring sudo, and other base configurations.
 
 - hosts: linux_servers
-  # Only run on debian servers
-  when: ansible_distribution == 'Debian'
   become: yes  # Run with elevated privileges
   vars:
     # Pulled from the hosts.yaml file
