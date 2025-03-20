@@ -1,4 +1,8 @@
 ---
+- name: Set API token
+  ansible.builtin.set_fact:
+    ansible_zabbix_auth_key: "{{ zabbix_api_key }}"
+
 - name: Install Zabbix Agent on Debian-based systems
   become: true
   apt:
@@ -22,20 +26,29 @@
     state: started
     enabled: yes
 
-- name: Register host in Zabbix
-  become: true
+- name: Register a new host in Zabbix
+  vars:
+    ansible_network_os: community.zabbix.zabbix
+    ansible_connection: httpapi
+    ansible_httpapi_port: 443
+    ansible_httpapi_use_ssl: true
+    ansible_httpapi_validate_certs: false
+  become: false
   community.zabbix.zabbix_host:
-    server_url: "{{ zabbix_api_url }}"
-    login_user: "{{ zabbix_api_user }}"
-    login_password: "{{ zabbix_api_pass }}"
-    host_name: "{{ zabbix_hostname }}"
+    host_name: "{{ zabbix_hostname }}"  # Hostname in Zabbix
+    visible_name: "{{ zabbix_hostname }}"  # Optional: Friendly name for the host in Zabbix UI
+    host_groups:
+      - "Linux servers"  # Group to place the host in
+    link_templates:
+      - "Template OS Linux"  # Assign relevant templates to the host
+    status: enabled
+    state: present
     interfaces:
       - type: 1
         main: 1
         useip: 1
         ip: "{{ ansible_default_ipv4.address }}"
         dns: ""
-        port: 10050
-    groups:
-      - "Linux servers"
-    state: present
+        port: "10050" 
+
+
