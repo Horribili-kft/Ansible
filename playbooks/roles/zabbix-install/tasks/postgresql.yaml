@@ -16,7 +16,7 @@
 # Set PostgreSQL password for user 'postgres'
 - name: Set PostgreSQL password for 'postgres' user
   become_method: su
-  become_user: postgres
+  become_user: "{{ postgresql_user }}"
   postgresql_user:
     name: postgres
     password: "{{ postgresql_password }}"
