@@ -17,7 +17,6 @@
 - name: Set PostgreSQL password for 'postgres' user
   become: true
   become_user: "postgres"
-  remote_tmp: /tmp/ansible_tmp
   postgresql_user:
     name: postgres
     password: "{{ postgresql_password }}"
