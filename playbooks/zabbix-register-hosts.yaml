@@ -3,6 +3,7 @@
   gather_facts: no
   vars:
     ansible_zabbix_url_path: "http://zabbix.solardynamics.eu:8080/api_jsonrpc.php"
+    ansible_httpapi_validate_certs: false
     zabbix_username: "Admin"
     zabbix_password: "zabbix"
     zabbix_host_group: "Linux servers"
@@ -27,7 +28,5 @@
             port: "10050"
         status: enabled
         state: present
-        timeout: 30
-        validate_certs: false
       loop: "{{ groups['linux_servers'] }}"
       delegate_to: localhost  # Run from Ansible control node
