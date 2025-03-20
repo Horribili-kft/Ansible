@@ -13,7 +13,7 @@
 
   tasks:
   - name: Create host groups
-    zabbix.zabbix.zabbix.zabbix_group:
+    zabbix.zabbix.zabbix_group:
       state: present
       host_groups:
         - Ansible
