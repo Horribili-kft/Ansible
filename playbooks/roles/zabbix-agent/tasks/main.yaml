@@ -1,55 +1,34 @@
 ---
-- name: Set API token
-  ansible.builtin.set_fact:
-    ansible_zabbix_auth_key: "{{ zabbix_api_key }}"
-
-- name: Install Zabbix Agent on Debian-based systems
+- name: Install and configure Zabbix Agent on target hosts
+  hosts: all
+  gather_facts: yes
   become: true
-  apt:
-    name: "{{ zabbix_agent_package }}"
-    state: present
-
-- name: Deploy Zabbix Agent configuration file
-  become: true
-  template:
-    src: zabbix_agentd.conf.j2
-    dest: "{{ zabbix_agent_conf_file }}"
-    owner: root
-    group: root
-    mode: '0644'
-  notify: Restart Zabbix Agent
-
-- name: Ensure Zabbix Agent service is started and enabled
-  become: true
-  service:
-    name: zabbix-agent
-    state: started
-    enabled: yes
-
-- name: Register a new host in Zabbix
   vars:
-    ansible_network_os: community.zabbix.zabbix
-    ansible_connection: httpapi
-    ansible_httpapi_host: "10.0.70.11"
-    ansible_httpapi_port: "{{ zabbix_server_port }}"
-    ansible_httpapi_use_ssl: false
-    ansible_httpapi_validate_certs: false
-  become: false
-  community.zabbix.zabbix_host:
-    host_name: "{{ zabbix_hostname }}"  # Hostname in Zabbix
-    visible_name: "{{ zabbix_hostname }}"  # Optional: Friendly name for the host in Zabbix UI
-    host_groups:
-      - "Linux servers"  # Group to place the host in
-    link_templates:
-      - "Template OS Linux"  # Assign relevant templates to the host
-    status: enabled
-    state: present
-    interfaces:
-      - type: 1
-        main: 1
-        useip: 1
-        ip: "{{ ansible_default_ipv4.address }}"
-        dns: ""
-        port: "10050" 
+    zabbix_agent_package: "zabbix-agent"            # Package name for the agent
+    zabbix_agent_conf_file: "/etc/zabbix/zabbix_agentd.conf"
+  tasks:
+    - name: Install Zabbix Agent on Debian-based systems
+      apt:
+        name: "{{ zabbix_agent_package }}"
+        state: present
 
+    - name: Deploy Zabbix Agent configuration file
+      template:
+        src: zabbix_agentd.conf.j2
+        dest: "{{ zabbix_agent_conf_file }}"
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart Zabbix Agent
 
+    - name: Ensure Zabbix Agent service is started and enabled
+      service:
+        name: zabbix-agent
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: Restart Zabbix Agent
+      service:
+        name: zabbix-agent
+        state: restarted

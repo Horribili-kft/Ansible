@@ -1,0 +1,30 @@
+- name: Register hosts in Zabbix
+  hosts: SD-HQ-NMS
+  gather_facts: no
+  vars:
+    zabbix_host_group: "Linux servers"
+    zabbix_template_name: "Template OS Linux"
+
+    zabbix_api_url: "http://zabbix.solardynamics.eu/api_jsonrpc.php"
+    zabbix_api_key: "8bcddfb1672d63ed31830fc61dc9fcdc64962ec68e540448d46ded1211e9c99c"
+  tasks:
+    - name: Register each host in Zabbix
+      community.zabbix.zabbix_host:
+        server_url: "{{ zabbix_api_url }}"
+        auth: "{{ zabbix_api_key }}"
+        host_name: "{{ item }}"
+        visible_name: "{{ item }}"
+        host_groups:
+          - "{{ zabbix_host_group }}"
+        link_templates:
+          - "{{ zabbix_template_name }}"
+        status: enabled
+        state: present
+        interfaces:
+          - type: 1
+            main: 1
+            useip: 1
+            ip: "{{ hostvars[item].ansible_host }}"
+            dns: ""
+            port: "10050"
+      loop: "{{ groups['linux_servers'] }}"
