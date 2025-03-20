@@ -32,7 +32,7 @@
         - "Linux servers"
         - "Ansible"
       link_templates:
-        - "{{ zabbix_template_name }}"
+        - "Linux by Zabbix agent"
       inventory_mode: manual
       inventory_zabbix:
         location: "{{ location }}"
