@@ -4,10 +4,9 @@
   vars:
     zabbix_host_group: "Linux servers"
     zabbix_template_name: "Template OS Linux"
-
+    zabbix_username: Zabbix
+    zabbix_password: Solar-Dynamics-2025
     zabbix_api_url: "http://zabbix.solardynamics.eu/api_jsonrpc.php"
-    zabbix_username: "your_username"  # Replace with your Zabbix username
-    zabbix_password: "your_password"  # Replace with your Zabbix password
   tasks:
     - name: Authenticate with Zabbix
       community.zabbix.zabbix_auth:
