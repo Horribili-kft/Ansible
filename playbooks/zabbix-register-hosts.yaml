@@ -4,16 +4,15 @@
   vars:
     zabbix_host_group: "Linux servers"
     zabbix_template_name: "Template OS Linux"
-    zabbix_username: Zabbix
-    zabbix_password: Solar-Dynamics-2025
+    zabbix_username: "Zabbix"
+    zabbix_password: "Solar-Dynamics-2025"
     zabbix_api_url: "http://zabbix.solardynamics.eu/api_jsonrpc.php"
   tasks:
-    - name: Authenticate with Zabbix
-      community.zabbix.zabbix_auth:
-        server_url: "{{ zabbix_api_url }}"
-        username: "{{ zabbix_username }}"
-        password: "{{ zabbix_password }}"
-      register: zabbix_auth
+    - name: Set credentials to access Zabbix Server API
+      ansible.builtin.set_fact:
+        ansible_user: "{{ zabbix_username }}"
+        ansible_httpapi_pass: "{{ zabbix_password }}"
+
 
     - name: Register each host in Zabbix
       community.zabbix.zabbix_host:
