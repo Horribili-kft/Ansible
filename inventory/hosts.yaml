@@ -6,7 +6,14 @@ all:
         admin_name: "solaire"
 
     children:
+        proxmox_servers:
+            hosts:
+                SD-HQ-PVE1:
+                # Variables in /inventory/host_vars/SD-HQ-PVE1.yaml
+        
         linux_servers:
+        # Group-wide variables in /inventory/group_vars/linux_servers.yaml
+
             hosts:
                 SD-HQ-LIN1:
                 # Variables in ./host_vars/SD-HQ-LIN1.yaml
@@ -26,10 +33,6 @@ all:
                 SD-HQ-WIN1:
                 # Variables in /inventory/host_vars/SD-HQ-WIN1.yaml
 
-        proxmox_servers:
-            hosts:
-                SD-HQ-PVE1:
-                # Variables in /inventory/host_vars/SD-HQ-PVE1.yaml
 
         cisco:
             # Group-wide variables in /inventory/group_vars/cisco.yaml
@@ -40,6 +43,7 @@ all:
                             # Publikus cím:
                             # ansible_host: 82.136.79.1
                             ansible_host: 172.16.0.0
+                            
                         HQ-R2:
                             # Publikus cím
                             # ansible_host: 85.16.100.3
@@ -103,6 +107,7 @@ all:
         hq:
             vars:
                 domain_name: hq.solardynamics.eu
+                location: Gyor-HQ
 
             hosts:
                 SD-HQ-LIN1:
@@ -124,6 +129,7 @@ all:
         szf:
             vars:
                 domain_name: szf.solardynamics.eu
+                location: Szekesfehervar
 
             hosts:
                 SzF_R:
@@ -135,6 +141,7 @@ all:
         tb:
             vars:
                 domain_name: tb.solardynamics.eu
+                location: Tatabanya
 
             hosts:
                 TB-RT:
@@ -149,6 +156,7 @@ all:
         bp:
             vars:
                 domain_name: bp.solardynamics.eu
+                zabbix_location: Budapest
 
             hosts:
                 BP-R:
