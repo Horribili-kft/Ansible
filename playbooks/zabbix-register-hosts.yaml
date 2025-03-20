@@ -6,12 +6,20 @@
     zabbix_template_name: "Template OS Linux"
 
     zabbix_api_url: "http://zabbix.solardynamics.eu/api_jsonrpc.php"
-    zabbix_api_key: "8bcddfb1672d63ed31830fc61dc9fcdc64962ec68e540448d46ded1211e9c99c"
+    zabbix_username: "your_username"  # Replace with your Zabbix username
+    zabbix_password: "your_password"  # Replace with your Zabbix password
   tasks:
+    - name: Authenticate with Zabbix
+      community.zabbix.zabbix_auth:
+        server_url: "{{ zabbix_api_url }}"
+        username: "{{ zabbix_username }}"
+        password: "{{ zabbix_password }}"
+      register: zabbix_auth
+
     - name: Register each host in Zabbix
       community.zabbix.zabbix_host:
         server_url: "{{ zabbix_api_url }}"
-        auth: "{{ zabbix_api_key }}"
+        auth: "{{ zabbix_auth.auth }}"
         host_name: "{{ item }}"
         visible_name: "{{ item }}"
         host_groups:
