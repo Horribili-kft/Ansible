@@ -30,10 +30,8 @@
       status: enabled
       state: present
       interfaces:
-        - type: agent
-          main: 1
-          useip: 1
+        - type: "agent"
           ip: "{{ hostvars[item].ansible_host }}"
-          dns: ""
+          dns: "{{ item }}"
           port: "10050"
     loop: "{{ groups['linux_servers'] }}"
