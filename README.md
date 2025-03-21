@@ -61,14 +61,34 @@ chmod +x ./*
 ./PrepareNMS-user.sh
 ```
 
-You are done. The server is ready to manage hosts.
+You can now run Ansible.
+
+> [!NOTE]
+> Final step is to run two playbooks that completely set up the NMS
+
+> [!IMPORTANT]
+> Your manager user must be in the sudo group, if they are not you should run
+> `su -c "usermod -aG sudo <username>"`
+
+```bash
+cd
+# Use the virtual environment
+source ansible-venv/bin/activate
+cd Ansible
+# Run this playbook first
+ansible-playbook playbooks/debian-basic-setup.yaml  --limit SD-HQ-NMS -i inventory/hosts.yaml --ask-become-pass
+# Run this playbook second
+ansible-playbook playbooks/nms-setup.yaml  --limit SD-HQ-NMS -i inventory/hosts.yaml --ask-become-pass
+```
+
+
+
 
 > [!TIP]
 > You can run the PrepareNMS-user.sh script as a different user to set ansible up for that user as well.
 
 
-
-## Prepare Linux hosts for management
+### Prepare Linux hosts for management
 
 > [!CAUTION]
 > The scipt sets up a temporary password for the created "ansible" user until the control node takes over and replaces the password login with pubkey login.
@@ -84,8 +104,15 @@ chmod +x ./PrepareForAnsible.sh
 ./PrepareForAnsible.sh
 ```
 
+
 ## Usage
-The scripts install a python virtual environment with Ansible into the ./ansible
+> [!IMPORTANT]
+> The scripts install a python virtual environment with Ansible into the ./ansible
+> Before running any playbooks, you should tell the shell to use the venv
+
+```bash
+source ansible-venv/bin/activate
+```
 
 ```bash
 ansible-playbook playbooks/<playbook_name>.yaml -i inventory/hosts.yaml
