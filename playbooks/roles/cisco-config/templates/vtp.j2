@@ -1,0 +1,7 @@
+{% if 'switches' in group_names %}
+vtp domain {{ vtp_domain }}
+vtp mode server
+vtp version {{ vtp_version }}
+vtp password {{ vtp_password }}
+do vtp primary
+{% endif %}

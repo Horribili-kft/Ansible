@@ -39,7 +39,7 @@ all:
 
 
         cisco:
-            # Group-wide variables in /inventory/group_vars/cisco.yaml
+            # Group-wide variables in /inventory/group_vars/cisco/cisco.yaml
             children:
                 routers:
                     hosts:
@@ -109,10 +109,6 @@ all:
                             ansible_host: 10.3.254.3
                         
         hq:
-            vars:
-                domain_name: hq.solardynamics.eu
-                location: Gyor-HQ
-
             hosts:
                 SD-HQ-LIN1:
                 SD-HQ-LIN2:
@@ -132,10 +128,6 @@ all:
                 HQ-WS-S2:
 
         szf:
-            vars:
-                domain_name: szf.solardynamics.eu
-                location: Szekesfehervar
-
             hosts:
                 SzF_R:
 
@@ -144,10 +136,6 @@ all:
                 SzF_WR:
 
         tb:
-            vars:
-                domain_name: tb.solardynamics.eu
-                location: Tatabanya
-
             hosts:
                 TB-RT:
 
@@ -159,10 +147,6 @@ all:
 
 
         bp:
-            vars:
-                domain_name: bp.solardynamics.eu
-                zabbix_location: Budapest
-
             hosts:
                 BP-R:
                     

@@ -1,0 +1,7 @@
+spanning-tree mode {{ spanning_tree_mode }}
+{% if spanning_tree_primary %}
+spanning-tree vlan {{ spanning_tree_primary | join(',') }} primary
+{% endif %}
+{% if spanning_tree_secondary %}
+spanning-tree vlan {{ spanning_tree_secondary | join(',') }} secondary
+{% endif %}

@@ -1,7 +1,0 @@
-ansible_user: solaire
-ansible_password: Solar-Dynamics-2025
-ansible_become_password: Solar-Dynamics-2025
-ansible_network_os: ios
-ansible_connection: network_cli
-# We need these options because the devices we are managing are old.
-ansible_ssh_common_args: "-oKexAlgorithms=+diffie-hellman-group1-sha1 -oPubkeyAcceptedAlgorithms=+ssh-rsa -oHostkeyAlgorithms=+ssh-rsa -oCiphers=+aes128-cbc -o StrictHostKeyChecking=no"

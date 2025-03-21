@@ -1,0 +1,40 @@
+---
+
+# === Common ===
+- name: Backup current config to control node
+  cisco.ios.ios_config:
+    backup: true
+    backup_options:
+      dir_path: "{{ lookup('env', 'HOME') }}/cisco_backup"
+  register: backup_ios_location
+
+- name: Configure hostname and domain
+  cisco.ios.config:
+    src: hostname.j2
+
+- name: Disable IP domain lookup
+  cisco.ios.ios_config:
+    commands:
+      - "no ip domain lookup"
+
+- name: Configure banners
+  cisco.ios.ios_config:
+    src: banner.j2
+
+# === Device specific ===
+- name: Configure routers
+  ansible.builtin.include_tasks: routers.yml
+  when: "'routers' in group_names"
+
+- name: Configure mls
+  ansible.builtin.include_tasks: mls.yml
+  when: "'mls' in group_names"
+
+- name: Configure switches
+  ansible.builtin.include_tasks: switches.yml
+  when: "'switches' in group_names"
+
+- name: Print backup location
+  ansible.builtin.debug:
+    msg: "Backup location: {{ backup_ios_location }}"
+...

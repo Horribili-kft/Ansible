@@ -1,0 +1,4 @@
+- name: Configure Cisco Devices
+  hosts: cisco
+  roles:
+    - cisco-config
