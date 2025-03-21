@@ -3,14 +3,14 @@
   hosts: linux_servers
   tasks:
     - name: Ping Linux servers
-      ping:
+      ansible.builtin.ping:
 
 - name: Ping all Windows servers
   hosts: windows_servers
   ignore_unreachable: true
   tasks:
     - name: Ping Windows servers
-      win_ping:
+      ansible.windows.win_ping:
 
 - name: Ping control node from all Cisco devices
   hosts: cisco

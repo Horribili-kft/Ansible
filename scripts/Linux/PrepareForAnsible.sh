@@ -1,15 +1,14 @@
 #!/bin/bash
-# You must run this as root
+# !!! You must run this as root !!!
 
-# To run this:
-# wget https://raw.githubusercontent.com/Horribili-kft/Ansible/refs/heads/main/helperscripts/PrepareForAnsible.sh
-# chmod +x ./DebianConfigureControl.sh
-# (sudo) ./DebianConfigureControl.sh
+# wget https://raw.githubusercontent.com/Horribili-kft/Ansible/refs/heads/main/scripts/Linux/PrepareForAnsible.sh
+# chmod +x ./PrepareForAnsible.sh
+# ./PrepareForAnsible.sh
 
 # --- Variables ---
-ANSIBLE_USER="ansible"  
+ANSIBLE_USER="ansible" # If you change this, you must update it in the playbook as well.
 # IMPORTANT! This password will be removed after Ansible copies over the SSH keys for secure remote management.       
-DEFAULT_PASSWORD="Solar-Dynamics-2025"  # The default password for the ansible user
+DEFAULT_PASSWORD="Solar-Dynamics-2025"  # The default password for the ansible user. This is removed by the basic setup playbook later for more secure management
 
 # --- Script ---
 # Function to check if a package is installed
@@ -70,6 +69,7 @@ su - $ANSIBLE_USER -c "sudo ssh -o StrictHostKeyChecking=no -T localhost echo 'S
 
 # Completion message
 echo "Host is now prepared for Ansible management!"
-echo "You should be able to run Ansible playbooks with this host."
+echo "You should run the debian-basic-setup.yaml script on the control node!"
+
 
 # End of script

@@ -1,66 +1,67 @@
 ---
 # Playbook: debian-basic-setup.yaml
 # Description: Basic setup for Debian systems, including installing essential packages, configuring sudo, and other base configurations.
-
-- hosts: linux_servers
-  become: yes  # Run with elevated privileges
+- name: Basic setup for Debian systems
+  hosts: linux_servers
+  become: true  # Run with elevated privileges
   vars:
     # Pulled from the hosts.yaml file
-    admin_username: "{{admin_name}}"
+    admin_username: "{{ admin_name }}"
   tasks:
 
     - name: Update APT package cache
-      apt:
-        update_cache: yes
+      ansible.builtin.apt:
+        update_cache: true
         cache_valid_time: 3600  # 1 hour
 
     - name: Upgrade all packages to the latest version
-      apt:
+      ansible.builtin.apt:
         upgrade: dist
-        autoremove: yes
+        autoremove: true
 
     - name: Install essential packages
-      apt:
+      ansible.builtin.apt:
         name:
           - sudo
         state: present
 
     - name: Ensure the firewall (UFW) is installed
-      apt:
+      ansible.builtin.apt:
         name: ufw
         state: present
 
     - name: Enable SSH service
-      service:
+      ansible.builtin.service:
         name: ssh
         state: started
-        enabled: yes
+        enabled: true
 
     - name: Enable UFW and allow OpenSSH
-      ufw:
+      community.general.ufw:
         rule: allow
         name: OpenSSH
+
     # Right now we are not using the firewall
     - name: Disable the firewall (UFW)
-      ufw:
+      community.general.ufw:
         state: disabled
 
     - name: Add the user to the sudo group
-      user:
+      ansible.builtin.user:
         name: "{{ admin_name }}"
         groups: sudo
-        append: yes
+        append: true
 
     - name: Verify user is part of the sudo group
-      command: id "{{ admin_name }}"
+      ansible.builtin.command: id "{{ admin_name }}"
       register: user_check
       changed_when: false
 
     - name: Display user group information
-      debug:
+      ansible.builtin.debug:
         msg: "User '{{ admin_name }}' is in groups: {{ user_check.stdout }}"
   # This is run after the rest of the playbook
   roles:
   # All Linux servers will have zabbix-agent installed.
-  - resolv.conf
-  - zabbix-agent 
+    - resolv.conf
+    - zabbix-agent
