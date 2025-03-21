@@ -68,7 +68,7 @@ You can now run Ansible.
 
 > [!IMPORTANT]
 > Your manager user must be in the sudo group, if they are not you should run
-> `su -c "usermod -aG sudo <username>"`
+> `su - -c "usermod -aG sudo <username>"`
 
 ```bash
 cd
