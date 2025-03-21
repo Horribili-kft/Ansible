@@ -65,3 +65,17 @@ fi
 # Deactivate the virtual environment
 deactivate
 echo "Setup complete. Your NMS should be fully configured."
+
+current_user=$(whoami)
+echo "Your next moves should be:"
+echo "1. Adding your user to the sudo group (if they are not part of it):"
+echo "   su -c 'usermod -aG sudo $current_user'"
+echo ""
+echo "2. Activating the Ansible virtual environment:"
+echo "   source ansible-venv/bin/activate"
+echo ""
+echo "3. Running the following playbooks in order:"
+echo "   - First, run the basic setup playbook:"
+echo "     ansible-playbook ~/Ansible/playbooks/debian-basic-setup.yaml --limit SD-HQ-NMS -i ~/Ansible/inventory/hosts.yaml --ask-become-pass"
+echo "   - Second, run the NMS setup playbook:"
+echo "     ansible-playbook ~/Ansible/playbooks/nms-setup.yaml --limit SD-HQ-NMS -i ~/Ansible/inventory/hosts.yaml --ask-become-pass"
