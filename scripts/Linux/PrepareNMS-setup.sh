@@ -32,4 +32,4 @@ for package in "${REQUIRED_PACKAGES[@]}"; do
     fi
 done
 
-echo "System setup complete. Now run the user part of the script."
+echo "System setup complete. Now run PrepareNMS-user.sh"
