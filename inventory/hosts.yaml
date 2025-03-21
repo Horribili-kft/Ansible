@@ -109,6 +109,8 @@ all:
                             ansible_host: 10.3.254.3
                         
         hq:
+            vars:
+                domain_name: hq.solardynamics.eu        
             hosts:
                 SD-HQ-LIN1:
                 SD-HQ-LIN2:
@@ -128,6 +130,8 @@ all:
                 HQ-WS-S2:
 
         szf:
+            vars:
+                domain_name: szf.solardynamics.eu
             hosts:
                 SzF_R:
 
@@ -136,6 +140,8 @@ all:
                 SzF_WR:
 
         tb:
+            vars:
+                domain_name: tb.solardynamics.eu
             hosts:
                 TB-RT:
 
@@ -147,6 +153,8 @@ all:
 
 
         bp:
+            vars:
+                domain_name: bp.solardynamics.eu
             hosts:
                 BP-R:
                     
