@@ -54,9 +54,6 @@ chmod +x ./*
 > [!NOTE]
 > Next, run the script that installs the ansible-venv as ***non-root***
 
-> [!IMPORTANT]
-> This script automatically runs nms-setup, configuring SD-HQ-NMS to its fully ready state.
-
 ```bash
 ./PrepareNMS-user.sh
 ```
