@@ -64,7 +64,7 @@ fi
 
 # Deactivate the virtual environment
 deactivate
-echo "Setup complete. Your NMS should be fully configured."
+echo "Setup complete. Your NMS should be ready to run Ansible."
 
 current_user=$(whoami)
 echo "Your next moves should be:"
