@@ -54,6 +54,7 @@
     - name: Verify user is part of the sudo group
       command: id "{{ admin_name }}"
       register: user_check
+      changed_when: false
 
     - name: Display user group information
       debug:
