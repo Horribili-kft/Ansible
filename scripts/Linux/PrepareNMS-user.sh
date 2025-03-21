@@ -69,7 +69,7 @@ echo "Setup complete. Your NMS should be ready to run Ansible."
 current_user=$(whoami)
 echo "Your next moves should be:"
 echo "1. Adding your user to the sudo group:"
-echo "   su -c 'usermod -aG sudo $current_user'"
+echo "   su - -c 'usermod -aG sudo $current_user'"
 echo ""
 echo "2. Activating the Ansible virtual environment:"
 echo "   source ~/ansible-venv/bin/activate"
