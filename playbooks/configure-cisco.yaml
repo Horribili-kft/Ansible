@@ -1,5 +1,5 @@
 - name: Configure Cisco Devices
   hosts: cisco
-  becoem: true
+  become: true
   roles:
     - cisco-config
