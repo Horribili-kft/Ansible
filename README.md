@@ -12,52 +12,76 @@ This repository contains playbook files for the Solar Dynamics company network. 
 - [Roles](#roles)
 
 ## Prerequisites
-- Ansible (installed and configured with prepareNMS.sh)
-- Default community modules (installed by default)
-- zabbix.zabbix module version >=1.4 (installed automatically by nms-setup.yaml)
-- SSH Access to the target machines (the PrepareForAnsible.sh script set this up automatically for user "ansible" on all target hosts)
-- Root privileges on the target machines for setup. (After installation the "ansible" user is used for root tasks. They are set up with passwordless sudo by PrepareForAnsible.sh)
+
+### Control node (SD-HQ-NMS)
+| Requirement                                              | Automatically done by                       |
+|----------------------------------------------------------|---------------------------------------------|
+| Basic packages (python, python-venv, pip)                | PrepareNMS-setup.sh (root required)         |
+| Ansible                                                  | PrepareNMS-user.sh                          |
+| Default community modules                                | PrepareNMS-user.sh                          |
+| zabbix.zabbix module version >=1.4                       | PrepareNMS-user.sh                          |
 
 
-## Installation on control node (SD-HQ-NMS)
+### Controlled hosts
 
-First, run the basic setup script that installs dependencies and sets up a python-venv
+#### Linux
+| Requirement                                              | Automatically done by (run on host, not NMS)|
+|----------------------------------------------------------|---------------------------------------------|
+| Basic packages (python, sudo)                            | PrepareForAnsible.sh (root required)        |
+| Sudo privileges on "ansible" user                        | PrepareForAnsible.sh (root required)        |
+| SSH Access to the host by control node                   | PrepareForAnsible.sh (root required)        |
+
+#### Cisco
+| Requirement                                              | Automatically done by (run on host, not NMS)|
+
+
+## Installation
+
+### Install on control node (SD-HQ-NMS)
+
+> [!NOTE]
+> First, run the basic setup script that installs basic dependencies as ***root***
 
 ```bash
 apt update -y
 apt install -y git 
 git clone https://github.com/Horribili-kft/Ansible
 cd ./Ansible/scripts/Linux
-chmod +x ./PrepareNMS.sh
-./PrepareNMS.sh
+chmod +x ./*
+./PrepareNMS-.sh
 ```
 
-Then move the created python-venv environment to your home folder, and change the permissions so you can use it.ű
+> [!NOTE]
+> Next, run the script that installs the ansible-venv as ***non-root***
+
+> [!IMPORTANT]
+> This script automatically runs nms-setup, configuring SD-HQ-NMS to its fully ready state.
 
 ```bash
-# Substitute username for your non-root manager user (solaire in this example)
-sudo mv -r /root/ansible-venv /home/solaire/
-sudo chown -R solaire:solaire /home/solaire/ansible-venv
+./PrepareNMS-user.sh
 ```
 
+You are done. The server is ready to manage hosts.
+
+> [!TIP]
+> You can run the PrepareNMS-user.sh script as a different user to set ansible up for that user as well.
 
 
-## Linux host configuration for control with Ansible
+
+## Prepare Linux hosts for management
+
+> [!CAUTION]
+> The scipt sets up a temporary password for the created "ansible" user until the control node takes over and replaces the password login with pubkey login.
+> This leaves a small window of time between you running PrepareForAnsible.sh on the host and setup_ssh_key.yaml on the control node where the host can be connected to via password.
+> The script (along with the temporary password) is in a public GitHub repository, so changing the temporary password in the script is recommended for environments requiring absolute security.
+
+> [!NOTE]
+> Run the script. You don't need to download the full repository, only this script is enough.
 
 ```bash
 wget https://raw.githubusercontent.com/Horribili-kft/Ansible/refs/heads/main/scripts/Linux/PrepareForAnsible.sh
 chmod +x ./PrepareForAnsible.sh
-# The scirpt requires root permissions
-# You can change the temporary password for the ansible user (which is later removed by the control node)
 ./PrepareForAnsible.sh
-```
-
-
-Make sure to run the `PrepareForAnsible.sh` script to set up the necessary environment:
-
-```bash
-chmod +x helperscripts/PrepareForAnsible.sh
-sudo ./helperscripts/PrepareForAnsible.sh
 ```
 
 ## Usage
@@ -66,17 +90,28 @@ The scripts install a python virtual environment with Ansible into the ./ansible
 ```bash
 ansible-playbook playbooks/<playbook_name>.yaml -i inventory/hosts.yaml
 ```
+> [!IMPORTANT]
+> When password / become (sudo/enable) password is required
+
+```bash
+ansible-playbook playbooks/<playbook_name>.yaml -i inventory/hosts.yaml --ask-pass --ask-become-pass
+```
+
 
 Replace `<playbook_name>` with the name of the playbook you wish to execute.
 
 ## Playbooks
-- **debian-basic-setup.yaml**: Sets up a basic Debian environment, including essential packages and user configurations.
-- **setup_ssh_key.yaml**: Configures SSH key-based authentication for users.
-- **pingall.yaml**: Pings all Linux and Windows servers to check connectivity.
-- **zabbix-register-hosts.yaml**: Registers hosts to Zabbix for monitoring.
+
+### Setup scripts
+- **nms-setup.yaml**: Sets up the control node. Installs Nessus and Zabbix. *Runs only on SD-HQ-NMS*
+- **debian-basic-setup.yaml**: Sets up a basic Debian server environment, including essential packages, zabbix-agent and resolv.conf. *Runs on all linux_servers*
+- **setup_ssh_key.yaml**: Configures SSH pubkey-based authentication for the "ansible" user. *Runs on all linux_servers*
+- **pingall.yaml**: Orders devices to ping key network targets to test connectivity.
+- **zabbix-register-hosts.yaml**: Automatically registers hosts to Zabbix for monitoring.
 
 ## Roles
+- **zabbix-server-install**: Installs and configures
 - **resolv.conf**: Manages the `/etc/resolv.conf` file.
-- **zabbix-agent**: Installs and configures the Zabbix agent on target machines.
+- **zabbix-agent**: Installs and configures the Zabbix agent on target machines. Included in debian-basic-setup.yaml
 
 

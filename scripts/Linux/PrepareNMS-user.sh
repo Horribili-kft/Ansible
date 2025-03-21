@@ -12,6 +12,12 @@ NMS_SETUP_PLAYBOOK="../../playbooks/nms-setup.yaml"
 INVENTORY="../../inventory/hosts.yaml"
 VENV_DIR="$HOME/ansible-venv"
 
+# These modules will be installed automatically
+REQUIRED_COLLECTIONS=(
+    "zabbix.zabbix"
+
+)
+
 # Step 0: cd to script directory for relative paths to work:
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd "$parent_path"
@@ -39,6 +45,12 @@ if ! pip show ansible >/dev/null 2>&1; then
 else
     echo "Ansible is already installed in the virtual environment."
 fi
+
+# Step 4.1: Install required Ansible collections
+echo "Installing required Ansible collections..."
+for collection in "${REQUIRED_COLLECTIONS[@]}"; do
+    ansible-galaxy collection install "$collection"
+done
 
 # Step 5: Check if the basic setup playbook exists
 if [ ! -f "$BASIC_SETUP_PLAYBOOK" ]; then
