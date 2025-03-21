@@ -11,6 +11,7 @@
 - name: Configure hostname and domain
   cisco.ios.config:
     src: hostname.j2
+    diff_against: running
 
 - name: Disable IP domain lookup
   cisco.ios.ios_config:
@@ -20,6 +21,8 @@
 - name: Configure banners
   cisco.ios.ios_config:
     src: banner.j2
+    diff_against: running
+
 
 # === Device specific ===
 - name: Configure routers
