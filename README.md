@@ -87,11 +87,6 @@ ansible-playbook playbooks/nms-setup.yaml  --limit SD-HQ-NMS -i inventory/hosts.
 
 ### Prepare Linux hosts for management
 
-> [!CAUTION]
-> The scipt sets up a temporary password for the created "ansible" user until the control node takes over and replaces the password login with pubkey login.
-> This leaves a small window of time between you running PrepareForAnsible.sh on the host and setup_ssh_key.yaml on the control node where the host can be connected to via password.
-> The script (along with the temporary password) is in a public GitHub repository, so changing the temporary password in the script is recommended for environments requiring absolute security.
-
 > [!NOTE]
 > Run the script. You don't need to download the full repository, only this script is enough.
 
@@ -100,6 +95,11 @@ wget https://raw.githubusercontent.com/Horribili-kft/Ansible/refs/heads/main/scr
 chmod +x ./PrepareForAnsible.sh
 ./PrepareForAnsible.sh
 ```
+
+> [!CAUTION]
+> The scipt sets up a temporary password for the created "ansible" user until the control node takes over and replaces the password login with pubkey login.
+> This leaves a small window of time between you running PrepareForAnsible.sh on the host and setup_ssh_key.yaml on the control node where the host can be connected to via password.
+> The script (along with the temporary password) is in a public GitHub repository, so changing the temporary password in the script is recommended for environments requiring absolute security.
 
 
 ## Usage
