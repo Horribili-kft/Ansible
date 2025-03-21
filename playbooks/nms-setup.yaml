@@ -38,7 +38,7 @@
           - sudo
         state: present
 
-    - name: Install essential Ansible modules with pip
+    - name: Install essential Ansible modules with pip to the venv
       ansible.builtin.pip:
         name:
           # This is for better SSH support

@@ -58,6 +58,9 @@ chmod +x ./*
 ./PrepareNMS-user.sh
 ```
 
+> [!TIP]
+> You can run the PrepareNMS-user.sh script as a different user to set ansible up for that user as well.
+
 You can now run Ansible.
 
 > [!NOTE]
@@ -78,11 +81,7 @@ ansible-playbook playbooks/debian-basic-setup.yaml  --limit SD-HQ-NMS -i invento
 ansible-playbook playbooks/nms-setup.yaml  --limit SD-HQ-NMS -i inventory/hosts.yaml --ask-become-pass
 ```
 
-
-
-
-> [!TIP]
-> You can run the PrepareNMS-user.sh script as a different user to set ansible up for that user as well.
+You have now fully set up the NMS server.
 
 
 ### Prepare Linux hosts for management
@@ -98,8 +97,19 @@ chmod +x ./PrepareForAnsible.sh
 
 > [!CAUTION]
 > The scipt sets up a temporary password for the created "ansible" user until the control node takes over and replaces the password login with pubkey login.
-> This leaves a small window of time between you running PrepareForAnsible.sh on the host and setup_ssh_key.yaml on the control node where the host can be connected to via password.
+> This leaves a small window of time between you running PrepareForAnsible.sh on the host and setup-ssh-key.yaml on the control node where the host can be connected to via password.
 > The script (along with the temporary password) is in a public GitHub repository, so changing the temporary password in the script is recommended for environments requiring absolute security.
+
+
+> [!NOTE]
+> Run the setup-ssh-key.yaml playbook *on the control node*. 
+> Ensure that you have this newly set up host in the Ansible inventory.
+
+```bash
+source ~/ansible-venv/bin/activate
+ansible-playbook ~/Ansible/playbooks/setup-ssh-key.yaml -i ~/Ansible/inventory/hosts.yaml --ask-become-pass
+```
+
 
 
 ## Usage
@@ -129,7 +139,7 @@ Replace `<playbook_name>` with the name of the playbook you wish to execute.
 ### Setup scripts
 - **nms-setup.yaml**: Sets up the control node. Installs Nessus and Zabbix. *Runs only on SD-HQ-NMS*
 - **debian-basic-setup.yaml**: Sets up a basic Debian server environment, including essential packages, zabbix-agent and resolv.conf. *Runs on all linux_servers*
-- **setup_ssh_key.yaml**: Configures SSH pubkey-based authentication for the "ansible" user. *Runs on all linux_servers*
+- **setup-ssh-key.yaml**: Configures SSH pubkey-based authentication for the "ansible" user. *Runs on all linux_servers*
 - **pingall.yaml**: Orders devices to ping key network targets to test connectivity.
 - **zabbix-register-hosts.yaml**: Automatically registers hosts to Zabbix for monitoring.
 
