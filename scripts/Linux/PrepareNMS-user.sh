@@ -54,25 +54,13 @@ done
 
 # Step 5: Check if the basic setup playbook exists
 if [ ! -f "$BASIC_SETUP_PLAYBOOK" ]; then
-    echo "Error: Basic setup playbook ($BASIC_SETUP_PLAYBOOK) not found!"
-    deactivate
-    exit 1
+    echo "Warning: Basic setup playbook ($BASIC_SETUP_PLAYBOOK) not found!"
 fi
 
-# Step 6: Run the basic environment setup playbook using virtual environment's Ansible
-echo "Running the basic environment setup playbook..."
-ansible-playbook "$BASIC_SETUP_PLAYBOOK" --limit SD-HQ-NMS -i "$INVENTORY"
-
-# Step 7: Check if the NMS setup playbook exists
+# Step 6: Check if the NMS setup playbook exists
 if [ ! -f "$NMS_SETUP_PLAYBOOK" ]; then
-    echo "Error: NMS setup playbook ($NMS_SETUP_PLAYBOOK) not found!"
-    deactivate
-    exit 1
+    echo "Warning: NMS setup playbook ($NMS_SETUP_PLAYBOOK) not found!"
 fi
-
-# Step 8: Run the NMS setup playbook using virtual environment's Ansible
-echo "Running the NMS software installation playbook..."
-ansible-playbook "$NMS_SETUP_PLAYBOOK" --limit SD-HQ-NMS -i "$INVENTORY"
 
 # Deactivate the virtual environment
 deactivate
