@@ -61,4 +61,5 @@
   # This is run after the rest of the playbook
   roles:
   # All Linux servers will have zabbix-agent installed.
+  - resolv.conf
   - zabbix-agent 
