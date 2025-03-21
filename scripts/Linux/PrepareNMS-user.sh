@@ -68,7 +68,7 @@ echo "Setup complete. Your NMS should be fully configured."
 
 current_user=$(whoami)
 echo "Your next moves should be:"
-echo "1. Adding your user to the sudo group (if they are not part of it):"
+echo "1. Adding your user to the sudo group:"
 echo "   su -c 'usermod -aG sudo $current_user'"
 echo ""
 echo "2. Activating the Ansible virtual environment:"
