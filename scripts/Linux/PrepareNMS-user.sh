@@ -2,12 +2,19 @@
 # You must run PrepareNMS-setup.sh before this script
 
 # This script sets up a python-venv in the current user's directory, and installs ansible within it.
+# To run it, add execute permissions, and execute as the user you want to install ansible for
+# chmod +x ./PrepareNMS-user.sh
+# ./PrepareNMS-user.sh
 
 # Variables
 BASIC_SETUP_PLAYBOOK="../../playbooks/debian-basic-setup.yaml"
 NMS_SETUP_PLAYBOOK="../../playbooks/nms-setup.yaml"
 INVENTORY="../../inventory/hosts.yaml"
 VENV_DIR="$HOME/ansible-venv"
+
+# Step 0: cd to script directory for relative paths to work:
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+cd "$parent_path"
 
 # Step 1: Check if running as a non-root user
 if [ "$EUID" -eq 0 ]; then

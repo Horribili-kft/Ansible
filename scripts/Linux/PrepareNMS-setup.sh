@@ -6,8 +6,8 @@
 # apt install -y git
 # git clone https://github.com/Horribili-kft/Ansible
 # cd ./Ansible/scripts/Linux
-# chmod +x ./PrepareNMS.sh
-# ./PrepareNMS.sh
+# chmod +x ./*
+# ./PrepareNMS-setup.sh
 
 # Variables for dependencies
 REQUIRED_PACKAGES=("sudo" "sshpass" "python3" "python3-venv" "python3-pip")
