@@ -23,15 +23,15 @@
 
 # === Device specific ===
 - name: Configure routers
-  ansible.builtin.include_tasks: routers.yml
+  ansible.builtin.include_tasks: routers.yaml
   when: "'routers' in group_names"
 
 - name: Configure mls
-  ansible.builtin.include_tasks: mls.yml
+  ansible.builtin.include_tasks: mls.yaml
   when: "'mls' in group_names"
 
 - name: Configure switches
-  ansible.builtin.include_tasks: switches.yml
+  ansible.builtin.include_tasks: switches.yaml
   when: "'switches' in group_names"
 
 - name: Print backup location
