@@ -1,0 +1,5 @@
+---
+ansible_host: 10.0.70.12
+machine_type: "Linux Debian 12"
+
+...

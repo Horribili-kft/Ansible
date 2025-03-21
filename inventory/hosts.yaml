@@ -18,6 +18,10 @@ all:
                 SD-HQ-LIN1:
                 # Variables in ./host_vars/SD-HQ-LIN1.yaml
                 
+                SD-HQ-LIN2:
+                # Variables in ./host_vars/SD-HQ-LIN2.yaml
+                
+
                 SD-HQ-NMS:
                 # Variables in ./host_vars/SD-HQ-NMS.yaml
 
@@ -111,6 +115,7 @@ all:
 
             hosts:
                 SD-HQ-LIN1:
+                SD-HQ-LIN2:
                 SD-HQ-WIN1:
                 SD-HQ-NMS:
                 SD-HQ-PVE1:
