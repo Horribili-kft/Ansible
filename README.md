@@ -1,4 +1,4 @@
-# Ansible Playbook Repository
+# Solar Dynamics Repository
 
 ## Overview
 This repository contains playbook files for the Solar Dynamics company network. The playbooks are designed assuming SD-HQ-NMS is the control node. 
@@ -144,8 +144,8 @@ Replace `<playbook_name>` with the name of the playbook you wish to execute.
 - **zabbix-register-hosts.yaml**: Automatically registers hosts to Zabbix for monitoring.
 
 ## Roles
-- **zabbix-server-install**: Installs and configures
-- **resolv.conf**: Manages the `/etc/resolv.conf` file.
-- **zabbix-agent**: Installs and configures the Zabbix agent on target machines. Included in debian-basic-setup.yaml
+- **zabbix-server-install**: Installs and configures zabbix server on the control node *included in nms-setup.yaml*
+- **resolv.conf**: Manages the `/etc/resolv.conf` file. *Included in debian-basic-setup.yaml*
+- **zabbix-agent**: Installs and configures the Zabbix agent on target machines. *Included in debian-basic-setup.yaml*
 
 
