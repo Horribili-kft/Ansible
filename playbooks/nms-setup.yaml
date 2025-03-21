@@ -1,7 +1,7 @@
 ---
 - name: NMS configuration
   hosts: SD-HQ-NMS
-  gather_facts: true # localhoston fut, úgyhogy nem kell.
+  gather_facts: false # localhoston fut, úgyhogy nem kell.
   become: true # Alapból a manager felhasználóval (nálunk ez solaire) futtatjuk a taskokat, ahol root kell ott expliciten megadjuk
 
   # Globális változók, frissítések esetén kell ezeket változtatni
