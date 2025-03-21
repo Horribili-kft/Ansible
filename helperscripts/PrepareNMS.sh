@@ -5,8 +5,8 @@
 # apt install -y git 
 # git clone https://github.com/Horribili-kft/Ansible
 # cd ./Ansible/helperscripts/
-# chmod +x ./DebianConfigureControl.sh
-# ./DebianConfigureControl.sh
+# chmod +x ./PrepareNMS.sh
+# ./PrepareNMS.sh
 
 # Variables
 BASIC_SETUP_PLAYBOOK="../playbooks/debian-basic-setup.yaml"
