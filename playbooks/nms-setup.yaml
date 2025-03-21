@@ -76,8 +76,9 @@
         enabled: true
         state: started
 
-  roles:
-    - zabbix-install
+    - name: Install Zabbix
+      ansible.builtin.include_role:
+        name: zabbix-install
 
   handlers:
     - name: Display public key content
