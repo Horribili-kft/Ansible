@@ -1,0 +1,10 @@
+---
+- name: Create /etc/resolv.conf from template.
+  ansible.builtin.template:
+    dest: /etc/resolv.conf
+    src: resolv.conf.j2
+    mode: '0644'
+    owner: root
+    group: root
+    
+...
