@@ -1,5 +1,8 @@
+---
 - name: Configure Cisco Devices
   hosts: cisco
   become: true
+  diff_against: running
   roles:
     - cisco-config
+...
