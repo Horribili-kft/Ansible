@@ -18,15 +18,19 @@ banner_text: " WARNING: Unauthorized access is strictly prohibited. This device 
 # protocol versions
 vtp_version: 2
 hsrp_version: 2
+
 # layer 2 things
 vtp_mode: 'client'
 vtp_password: SD-vtppass
 spanning_tree_mode: 'rapid-pvst'
+
 # helper address
 ip_helper_address: 10.0.70.20
 ipv6_relay_dest: 2a:1dc:7c0:0046:10:0:70:20
+
 # routing
 site_eigrp_address: 100
+
 # security
 native_vlan: 999
 voice_vlan: 200

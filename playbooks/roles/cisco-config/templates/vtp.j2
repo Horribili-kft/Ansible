@@ -1,7 +1,6 @@
 {% if 'switches' in group_names or 'mls' in group_names %}
 {% if vtp_mode == 'server' %}
 vtp mode server
-do vtp primary
 {% else %}
 vtp_mode {{ vtp_mode }}
 {% endif %}

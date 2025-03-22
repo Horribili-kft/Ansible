@@ -1,0 +1,7 @@
+---
+- name: Deploy crypto configuration
+  cisco.ios.ios_config:
+    src: crypto.j2
+
+
+...
