@@ -45,6 +45,8 @@
           - ansible-pylibssh
           # This is for postgresql
           - psycopg2-binary
+          # This is for tempalting subnet masks easier
+          - netaddr
         virtualenv: "{{ lookup('env', 'HOME') }}/ansible-venv"
 
     # === NESSUS ===

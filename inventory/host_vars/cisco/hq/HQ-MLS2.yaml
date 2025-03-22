@@ -1,4 +1,0 @@
-ansible_host: 10.0.253.2
-
-spanning_tree_primary: [10,15,20,50,100,160,255]
-spanning_tree_secondary: [70, 200]

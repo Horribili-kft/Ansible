@@ -1,0 +1,39 @@
+# === Ansible connection details ===
+ansible_user: solaire
+ansible_password: Solar-Dynamics-2025
+
+ansible_become_password: Solar-Dynamics-2025
+ansible_become_method: enable
+
+ansible_network_os: ios
+ansible_connection: network_cli
+# We need these options because the devices we are managing are old.
+ansible_ssh_common_args: "-oKexAlgorithms=+diffie-hellman-group1-sha1 -oPubkeyAcceptedAlgorithms=+ssh-rsa -oHostkeyAlgorithms=+ssh-rsa -oCiphers=+aes128-cbc -o StrictHostKeyChecking=no"
+
+
+# === Global configurations ===
+ipv6_prefix: "2a:1dc:7c0:"
+banner_text: " WARNING: Unauthorized access is strictly prohibited. This device is the property of the Solar Dynamics corporation and is only for authorized use. Any unauthorized access or attempt to gain access to this device will reported"
+
+# protocol versions
+vtp_version: 2
+hsrp_version: 2
+# layer 2 things
+vtp_mode: 'client'
+vtp_password: SD-vtppass
+spanning_tree_mode: 'rapid-pvst'
+# helper address
+ip_helper_address: 10.0.70.20
+ipv6_relay_dest: 2a:1dc:7c0:0046:10:0:70:20
+# routing
+site_eigrp_address: 100
+# security
+native_vlan: 999
+voice_vlan: 200
+switchport_security: { maximum: 1, violation: restrict }
+dhcp_snoop_rate: 10
+
+# Storm control
+storm_control_broadcast_level : '5.00'
+storm_control_multicast_level : '5.00'
+storm_control_unicast_level : '5.00'

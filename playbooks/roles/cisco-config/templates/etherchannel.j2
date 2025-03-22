@@ -1,0 +1,10 @@
+{% for etherchannel in lacp %}
+interface range {{ etherchannel.interfaces }}
+{% if etherchannel.switchport == true %}
+switchport
+{% else %}
+no switchport
+{% endif %}
+channel-group {{ etherchannel.channel_group }} mode active
+no shutdown
+{% endfor %}

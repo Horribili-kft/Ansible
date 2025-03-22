@@ -1,0 +1,14 @@
+hostname: HQ-OFFICE-S1
+ansible_host: 10.0.254.1
+
+interfaces:
+  layer2:
+  - { name: GigabitEthernet0/0, mode: trunk, encapsulation: dot1q, description: 'Link to HQ-MLS-1' }
+  - { name: GigabitEthernet0/1, mode: trunk, encapsulation: dot1q, description: 'Link to HQ-MLS-2' }
+  - { name: GigabitEthernet1/0, mode: access, access_vlan: 10,  dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 10: Vezetoseg' }
+  - { name: GigabitEthernet1/1, mode: access, access_vlan: 220, dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 220: Nyomtatok'}
+  - { name: GigabitEthernet1/2, mode: access, access_vlan: 15,  dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 15: Vezetoseg' }
+  - { name: GigabitEthernet1/3, mode: access, access_vlan: 220, dhcp_snooping: { limit_rate: 50, trust: false }, description: 'VLAN 100: Iroda WLAN'}
+
+vlan_interfaces:
+  - { id: 252, ip: 10.0.254.1/22 }

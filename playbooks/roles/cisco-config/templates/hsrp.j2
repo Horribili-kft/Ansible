@@ -1,0 +1,49 @@
+{% from 'calculate_ipv6.j2' import calculate_ipv6 %}
+
+{# Macro to calculate the last available IPv4 address of a subnet #}
+{% macro last_ipv4_in_subnet(vlan_ip) %}
+    {# Extract network and subnet #}
+    {{ vlan_ip | ipaddr('last') }}
+{% endmacro %}
+
+{# Macro to calculate the HSRP addresses (IPv4 and IPv6) #}
+{% macro configure_hsrp(vlan, hsrp_version, ipv6_prefix) %}
+    {# Calculate the last available IPv4 address for HSRP #}
+    {% set hsrp_ip = last_ipv4_in_subnet(vlan.ip) %}
+    {% set ipv4_octets = hsrp_ip.split('.') %}
+
+    {# IPv6 HSRP address based on IPv4 octets and VLAN ID #}
+    {% set hsrp_ipv6 = ipv6_prefix ~ '%02X' % (ipv4_octets[1] | int) ~ '%02X' % (vlan.id | int) ~ ':' ~ ipv4_octets[0] ~ ':' ~ ipv4_octets[1] ~ ':' ~ ipv4_octets[2] ~ ':' ~ ipv4_octets[3] %}
+
+    standby {{ vlan.id }} version {{ hsrp_version }}
+    standby {{ vlan.id }} ip {{ hsrp_ip }}
+    standby {{ vlan.id }} priority {{ vlan.hsrp_priority }}
+    standby {{ vlan.id }} preempt
+
+    {% if hsrp_version == 2 %}
+    standby {{ 2000 + vlan.id }} version {{ hsrp_version }}
+    standby {{ 2000 + vlan.id }} priority {{ vlan.hsrp_priority }}
+    standby {{ 2000 + vlan.id }} ipv6 {{ hsrp_ipv6 }}
+    standby {{ 2000 + vlan.id }} preempt
+    {% endif %}
+{% endmacro %}
+
+{# Iterate through VLANs #}
+{% for vlan in site_vlans %}
+    {# Find the matching device-specific entry based on VLAN id #}
+    {% set device_vlan = (vlan_interfaces | selectattr('id', 'equalto', vlan.id) | list | first) %}
+    {# Merge the two dictionaries. Device values will override common values if there’s overlap #}
+    {% set vlan = vlan | combine(device_vlan, recursive=True) %}
+
+    interface vlan {{ vlan.id }}
+    ip address {{ vlan.ip.split('/')[0] }} {{ vlan.ip | ipaddr('netmask') }}
+    ipv6 address {{ calculate_ipv6(ipv6_prefix, vlan.ip) | trim }} /64
+    ipv6 eigrp {{ site_eigrp_address }}
+    ip helper-address {{ ip_helper_address }}
+    ipv6 dhcp relay destination {{ ipv6_relay_dest }}
+
+    {# Call the HSRP macro to configure HSRP, which now calculates the last IPv4 and the corresponding IPv6 #}
+    {{ configure_hsrp(vlan.network, hsrp_version, ipv6_prefix) }}
+    
+    no shutdown
+{% endfor %}

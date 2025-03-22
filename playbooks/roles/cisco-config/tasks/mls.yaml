@@ -1,3 +1,39 @@
+- name: Configure routing
+  cisco.ios.ios_config:
+    commands:
+    - ip routing
+    - ipv6 unicast-routing
+
 - name: Configure VTP
   cisco.ios.ios_config:
     src: vtp.j2
+
+- name: Configure STP
+  cisco.ios.ios_config:
+    src: stp.j2
+
+- name: Configure Etherchannels
+  cisco.ios.ios_config:
+    src: etherchannel.j2
+  when: lacp is defined
+
+- name: Configure VLANs
+  cisco.ios.ios_config:
+    src: vlans.j2
+  when: vtp_mode is defined and vtp_mode == 'server'
+
+- name: Configure interfaces
+  cisco.ios.ios_config:
+    src: interface.j2
+  when: interfaces is defined
+
+- name: Configure VLAN interfaces
+  cisco.ios.ios_config:
+    src: vlan_interface.j2
+  when: vlan_interfaces is defined
+
+- name: Configure EIGRP
+  cisco.ios.ios_config:
+    src: eigrp.j2
+
+

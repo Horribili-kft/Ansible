@@ -10,8 +10,9 @@
 
 - name: Configure hostname and domain
   cisco.ios.config:
-    src: hostname.j2
-    diff_against: startup
+    commands:
+      - hostname {{ hostname }}
+      - ip domain name {{ domain_name }}
 
 - name: Disable IP domain lookup
   cisco.ios.ios_config:
@@ -20,8 +21,10 @@
 
 - name: Configure banners
   cisco.ios.ios_config:
-    src: banner.j2
-    diff_against: startup
+    commands:
+      - banner login \# {{ banner_text }}\#
+      - banner incoming \# {{ banner_text }}\#
+      - banner exec \# {{ banner_text }}\#
 
 
 # === Device specific ===

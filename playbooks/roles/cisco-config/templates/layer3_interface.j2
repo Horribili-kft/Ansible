@@ -1,0 +1,20 @@
+interface {{ interface.name }}
+{% if interface.description %}
+description {{ interface.description }}
+{% endif %}
+{% if 'mls' in group_names %}
+no switchport
+{% endif %}
+ip address {{ interface.ip.split('/')[0] }} {{ interface.ip | ipaddr('netmask') }}
+{# IPv6 configuration #}
+{% if interface.ipv6_link_local_only is defined %}
+ipv6 enable
+{% else %}
+{% if ipv6 is defined %}
+ipv6 address {{ ipv6 }}
+{% else %}
+ipv6 address {{ calculate_ipv6(ipv6_prefix, interface.ip) | trim }}/64
+{% endif %}
+{% endif %}
+ipv6 eigrp {{ site_eigrp_address }}
+no shutdown

@@ -1,0 +1,12 @@
+hostname: HQ-WS-S2
+ansible_host: 10.0.254.4
+
+interfaces:
+  layer2:
+  - { name: GigabitEthernet0/0, mode: trunk, encapsulation: dot1q, description: 'Link to HQ-MLS-1' }
+  - { name: GigabitEthernet0/1, mode: trunk, encapsulation: dot1q, description: 'Link to HQ-MLS-2' }
+  - { name: GigabitEthernet1/0, mode: access, access_vlan: 51, dhcp_snooping: { trust: false }, voice: false, description: 'VLAN 51: Fejlesztok 2' }
+  - { name: GigabitEthernet1/1, mode: access, access_vlan: 104, dhcp_snooping: { limit_rate: 50, trust: false }, description: 'VLAN 104: Workshop WAN' }
+
+vlan_interfaces:
+  - { id: 252, ip: 10.0.254.4/22 }
