@@ -25,3 +25,9 @@
   cisco.ios.ios_config:
     src: vlan_interface.j2
   when: vlan_interfaces is defined
+
+
+- name: Configure default gateway
+  cisco.ios.config:
+    commands:
+      - ip default-gateway {{ site_vlans | selectattr('id', 'equalto', 252) | first | map(attribute='network') | first | ipaddr('last_usable') }}
