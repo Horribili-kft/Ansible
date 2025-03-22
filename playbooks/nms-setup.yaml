@@ -30,6 +30,12 @@
       when: not ssh_key_status.stat.exists
       notify: Display public key content
 
+    - name: Update Ansible configuration file
+      ansible.builtin.copy:
+        dest: "{{ lookup('env', 'HOME') }}/.ansible.cfg"
+        src: "{{ lookup('env', 'HOME') }}/Ansible/playbooks/files/ansible.cfg.j2"
+        mode: '0755'
+
     # --- Essential Packages Installation ---
     - name: Install essential packages
       become: true
