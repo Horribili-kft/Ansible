@@ -1,0 +1,29 @@
+- name: Configure static routes
+  cisco.ios.ios_config:
+    commands:
+      - "ip route {{ item.destination }} {{ item.via }}"
+  loop: "{{ static_routes }}"
+
+- Name: Configure EIGRP
+  cisco.ios.ios_config:
+    src: eigrp.j2
+    diff_against: running
+  when: "eigrp is defined"
+
+- name: Create standard ACLs
+  cisco.ios.ios_config:
+    src: standard_acl.j2
+    diff_against: running
+  when: "access_lists is defined"
+
+- name: Configure NAT
+  cisco.ios.ios_config:
+    src: nat.j2
+    diff_against: running
+  when: "nat is defined"
+
+- name: Configure DMVPN
+  ansible.builtin.include_role:
+    name: cisco-dmvpn
+  when: "dmvpn is defined"
+

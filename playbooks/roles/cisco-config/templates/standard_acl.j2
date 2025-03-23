@@ -1,0 +1,6 @@
+{% for acl in access_lists %}
+ip access-list standard {{ acl.name }}
+{% for network in acl.permit %}
+    permit {{ network.split('/')[0] }} {{ network | ipaddr('hostmask') }}
+{% endfor %}
+{% endfor %}
