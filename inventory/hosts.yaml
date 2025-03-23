@@ -5,8 +5,10 @@ all:
         domain_name: solardynamics.eu
         admin_name: "solaire"
         ntp_server: "sd-hq-lin1.solardynamics.eu"
-        dns_servers: [10.0.70.20, 1.1.1.1]
-        # This should be three hextets long, with a single colon at the end (xxxx:xxxx:xxxx:)
+        dns_servers: 
+            - 10.0.70.10
+            - 1.1.1.1
+            
     children:
         proxmox_servers:
             hosts:
@@ -15,21 +17,15 @@ all:
         
         linux_servers:
         # Group-wide variables in /inventory/group_vars/linux_servers.yaml
-
             hosts:
                 SD-HQ-LIN1:
                 # Variables in ./host_vars/SD-HQ-LIN1.yaml
-                
                 SD-HQ-LIN2:
                 # Variables in ./host_vars/SD-HQ-LIN2.yaml
-                
-
                 SD-HQ-NMS:
                 # Variables in ./host_vars/SD-HQ-NMS.yaml
-
                 SD-HQ-PVE1:
                 # Variables in /inventory/host_vars/SD-HQ-PVE1.yaml
-
                 # SD-BP-LIN1:
                 # Variables in /inventory/host_vars/SD-BP-LIN1.yaml
 

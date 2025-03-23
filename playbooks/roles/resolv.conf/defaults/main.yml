@@ -1,5 +1,2 @@
----
 resolv_conf_search: [solardynamics.eu ,'{{ domain_name }}']
-resolv_conf_nameservers:
-  - '10.0.70.20'
-  - '1.1.1.1'
+resolv_conf_nameservers:  {{ dns_servers }}
