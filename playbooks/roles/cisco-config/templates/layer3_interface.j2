@@ -8,15 +8,20 @@ interface {{ interface.name }}
     {% endif %}
     ip address {{ interface.ip.split('/')[0] }} {{ interface.ip | ipaddr('netmask') }}
     {# IPv6 configuration #}
-    {% if interface.ipv6_link_local_only is defined %}
+    {# ================== #}
+    {# If link_local_only is enabled, it's link local only #}
+    {% if interface.ipv6_link_local_only is defined and interface.ipv6_link_local_only %}
     ipv6 enable
     {% else %}
-    {% if interface.ipv6 is defined %}
+    {# If IPv6 is defined, use that #}
+    {% if interface.ipv6 is defined and interface.ipv6 %}
     ipv6 address {{ interface.ipv6 }}
-    {% else %}
+    {# If it's not, infer the IPv6 from IPv4, unless stated otherwise #}
+    {% elif interface.ipv6 is not false %}
     ipv6 address {{ calculate_ipv6(ipv6_prefix, interface.ip) | trim }}/64
     {% endif %}
     {% endif %}
+    {# ================== #}
     ipv6 eigrp {{ site_eigrp_address }}
     {# Nat inside and outside #}
     {% if interface.nat is defined %}
