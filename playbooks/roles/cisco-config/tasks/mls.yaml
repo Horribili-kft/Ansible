@@ -42,25 +42,27 @@
 # (currently disabled and untested)
 
 - name: Configure interfaces
+  vars:
+    ansible_command_timeout: 60
   cisco.ios.ios_config:
     src: interface.j2
     diff_against: running
   when: interfaces is defined
-  vars:
-    ansible_command_timeout: 60
+
   # regiester: result
   # until: "result is not failed"
   # retries: 2
   # delay: 10
 
 - name: Configure VLAN interfaces
+  vars:
+    # Lassú a GNS3 MLS, ezért felvittem a timeoutout
+    ansible_command_timeout: 120
   cisco.ios.ios_config:
     src: vlan_interface.j2
     diff_against: running
   when: vlan_interfaces is defined
-  vars:
-    # Lassú a GNS3 MLS, ezért felvittem a timeoutout
-    ansible_command_timeout: 120
+
   
   # regiester: result
   # until: "result is not failed"

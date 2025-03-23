@@ -3,5 +3,9 @@
   cisco.ios.ios_config:
     src: crypto.j2
 
+- name: Configure tunnel interface
+  cisco.ios.ios_config:
+    src: interfaces.j2
+
 
 ...
