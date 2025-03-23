@@ -8,7 +8,7 @@ interfaces:
     - { name: GigabitEthernet2/0, ip: 82.1.79.1/24, nat: outside, ipv6: 2a:1dc:7c0:00FF:82:1:79:1/64, description: 'Link to ISP' }
 
 access_lists:
-  - { name: SD-ACL-internal-client, permit: [10.0.10.0/24, 10.0.15.0/24, 10.0.20.0/24, 10.0.25.0/24, 10.0.50.0/24, 10.0.51.0/24, 10.0.70.0/24 ,10.0.200.0/24, 10.0.220.0/24] }
+  - { name: SD-ACL-internal-client, permit: [10.0.10.0/24, 10.0.15.0/24, 10.0.20.0/24, 10.0.25.0/24, 10.0.50.0/24, 10.0.51.0/24, 10.0.70.0/24, 10.0.200.0/24, 10.0.220.0/24] }
   - { name: SD-ACL-external-client, permit: [10.0.100.0/22, 10.0.104.0/22, 10.0.160.0/22] }
 
 nat:
@@ -28,7 +28,7 @@ dmvpn:
 eigrp:
   router_id: 3.3.3.3
   networks: [172.16.0.0/31, 172.16.0.2/31, 192.168.0.0/24]
-  no_passive_interfaces: [GigabitEthernet0/0, GigabitEthernet1/0, Tunnel0]
+  non_passive_interfaces: [GigabitEthernet0/0, GigabitEthernet1/0, Tunnel0]
   redistribute_static: true
 
 static_routes:

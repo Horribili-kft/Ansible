@@ -23,11 +23,13 @@
     src: interface.j2
     diff_against: running
   when: interfaces is defined
+  tags: interface
 
 - name: Configure VLAN interfaces
   cisco.ios.ios_config:
     src: vlan_interface.j2
   when: vlan_interfaces is defined
+  tags: interface
 
 - name: Configure default gateway
   cisco.ios.config:

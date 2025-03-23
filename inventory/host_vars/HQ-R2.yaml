@@ -25,5 +25,8 @@ dmvpn:
 eigrp:
   router_id: 4.4.4.4
   networks: [172.16.0.4/31, 172.16.0.6/31, 192.168.0.0/24]
-  no_passive_interfaces: [GigabitEthernet0/0, GigabitEthernet1/0, Tunnel0]
+  non_passive_interfaces: [GigabitEthernet0/0, GigabitEthernet1/0, Tunnel0]
   redistribute_static: true
+
+static_routes:
+  { destination: 0.0.0.0/0, via: 85.16.100.3}

@@ -1,4 +1,4 @@
 {% for route in static_routes %}
-ip route {{ route.destination }} {{ route.via }}
+ip route {{ route.dest }} {{ route.via }}
 {% endfor %}
 

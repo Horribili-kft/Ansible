@@ -44,14 +44,20 @@
 - name: Configure routers
   ansible.builtin.include_tasks: routers.yaml
   when: "'routers' in group_names"
+  tags:
+    -interface
 
 - name: Configure mls
   ansible.builtin.include_tasks: mls.yaml
   when: "'mls' in group_names"
+  tags:
+    - interface
 
 - name: Configure switches
   ansible.builtin.include_tasks: switches.yaml
   when: "'switches' in group_names"
+  tags:
+    - interface
 
 - name: Print backup location
   ansible.builtin.debug:

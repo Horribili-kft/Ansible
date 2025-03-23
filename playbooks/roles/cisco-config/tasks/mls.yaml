@@ -48,6 +48,7 @@
     src: interface.j2
     diff_against: running
   when: interfaces is defined
+  tags: interface
 
   # regiester: result
   # until: "result is not failed"
@@ -62,8 +63,8 @@
     src: vlan_interface.j2
     diff_against: running
   when: vlan_interfaces is defined
+  tags: interface
 
-  
   # regiester: result
   # until: "result is not failed"
   # retries: 2
