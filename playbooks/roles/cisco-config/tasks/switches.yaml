@@ -17,8 +17,11 @@
   when: vtp_mode is defined and vtp_mode == 'server'
 
 - name: Configure interfaces
+  vars:
+    ansible_command_timeout: 60
   cisco.ios.ios_config:
     src: interface.j2
+    diff_against: running
   when: interfaces is defined
 
 - name: Configure VLAN interfaces

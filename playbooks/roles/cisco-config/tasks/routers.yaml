@@ -9,7 +9,6 @@
 - name: Configure static routes
   cisco.ios.ios_config:
     src: static_route.j2
-  loop: "{{ static_routes }}"
   when: 'static_routes is defined'
   
 - name: Configure EIGRP
