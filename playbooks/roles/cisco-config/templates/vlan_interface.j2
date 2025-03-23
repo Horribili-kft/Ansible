@@ -12,16 +12,16 @@
 {% set ipv6_vlan_part = '%02X' % (vlan.id | int) %}
 {% endif %}
 {% set hsrp_ipv6 = ipv6_prefix ~ '%02X' % (ipv4_octets[1] | int) ~ ipv6_vlan_part ~ ':' ~ ipv4_octets[0] ~ ':' ~ ipv4_octets[1] ~ ':' ~ ipv4_octets[2] ~ ':' ~ ipv4_octets[3] %}
-standby {{ vlan.id }} version {{ hsrp_version }}
-standby {{ vlan.id }} ip {{ hsrp_ip }}
-standby {{ vlan.id }} priority {{ vlan.hsrp_priority }}
-standby {{ vlan.id }} preempt
-{% if hsrp_version == 2 %}
-standby {{ 2000 + vlan.id }} version {{ hsrp_version }}
-standby {{ 2000 + vlan.id }} priority {{ vlan.hsrp_priority }}
-standby {{ 2000 + vlan.id }} ipv6 {{ hsrp_ipv6 }}
-standby {{ 2000 + vlan.id }} preempt
-{% endif %}
+    standby {{ vlan.id }} version {{ hsrp_version }}
+    standby {{ vlan.id }} ip {{ hsrp_ip }}
+    standby {{ vlan.id }} priority {{ vlan.hsrp_priority }}
+    standby {{ vlan.id }} preempt
+    {% if hsrp_version == 2 %}
+    standby {{ 2000 + vlan.id }} version {{ hsrp_version }}
+    standby {{ 2000 + vlan.id }} priority {{ vlan.hsrp_priority }}
+    standby {{ 2000 + vlan.id }} ipv6 {{ hsrp_ipv6 }}
+    standby {{ 2000 + vlan.id }} preempt
+    {% endif %}
 {% endmacro %}
 {# Iterate through VLANs #}
 {% for vlan in site_vlans %}
@@ -29,7 +29,7 @@ standby {{ 2000 + vlan.id }} preempt
 {% set device_vlan = (vlan_interfaces | selectattr('id', 'equalto', vlan.id) | list | first) %}
 {# Merge the two dictionaries. Device values will override common values if there’s overlap #}
 {% set vlan = vlan | combine(device_vlan, recursive=True) %}
-interface vlan {{ vlan.id }}
+interface Vlan{{ vlan.id }}
     ip address {{ vlan.ip.split('/')[0] }} {{ vlan.ip | ipaddr('netmask') }}
     ipv6 address {{ calculate_ipv6(ipv6_prefix, vlan.ip) | trim }}/64
     ipv6 eigrp {{ site_eigrp_address }}
