@@ -4,6 +4,7 @@ all:
         company_name: "Solar Dynamics"
         domain_name: solardynamics.eu
         admin_name: "solaire"
+        ntp_server: 10.0.70.10
         # This should be three hextets long, with a single colon at the end (xxxx:xxxx:xxxx:)
     children:
         proxmox_servers:

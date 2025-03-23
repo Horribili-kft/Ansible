@@ -45,7 +45,7 @@ eigrp:
   router_id: 1.1.1.1
   networks: [10.0.0.0/16, 172.16.0.0/31, 172.16.0.4/31, 172.16.0.8/31]
   non_passive_interfaces: [GigabitEthernet0/0, GigabitEthernet0/1, Port-channel 1]
-
+  
 
 
 # Fizikai konfig
