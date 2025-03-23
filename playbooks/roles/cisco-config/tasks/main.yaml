@@ -14,12 +14,6 @@
       - ip domain name {{ domain_name }}
     diff_against: running
 
-- name: Disable IP domain lookup
-  cisco.ios.ios_config:
-    commands:
-      - "no ip domain lookup"
-    diff_against: running
-
 - name: Configure banners
   cisco.ios.ios_config:
     commands:
@@ -32,6 +26,20 @@
   cisco.ios.ios_config:
     commands:
       - ntp server ip {{ ntp_server }}
+    diff_against: running
+
+- name: Conifgure DNS server
+  cisco.ios.ios_config:
+    commands:
+      - ip name-server {{ dns_servers[0] }} {{ dns_servers[1] }}
+    diff_against: running
+
+- name: Enable IP domain lookup
+  cisco.ios.ios_config:
+    commands:
+      - "ip domain lookup"
+    diff_against: running
+
 
 # === Device specific ===
 - name: Configure routers
