@@ -26,6 +26,12 @@
     diff_against: running
   when: lacp is defined
 
+- name: Enable native VLAN to prevent configuration errors
+  cisco.ios.ios_config:
+    commands: 'vlan {{ native_vlan }}'
+  when: vtp_mode is defined and vtp_mode == 'server'
+  notify: Disable native VLAN
+
 - name: Configure VLANs
   cisco.ios.ios_config:
     src: vlans.j2
@@ -48,5 +54,3 @@
   cisco.ios.ios_config:
     src: eigrp.j2
     diff_against: running
-
-

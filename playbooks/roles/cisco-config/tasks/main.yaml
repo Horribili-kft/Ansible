@@ -40,7 +40,6 @@
       - "ip domain lookup"
     diff_against: running
 
-
 # === Device specific ===
 - name: Configure routers
   ansible.builtin.include_tasks: routers.yaml

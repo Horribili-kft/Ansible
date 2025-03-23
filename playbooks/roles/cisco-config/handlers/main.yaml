@@ -1,0 +1,4 @@
+- name: Disable native VLAN
+  cisco.ios.ios_config:
+    commands:
+      - 'no native vlan {{ native_vlan }}'
