@@ -1,5 +1,5 @@
-{% from 'calculate_ipv6.j2' import calculate_ipv6 %}
 
+{% from 'calculate_ipv6.j2' import calculate_ipv6 %}
 {# Macro to calculate the HSRP addresses (IPv4 and IPv6) #}
 {% macro configure_hsrp(vlan, hsrp_version, ipv6_prefix) %}
 {# Calculate the last available IPv4 address for HSRP #}
