@@ -13,7 +13,7 @@ ansible_ssh_common_args: "-oKexAlgorithms=+diffie-hellman-group1-sha1 -oPubkeyAc
 
 # === Global configurations ===
 ipv6_prefix: "2a:1dc:7c0:"
-banner_text: " WARNING: Unauthorized access is strictly prohibited. This device is the property of the Solar Dynamics corporation and is only for authorized use. Any unauthorized access or attempt to gain access to this device will reported"
+banner_text: "WARNING: Unauthorized access is strictly prohibited. This device is the property of the Solar Dynamics corporation and is only for authorized use. Any unauthorized access or attempt to gain access to this device will reported"
 
 # protocol versions
 vtp_version: 2

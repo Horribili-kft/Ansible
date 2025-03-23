@@ -17,9 +17,9 @@
 - name: Configure banners
   cisco.ios.ios_config:
     commands:
-      - banner login \# {{ banner_text }}\#
-      - banner incoming \# {{ banner_text }}\#
-      - banner exec \# {{ banner_text }}\#
+      - banner login \#{{ banner_text }}\#
+      - banner incoming \#{{ banner_text }}\#
+      - banner exec \#{{ banner_text }}\#
     diff_against: running
 
 - name: Configure NTP server
