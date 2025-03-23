@@ -1,5 +1,6 @@
 {% from 'calculate_ipv6.j2' import calculate_ipv6 %}
 {% for vlan in site_vlans %}
+
     {% set device_vlan = (vlan_interfaces | selectattr('id', 'equalto', vlan.id) | list | first) %}
     {% set vlan = vlan | combine(device_vlan, recursive=True) %}
     {# Calculate HSRP addresses #}
@@ -30,4 +31,5 @@ interface Vlan{{ vlan.id }}
     standby {{ 2000 + vlan.id }} preempt
     {% endif %}
     no shutdown
+    
 {% endfor %}
