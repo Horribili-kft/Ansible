@@ -12,7 +12,7 @@
         {% set ipv6_vlan_part = '%02X' % (vlan.id|int) %}
     {% endif %}
     {% set site_octet = '%02X' % (ipv4_octets[1]|int) %}
-    {% set hsrp_ipv6 = ipv6_prefix ~ site_octet ~ ipv6_vlan_part ~ ':' ~ ipv4_octets[0] ~ ':' ~ ipv4_octets[1] ~ ':' ~ ipv4_octets[2] ~ ':' ~ ipv4_octets[3] %}
+    {% set hsrp_ipv6 = ipv6_prefix ~ site_octet ~ ipv6_vlan_part ~ ':' ~ ipv4_octets[0] ~ ':' ~ ipv4_octets[1] ~ ':' ~ ipv4_octets[2] ~ ':' ~ ipv4_octets[3] ~ '/64'%}
 interface vlan {{ vlan.id }}
     ip address {{ vlan.ip.split('/')[0] }} {{ vlan.ip | ipaddr('netmask') }}
     ipv6 address {{ calculate_ipv6(ipv6_prefix, vlan.ip) | trim }}/64
