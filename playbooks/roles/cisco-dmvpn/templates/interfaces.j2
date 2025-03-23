@@ -1,13 +1,13 @@
 interface {{ dmvpn_tunnel_interface }}
-no shutdown
-bandwidth 100000
-ip address {{ dmvpn_address.split('/')[0] }} {{ dmvpn_address | ipaddr('netmask') }}
-ip mtu 1400
-ip tcp adjust-mss 1360
-tunnel source {{ public_ip }}
-tunnel mode gre multipoint
-tunnel key 123
-tunnel protection ipsec profile DMVPN-PROFILE
+    no shutdown
+    bandwidth 100000
+    ip address {{ dmvpn_address.split('/')[0] }} {{ dmvpn_address | ipaddr('netmask') }}
+    ip mtu 1400
+    ip tcp adjust-mss 1360
+    tunnel source {{ public_ip }}
+    tunnel mode gre multipoint
+    tunnel key 123
+    tunnel protection ipsec profile DMVPN-PROFILE
 
 {% if dmvpn_role == 'hub' %}
 ip nhrp map multicast dynamic
@@ -21,7 +21,5 @@ no ip next-hop-self {{ site_eigrp_address }}
 no ip split-horizon {{ site_eigrp_address }}
 
 interface GigabitEthernet0/0
-ip access-group ACL-INET-PUBLIC in
+    ip access-group ACL-INET-PUBLIC in
 
-
-ip nhrp map multicast dynamic
