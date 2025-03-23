@@ -1,1 +1,9 @@
 location: Tatabanya
+vtp_domain: TATAB
+
+site_vlans:
+  - { id: 10,  name: Gyar,     network: 10.3.10.0/24 }
+  - { id: 20,  name: Iroda,    network: 10.3.20.0/24 }
+  - { id: 30,  name: Partner,  network: 10.3.30.0/24 }
+  - { id: 150, name: WIFI,     network: 10.3.150.0/24 }
+  - { id: 252, name: Management, network: 10.3.252.0/22 }

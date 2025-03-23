@@ -1,1 +1,9 @@
 location: Szekesfehervar
+vtp_domain: SzekesF
+
+site_vlans:
+  - { id: 10,  name: Vezetők,     network: 10.1.10.0/24 }
+  - { id: 20,  name: Tesztelők,   network: 10.1.20.0/24 }
+  - { id: 50,  name: Fejlesztők,  network: 10.1.50.0/24 }
+  - { id: 110, name: Terep WLAN,  network: 10.1.110.0/22 }
+  - { id: 252, name: Management,  network: 10.1.252.0/22 }

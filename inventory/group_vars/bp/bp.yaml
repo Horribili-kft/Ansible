@@ -1,2 +1,15 @@
 location: Budapest
+vtp_domain: BUDAP
 
+site_vlans:
+  - { id: 10,  name: Technikai ugyfelsz,           network: 10.2.10.2/24 }
+  - { id: 20,  name: Kereskedelmi ugyfelsz,        network: 10.2.20.2/24 }
+  - { id: 30,  name: Rendelesek,                   network: 10.2.30.2/24 }
+  - { id: 40,  name: Nemzetkozi kapcs,             network: 10.2.40.2/24 }
+  - { id: 45,  name: Ugyfelsz manager,             network: 10.2.45.2/24 }
+  - { id: 50,  name: Vezetoseg,                    network: 10.2.50.2/24 }
+  - { id: 55,  name: Nemzetkozi kapcs vezeto,      network: 10.2.55.2/24 }
+  - { id: 60,  name: Rendszergazda,                network: 10.2.60.2/24 }
+  - { id: 70,  name: Szerverek,                    network: 10.2.70.2/24 }
+  - { id: 150, name: Targyalo,                     network: 10.2.150.2/24 }
+  - { id: 252, name: Management,                   network: 10.2.253.2/22 } 
