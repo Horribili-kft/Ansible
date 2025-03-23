@@ -1,20 +1,20 @@
 router eigrp {{ site_eigrp_address }}
-{% for network in eigrp.networks  %}
-network {{ network.split('/')[0] }} {{ network | ipaddr('hostmask') }}
-{% endfor %}
-no auto-summary
-router-id {{ eigrp.router_id }}
-passive-interface default
-{% if eigrp.redistribute_static is defined and eigrp.redistribute_static %}
-redistribute static metric 10000 100 255 1 1500
-{% endif %}
-{% for non_passive_interface in eigrp.non_passive_interfaces %}
-no passive-interface {{ non_passive_interface }}
-{% endfor %}
+    {% for network in eigrp.networks  %}
+    network {{ network.split('/')[0] }} {{ network | ipaddr('hostmask') }}
+    {% endfor %}
+    no auto-summary
+    router-id {{ eigrp.router_id }}
+    passive-interface default
+    {% if eigrp.redistribute_static is defined and eigrp.redistribute_static %}
+    redistribute static metric 10000 100 255 1 1500
+    {% endif %}
+    {% for non_passive_interface in eigrp.non_passive_interfaces %}
+    no passive-interface {{ non_passive_interface }}
+    {% endfor %}
 {# IPv6 #}
 ipv6 router eigrp {{ site_eigrp_address }}
-router-id {{ eigrp.router_id }}
-passive-interface default
-{% for non_passive_interface in eigrp.non_passive_interfaces %}
-no passive-interface {{ non_passive_interface }}
-{% endfor %}
+    router-id {{ eigrp.router_id }}
+    passive-interface default
+    {% for non_passive_interface in eigrp.non_passive_interfaces %}
+    no passive-interface {{ non_passive_interface }}
+    {% endfor %}
