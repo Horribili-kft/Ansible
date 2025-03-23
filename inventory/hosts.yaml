@@ -6,7 +6,7 @@ all:
         admin_name: "solaire"
         ntp_server: "sd-hq-lin1.solardynamics.eu"
         dns_servers: 
-            - 10.0.70.10
+            - 10.0.70.20
             - 1.1.1.1
             
     children:
