@@ -1,4 +1,4 @@
 {% for route in static_routes %}
-ip route {{ route.dest }} {{ route.via }}
+ip route {{ route.destination.split('/')[0] }} {{ route.destination | ipaddr('netmask') }} {{ route.via }}
 {% endfor %}
 
