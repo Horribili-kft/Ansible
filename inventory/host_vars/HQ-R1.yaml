@@ -1,33 +1,23 @@
 hostname: HQ-R1
 ansible_host: 172.16.0.0
-
+public_ip: 82.1.79.1
 interfaces:
   - { name: GigabitEthernet0/0, ip: 172.16.0.0/31, nat: inside, description: 'Link to HQ-MLS1' }
   - { name: GigabitEthernet1/0, ip: 172.16.0.2/31, nat: inside, description: 'Link to HQ-MLS2' }
   - { name: GigabitEthernet2/0, ip: 82.1.79.1/24, nat: outside, ipv6: 2a:1dc:7c0:00FF:82:1:79:1/64, description: 'Link to ISP' }
   - { name: Tunnel0, ip: 192.168.0.1/24, description: 'DMVPN Tunnel' }
 
+access_lists:
+  - { name: SD-ACL-internal-client, permit: [10.0.10.0/24, 10.0.15.0/24, 10.0.20.0/24, 10.0.25.0/24, 10.0.50.0/24, 10.0.51.0/24, 10.0.200.0/24, 10.0.220.0/24] }
+  - { name: SD-ACL-external-client, permit: [10.0.100.0/22, 10.0.104.0/22, 10.0.160.0/22] }
+
 nat:
   static:
     - { internal: 10.0.70.10, external: 82.1.79.3 }
     - { internal: 10.0.70.20, external: 82.1.79.4 }
   pools:
-    - { name: SD-internal-client-pool, range: 82.1.79.10-82.1.79.14, netmask: 255.255.255.224, acl: SD-ACL-internal-client, overload: true }
-    - { name: SD-external-client-pool, range: 82.1.79.15-82.1.79.19, netmask: 255.255.255.224, acl: SD-ACL-external-client, overload: true }
-
-access_lists:
-  - { name: SD-ACL-internal-client, type: standard, entries: [10.0.10.0/24, 10.0.15.0/24, 10.0.20.0/24, 10.0.25.0/24, 10.0.50.0/24, 10.0.51.0/24, 10.0.200.0/24, 10.0.220.0/24] }
-  - { name: SD-ACL-external-client, type: standard, entries: [10.0.100.0/22, 10.0.104.0/22, 10.0.160.0/22] }
-
-crypto:
-  isakmp_policy:
-    - { name: 10, encr: aes 256, hash: sha256, auth: pre-share, group: 14, lifetime: 86400 }
-  isakmp_key:
-    - { key: Solar-Dynamics-2025, address: 0.0.0.0 0.0.0.0 }
-  ipsec_transform_set:
-    - { name: DMVPN-TRANSFORM-SET, esp_encr: aes 256, esp_hash: sha256-hmac, mode: transport }
-  ipsec_profile:
-    - { name: DMVPN-PROFILE, transform_set: DMVPN-TRANSFORM-SET }
+    - { name: SD-internal-client-pool, range: { start: 82.1.79.10 , end: 82.1.79.14}, netmask: 255.255.255.224, acl: SD-ACL-internal-client, overload: true }
+    - { name: SD-external-client-pool, range: { start: 82.1.79.15 , end: 82.1.79.19}, netmask: 255.255.255.224, acl: SD-ACL-external-client, overload: true }
 
 tunnels:
   - { name: Tunnel0, source: 82.1.79.1, mode: gre multipoint, ip: 192.168.0.1/24, nhrp: { network_id: 1, auth: Password, key: 123, map_multicast: dynamic }, eigrp: { no_ip_next_hop_self: true, no_ip_split_horizon: true } }

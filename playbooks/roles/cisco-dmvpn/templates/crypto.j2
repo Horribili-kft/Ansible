@@ -1,15 +1,11 @@
-crypto isakmp policy 10
-encr aes 256
-hash sha256
-authentication pre-share
-! 2048 bit Diffie-Hellman key exchange
-group 14
-lifetime 86400
-
-crypto isakmp key {{ isakmp_key }} address 0.0.0.0 0.0.0.0
-
-crypto ipsec transform-set DMVPN-TRANSFORM-SET esp-aes 256 esp-sha256-hmac
-mode transport
-
-crypto ipsec profile DMVPN-PROFILE
-set transform-set DMVPN-TRANSFORM-SET
+crypto isakmp policy {{ isakmp.policy.id }}
+    encr {{ isakmp.policy.encr }}
+    hash {{ isakmp.policy.hash }}
+    authentication {{ isakmp.policy.auth_method }}
+    group {{ isakmp.policy.diffie_hellman_group }}
+    lifetime 86400
+crypto isakmp key {{ isakmp.key }} address 0.0.0.0 0.0.0.0
+crypto ipsec transform-set {{ ipsec.transform_set_name }} {{ ipsec.encr }} {{ ipsec.hash }}
+    mode transport
+crypto ipsec profile {{ipsec.profile_name}}
+    set transform-set {{ ipsec.transform_set_name }}
