@@ -25,9 +25,11 @@ interface {{ interface.name }}
     switchport port-security
     switchport port-security maximum {{ switchport_security.maximum }}
     switchport port-security violation {{ switchport_security.violation }}
+    {# Storm control disabled for testing purposes
     storm-control broadcast level {{ storm_control_broadcast_level }}
     storm-control multicast level {{ storm_control_multicast_level }}
     storm-control unicast level {{ storm_control_unicast_level }}
+    #}
     {% if  interface.dhcp_snooping.limit_rate is defined %}
     ip dhcp snooping limit rate {{ interface.dhcp_snooping.limit_rate }}
     {% else %}
