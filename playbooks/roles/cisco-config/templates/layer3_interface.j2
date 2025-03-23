@@ -11,11 +11,16 @@ interface {{ interface.name }}
     {% if interface.ipv6_link_local_only is defined %}
     ipv6 enable
     {% else %}
-    {% if ipv6 is defined %}
-    ipv6 address {{ ipv6 }}
+    {% if interface.ipv6 is defined %}
+    ipv6 address {{ interface.ipv6 }}
     {% else %}
     ipv6 address {{ calculate_ipv6(ipv6_prefix, interface.ip) | trim }}/64
     {% endif %}
     {% endif %}
     ipv6 eigrp {{ site_eigrp_address }}
+    {# Nat inside and outside #}
+    {% if interface.nat is defined %}
+    ip nat {{ interface.nat }}
+    {% else %}
+    {% endif %}
     no shutdown
