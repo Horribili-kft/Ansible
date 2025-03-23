@@ -8,6 +8,7 @@ interface {{ interface.name }}
     {% endif %}
     ip address {{ interface.ip.split('/')[0] }} {{ interface.ip | ipaddr('netmask') }}
     {# IPv6 configuration #}
+    {# Options: ipv6_link_local_only: true, ipv6: <address>, ipv6: false. Otherwise it is inferred from IPv4#}
     {# ================== #}
     {# If link_local_only is enabled, it's link local only #}
     {% if interface.ipv6_link_local_only is defined and interface.ipv6_link_local_only %}
