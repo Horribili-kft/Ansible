@@ -5,7 +5,6 @@
   become: true
   roles:
     - webserver
-    - ntp-server
     - zabbix-agent
     - resolv.conf
     - ntp
