@@ -149,3 +149,13 @@ Replace `<playbook_name>` with the name of the playbook you wish to execute.
 - **zabbix-agent**: Installs and configures the Zabbix agent on target machines. *Included in debian-basic-setup.yaml*
 
 
+## Useful commands
+
+To test template rendering:
+
+```bash
+ansible all -i "inventory/hosts.yaml" -c local -m template -a "src=playbooks/roles/cisco-config/templates/vlan_interface.j2 dest=./test.txt" --limit HQ-MLS1
+```
+
+> [!TIP]
+> You could combine this with watch to autmatically re-render the template after you change it.

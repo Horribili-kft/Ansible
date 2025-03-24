@@ -1,0 +1,7 @@
+---
+- name: Configure Cisco Devices
+  hosts: cisco
+  become: true
+  roles:
+    - cisco-config
+...

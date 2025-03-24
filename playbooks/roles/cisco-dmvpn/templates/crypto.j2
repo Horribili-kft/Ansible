@@ -1,0 +1,11 @@
+crypto isakmp policy {{ isakmp.policy.id }}
+    encr {{ isakmp.policy.encr }}
+    hash {{ isakmp.policy.hash }}
+    authentication {{ isakmp.policy.auth_method }}
+    group {{ isakmp.policy.diffie_hellman_group }}
+    lifetime 86400
+crypto isakmp key {{ isakmp.key }} address 0.0.0.0 0.0.0.0
+crypto ipsec transform-set {{ ipsec.transform_set_name }} {{ ipsec.encr }} {{ ipsec.hash }}
+    mode transport
+crypto ipsec profile {{ipsec.profile_name}}
+    set transform-set {{ ipsec.transform_set_name }}

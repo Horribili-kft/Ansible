@@ -1,0 +1,47 @@
+
+interface {{ interface.name }}
+    {% if interface.description is defined %}
+    description {{ interface.description }}
+    {% endif %}
+    {% if 'mls' in group_names %}
+    switchport
+    {% endif %}
+    {# Trunk configuration #}
+    {% if interface.mode == 'trunk' %}
+    switchport trunk encapsulation {{ interface.encapsulation }}
+    switchport mode trunk
+    switchport nonegotiate
+    switchport trunk native vlan {{ native_vlan }}
+    {% if interface.allowed_vlans is defined %}
+    switchport trunk allowed vlan {{ interface.allowed_vlans | join(',') }}
+    {% endif %}
+    {# Access configuration #}
+    {% elif interface.mode == 'access' %}
+    switchport mode access
+    switchport access vlan {{ interface.access_vlan }}
+    {% if 'switches' in group_names %}
+    spanning-tree portfast
+    spanning-tree bpduguard enable
+    switchport port-security
+    switchport port-security maximum {{ switchport_security.maximum }}
+    switchport port-security violation {{ switchport_security.violation }}
+    {# Storm control disabled for testing purposes
+    storm-control broadcast level {{ storm_control_broadcast_level }}
+    storm-control multicast level {{ storm_control_multicast_level }}
+    storm-control unicast level {{ storm_control_unicast_level }}
+    #}
+    {% if  interface.dhcp_snooping.limit_rate is defined %}
+    ip dhcp snooping limit rate {{ interface.dhcp_snooping.limit_rate }}
+    {% else %}
+    ip dhcp snooping limit rate {{ dhcp_snoop_rate }}
+    {% endif %}
+    {% if interface.dhcp_snooping.trust %}
+    ip dhcp snooping trust
+    {% endif %}
+    {% if interface.voice is defined and interface.voice %}
+    switchport voice vlan {{ voice_vlan }}
+    {% endif %}
+    {% endif %}
+    {% endif %}
+    no shutdown
+

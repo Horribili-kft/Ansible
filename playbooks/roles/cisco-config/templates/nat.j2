@@ -1,0 +1,11 @@
+{% if nat.static is defined %}
+{% for entry in nat.static %}
+ip nat inside source static {{ entry.internal }} {{ entry.external }}
+{% endfor %}
+{% endif %}
+{% if nat.pools is defined %}
+{% for pool in nat.pools %}
+ip nat pool {{ pool.name }} {{ pool.range.start }} {{ pool.range.end }} netmask {{ pool.netmask }}
+ip nat inside source list {{ pool.acl }} pool {{ pool.name }} {% if pool.overload %}overload{% endif %}
+{% endfor %}
+{% endif %}

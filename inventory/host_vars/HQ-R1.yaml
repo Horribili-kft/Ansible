@@ -1,0 +1,35 @@
+hostname: HQ-R1
+ansible_host: 172.16.0.0
+public_ip: 82.1.79.1
+interfaces:
+  layer3:
+    - { name: GigabitEthernet0/0, ip: 172.16.0.0/31, nat: inside, ipv6_link_local_only: true, description: 'Link to HQ-MLS1' }
+    - { name: GigabitEthernet1/0, ip: 172.16.0.2/31, nat: inside, ipv6_link_local_only: true, description: 'Link to HQ-MLS2' }
+    - { name: GigabitEthernet2/0, ip: 82.1.79.1/24, nat: outside, ipv6: 2a:1dc:7c0:00FF:82:1:79:1/64, description: 'Link to ISP' }
+
+access_lists:
+  - { name: SD-ACL-internal-client, permit: [10.0.10.0/24, 10.0.15.0/24, 10.0.20.0/24, 10.0.25.0/24, 10.0.50.0/24, 10.0.51.0/24, 10.0.70.0/24, 10.0.200.0/24, 10.0.220.0/24] }
+  - { name: SD-ACL-external-client, permit: [10.0.100.0/22, 10.0.104.0/22, 10.0.160.0/22] }
+
+nat:
+  static:
+    - { internal: 10.0.70.10, external: 82.1.79.3 }
+    - { internal: 10.0.70.20, external: 82.1.79.4 }
+  pools:
+    - { name: SD-internal-client-pool, range: { start: 82.1.79.10 , end: 82.1.79.14}, netmask: 255.255.255.224, acl: SD-ACL-internal-client, overload: true }
+    - { name: SD-external-client-pool, range: { start: 82.1.79.15 , end: 82.1.79.19}, netmask: 255.255.255.224, acl: SD-ACL-external-client, overload: true }
+
+dmvpn:
+  role: hub
+  tunnel:
+     name: Tunnel0
+     ip: 192.168.0.1/24
+
+eigrp:
+  router_id: 3.3.3.3
+  networks: [172.16.0.0/31, 172.16.0.2/31, 192.168.0.0/24]
+  non_passive_interfaces: [GigabitEthernet0/0, GigabitEthernet1/0, Tunnel0]
+  redistribute_static: true
+
+static_routes:
+  { destination: 0.0.0.0/0, via: 82.1.79.30}

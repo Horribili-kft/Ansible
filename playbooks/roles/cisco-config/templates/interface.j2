@@ -1,0 +1,12 @@
+{% from 'calculate_ipv6.j2' import calculate_ipv6 %}
+{% if interfaces.layer3 is defined %}
+{% for interface in interfaces.layer3 %}
+{% include 'layer3_interface.j2' %}
+{% endfor %}
+{% endif %}
+
+{% if interfaces.layer2 is defined %}
+{% for interface in interfaces.layer2 %}
+{% include 'layer2_interface.j2' %}
+{% endfor %}
+{% endif %}

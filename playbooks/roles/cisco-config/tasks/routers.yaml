@@ -1,0 +1,36 @@
+- name: Configure interfaces
+  vars:
+    ansible_command_timeout: 60
+  cisco.ios.ios_config:
+    src: interface.j2
+    diff_against: running
+  when: interfaces is defined
+  tags: interface
+
+- name: Configure static routes
+  cisco.ios.ios_config:
+    src: static_route.j2
+  when: 'static_routes is defined'
+
+- name: Configure EIGRP
+  cisco.ios.ios_config:
+    src: eigrp.j2
+    diff_against: running
+  when: "eigrp is defined"
+
+- name: Create standard ACLs
+  cisco.ios.ios_config:
+    src: standard_acl.j2
+    diff_against: running
+  when: "access_lists is defined"
+
+- name: Configure NAT
+  cisco.ios.ios_config:
+    src: nat.j2
+    diff_against: running
+  when: "nat is defined"
+
+- name: Configure DMVPN
+  ansible.builtin.include_role:
+    name: cisco-dmvpn
+  when: "dmvpn is defined"

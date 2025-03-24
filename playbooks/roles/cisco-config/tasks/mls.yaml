@@ -1,0 +1,80 @@
+- name: Configure routing
+  cisco.ios.ios_config:
+    commands:
+    - ip routing
+    - ipv6 unicast-routing
+    diff_against: running
+
+- name: Configure VTP
+  cisco.ios.ios_config:
+    src: vtp.j2
+    diff_against: running
+
+- name: Become VTP server
+  cisco.ios.ios_command:
+    commands: 'vtp primary'
+  when: vtp_mode is defined and vtp_mode == 'server'
+
+- name: Configure STP
+  cisco.ios.ios_config:
+    src: stp.j2
+    diff_against: running
+
+- name: Configure Etherchannels
+  cisco.ios.ios_config:
+    src: etherchannel.j2
+    diff_against: running
+  when: lacp is defined
+
+- name: Enable native VLAN to prevent configuration errors
+  cisco.ios.ios_config:
+    commands: 'vlan {{ native_vlan }}'
+  when: vtp_mode is defined and vtp_mode == 'server'
+  notify: Disable native VLAN
+
+- name: Configure VLANs
+  cisco.ios.ios_config:
+    src: vlans.j2
+    diff_against: running
+  when: vtp_mode is defined and vtp_mode == 'server'
+
+# === These tasks have retries since they configure interfaces, and thus might cut connection to remote hosts ===
+# (currently disabled and untested)
+
+- name: Configure interfaces
+  vars:
+    ansible_command_timeout: 60
+  cisco.ios.ios_config:
+    src: interface.j2
+    diff_against: running
+  when: interfaces is defined
+  tags: interface
+
+  # regiester: result
+  # until: "result is not failed"
+  # retries: 2
+  # delay: 10
+
+- name: Configure VLAN interfaces
+  vars:
+    # Lassú a GNS3 MLS, ezért felvittem a timeoutout
+    ansible_command_timeout: 120
+  cisco.ios.ios_config:
+    src: vlan_interface.j2
+    diff_against: running
+  when: vlan_interfaces is defined
+  tags: interface
+
+  # regiester: result
+  # until: "result is not failed"
+  # retries: 2
+  # delay: 10
+
+- name: Configure EIGRP
+  cisco.ios.ios_config:
+    src: eigrp.j2
+    diff_against: running
+  # regiester: result
+  # until: "result is not failed"
+  # retries: 3
+  # delay: 5
