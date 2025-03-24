@@ -25,7 +25,7 @@
 - name: Enable site by creating symlink in sites-enabled
   ansible.builtin.file:
     src: /etc/nginx/sites-available/{{ webserver_folder_name }}.conf
-    dest: /etc/nginx/sites-enabled/
+    dest: /etc/nginx/sites-enabled/{{ webserver_folder_name }}.conf
     state: link
   notify: Restart nginx
 
