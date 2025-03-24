@@ -11,7 +11,7 @@
 
 - name: Include SSL tasks if SSL is enabled
   ansible.builtin.include_tasks: ssl.yml
-  when: ssl_enabled
+  when: webserver_ssl_enabled
 
 - name: Deploy site configuration to sites-available
   ansible.builtin.template:
