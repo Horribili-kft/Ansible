@@ -35,7 +35,6 @@
     state: absent
   notify: Restart nginx
 
-
 - name: Copy website to server
   ansible.builtin.copy:
     src: "files/{{ webserver_folder_name }}"
@@ -46,6 +45,6 @@
 
 - name: Ensure NGINX is started and enabled
   ansible.builtin.service:
-    name: "{{ nginx_service }}"
+    name: nginx
     state: started
     enabled: true
