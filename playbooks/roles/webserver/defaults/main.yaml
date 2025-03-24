@@ -1,5 +1,5 @@
 ---
-
+# Put the webserver folder here in the role files directory.
 webserver_folder_name: Solar_Dynamics_Webpage
 # The domain we can reach the server from.
 webserver_name: solardynamics.eu
