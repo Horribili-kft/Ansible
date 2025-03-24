@@ -35,7 +35,7 @@ server {
 # HTTP server block (non-SSL)
 server {
     listen 80;
-    server_name {{ webserver_name }};
+    server_name www.{{ webserver_name }} {{ webserver_name }};
     
     root /var/www/html;
     index index.html index.htm;
