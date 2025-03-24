@@ -8,5 +8,6 @@
     - ntp-server
     - zabbix-agent
     - resolv.conf
+    - ntp
 
 ...

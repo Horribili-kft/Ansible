@@ -62,6 +62,7 @@
         msg: "User '{{ admin_name }}' is in groups: {{ user_check.stdout }}"
   # This is run after the rest of the playbook
   roles:
-  # All Linux servers will have zabbix-agent installed.
+  # All Linux servers will have zabbix-agent, resolv.conf configured, and chrony client (or server) configured and installed.
     - resolv.conf
     - zabbix-agent
+    - ntp
