@@ -1,4 +1,9 @@
 ---
+- name: Ensure apt cache is updated
+  ansible.builtin.apt:
+    update_cache: true
+  when: ansible_os_family == "Debian"
+
 - name: Install Chrony package
   ansible.builtin.package:
     name: chrony
