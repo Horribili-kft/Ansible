@@ -16,7 +16,7 @@
   openssl_certificate:
     path: "{{ webserver_ssl_cert_path }}"
     privatekey_path: "{{ webserver_ssl_key_path }}"
-    common_name: "{{ webserver_ssl_common_name }}"
+    common_name: "{{ webserver_name }}"
     provider: selfsigned
     days: "{{ webserver_ssl_days }}"
   register: ssl_cert
