@@ -5,8 +5,8 @@ server {
     listen 443 ssl;
     server_name {{ webserver_name }};
 
-    ssl_certificate     {{ ssl_cert_path }};
-    ssl_certificate_key {{ ssl_key_path }};
+    ssl_certificate     {{ webserver_ssl_cert_path }};
+    ssl_certificate_key {{ webserver_ssl_key_path }};
 
     # SSL settings
     ssl_ciphers "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384";

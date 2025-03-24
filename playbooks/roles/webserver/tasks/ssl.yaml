@@ -1,22 +1,33 @@
----
-- name: Ensure SSL directory exists
-  file:
-    path: "{{ webserver_ssl_cert_path | dirname }}"
-    state: directory
-    mode: '0755'
-
-- name: Generate a private key for NGINX SSL
-  openssl_privatekey:
-    path: "{{ webserver_ssl_key_path }}"
-    size: 2048
+- name: Ensure OpenSSL is installed
+  ansible.builtin.package:
+    name: openssl
     state: present
-  register: ssl_key
 
-- name: Generate a self-signed certificate for NGINX
-  openssl_certificate:
+- name: Create SSL directory
+  ansible.builtin.file:
+    path: "{{ ssl_directory }}"
+    state: directory
+    owner: root
+    group: "{{ nginx_group }}"
+    mode: '0750'
+
+- name: Generate SSL private key
+  community.crypto.openssl_privatekey:
+    path: "{{ webserver_ssl_key_path }}"
+    owner: root
+    group: www-data
+    mode: '0640'
+
+- name: Generate self-signed SSL certificate
+  community.crypto.x509_certificate:
     path: "{{ webserver_ssl_cert_path }}"
     privatekey_path: "{{ webserver_ssl_key_path }}"
-    common_name: "{{ webserver_name }}"
     provider: selfsigned
-    days: "{{ webserver_ssl_days }}"
-  register: ssl_cert
+    force: false
+
+- name: Set certificate permissions
+  ansible.builtin.file:
+    path: "{{ webserver_ssl_cert_path }}"
+    owner: root
+    group: www-data"
+    mode: '0640'
