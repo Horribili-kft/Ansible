@@ -1,0 +1,52 @@
+---
+- name: Ensure apt cache is updated
+  ansible.builtin.apt:
+    update_cache: true
+  when: ansible_os_family == "Debian"
+
+- name: Install NGINX package
+  ansible.builtin.package:
+    name: nginx
+    state: present
+
+- name: Include SSL tasks if SSL is enabled
+  ansible.builtin.include_tasks: ssl.yml
+  when: ssl_enabled
+
+- name: Deploy site configuration to sites-available
+  ansible.builtin.template:
+    src: site.conf.j2
+    dest: '/etc/nginx/sites-available/{{ webserver_folder_name }}.conf'
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart nginx
+
+- name: Enable site by creating symlink in sites-enabled
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/{{ webserver_folder_name }}.conf
+    dest: /etc/nginx/sites-enabled/
+    state: link
+  notify: Restart nginx
+
+- name: Remove default site configuration (if exists)
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: Restart nginx
+
+
+- name: Copy website to server
+  ansible.builtin.copy:
+    src: "files/{{ webserver_folder_name }}"
+    dest: /var/www/
+    owner: www-data
+    group: www-data
+    mode: '0755'
+    recursive: true
+
+- name: Ensure NGINX is started and enabled
+  ansible.builtin.service:
+    name: "{{ nginx_service }}"
+    state: started
+    enabled: true
