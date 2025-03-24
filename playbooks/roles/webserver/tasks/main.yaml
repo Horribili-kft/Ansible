@@ -43,7 +43,6 @@
     owner: www-data
     group: www-data
     mode: '0755'
-    recursive: true
 
 - name: Ensure NGINX is started and enabled
   ansible.builtin.service:
