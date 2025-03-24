@@ -16,7 +16,7 @@ server {
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers off;
 
-    root /var/www/html/{{webserver_folder_name}};
+    root /var/www/{{webserver_folder_name}};
     index index.html index.htm;
 
     location / {
@@ -27,7 +27,7 @@ server {
 # Redirect HTTP traffic to HTTPS
 server {
     listen 80;
-    server_name {{ webserver_name }};
+    server_name www.{{ webserver_name }} {{ webserver_name }};
     return 301 https://$host$request_uri;
 }
 
@@ -37,7 +37,7 @@ server {
     listen 80;
     server_name www.{{ webserver_name }} {{ webserver_name }};
     
-    root /var/www/html;
+    root /var/www;
     index index.html index.htm;
 
     location / {
