@@ -2,4 +2,6 @@
 ansible_host: 10.0.70.10
 machine_type: "Linux Debian 12"
 
+ntp_role: 'server'
+
 ...

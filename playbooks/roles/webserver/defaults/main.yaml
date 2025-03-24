@@ -1,6 +1,7 @@
 ---
 
 webserver_folder_name: Solar_Dynamics_Webpage
+# The domain we can reach the server from.
 webserver_name: www.solardynamics.eu
 
 

@@ -1,0 +1,27 @@
+---
+- name: Install Chrony package
+  ansible.builtin.package:
+    name: chrony
+    state: present
+
+- name: Deploy chrony configuration file
+  ansible.builtin.template:
+    src: chrony.conf.j2
+    dest: /etc/chrony/chrony.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart chrony
+
+- name: Start and enable Chrony service
+  ansible.builtin.service:
+    name: chrony
+    state: started
+    enabled: true
+
+- name: Allow NTP service through UFW
+  community.general.ufw:
+    rule: allow
+    port: '123'
+    proto: udp
+  notify: Reload UFW
