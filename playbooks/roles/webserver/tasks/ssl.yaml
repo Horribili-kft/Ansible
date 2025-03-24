@@ -8,7 +8,7 @@
     path: "{{ webserver_ssl_directory }}"
     state: directory
     owner: root
-    group: "{{ nginx_group }}"
+    group: www-data
     mode: '0750'
 
 - name: Generate SSL private key
