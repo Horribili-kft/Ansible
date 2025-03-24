@@ -3,20 +3,18 @@
     name: openssl
     state: present
 
-- name: Create SSL directory
-  ansible.builtin.file:
-    path: "{{ webserver_ssl_directory }}"
-    state: directory
-    owner: root
-    group: www-data
-    mode: '0750'
-
 - name: Generate SSL private key
   community.crypto.openssl_privatekey:
     path: "{{ webserver_ssl_key_path }}"
-    owner: root
-    group: www-data
-    mode: '0640'
+
+
+# This takes too long, and is not necessary (https://www.howtogeek.com/devops/how-to-create-and-use-self-signed-ssl-on-nginx/)
+
+# - name: Create DH group
+#   community.crypto.openssl_dhparam:
+#     path: {{ webserver_dhparam_path }}
+#     size: 4096
+#     state: present
 
 - name: Generate self-signed SSL certificate
   community.crypto.x509_certificate:
@@ -24,10 +22,3 @@
     privatekey_path: "{{ webserver_ssl_key_path }}"
     provider: selfsigned
     force: false
-
-- name: Set certificate permissions
-  ansible.builtin.file:
-    path: "{{ webserver_ssl_cert_path }}"
-    owner: root
-    group: www-data"
-    mode: '0640'

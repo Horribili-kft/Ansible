@@ -2,10 +2,11 @@
 
 webserver_folder_name: Solar_Dynamics_Webpage
 # The domain we can reach the server from.
-webserver_name: www.solardynamics.eu
+webserver_name: solardynamics.eu
 
 
 webserver_ssl_enabled: true
-webserver_ssl_directory: 'etc/nginx/ssl'
+webserver_ssl_directory: '/etc/ssl/certs'
 webserver_ssl_cert_path: '{{ webserver_ssl_directory }}/nginx-selfsigned.crt'
 webserver_ssl_key_path: '{{ webserver_ssl_directory }}/nginx-selfsigned.key'
+webserver_dhparam_path: '/etc/nginx/'

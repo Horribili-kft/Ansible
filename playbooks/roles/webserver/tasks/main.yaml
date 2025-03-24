@@ -50,4 +50,3 @@
     name: "{{ nginx_service }}"
     state: started
     enabled: true
-

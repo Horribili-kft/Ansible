@@ -3,7 +3,7 @@
 # HTTPS server block
 server {
     listen 443 ssl;
-    server_name {{ webserver_name }};
+    server_name www.{{ webserver_name }} {{ webserver_name }};
 
     ssl_certificate     {{ webserver_ssl_cert_path }};
     ssl_certificate_key {{ webserver_ssl_key_path }};
