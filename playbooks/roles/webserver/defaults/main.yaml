@@ -6,5 +6,6 @@ webserver_name: www.solardynamics.eu
 
 
 webserver_ssl_enabled: true
-webserver_ssl_cert_path: /etc/nginx/ssl/nginx-selfsigned.crt
-webserver_ssl_key_path: /etc/nginx/ssl/nginx-selfsigned.key
+webserver_ssl_directory: 'etc/nginx/ssl'
+webserver_ssl_cert_path: {{ webserver_ssl_cert_path }}/nginx-selfsigned.crt
+webserver_ssl_key_path: {{ webserver_ssl_cert_path }}/nginx-selfsigned.key

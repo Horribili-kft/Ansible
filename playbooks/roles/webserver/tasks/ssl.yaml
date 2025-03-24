@@ -5,7 +5,7 @@
 
 - name: Create SSL directory
   ansible.builtin.file:
-    path: "{{ ssl_directory }}"
+    path: "{{ webserver_ssl_directory }}"
     state: directory
     owner: root
     group: "{{ nginx_group }}"
