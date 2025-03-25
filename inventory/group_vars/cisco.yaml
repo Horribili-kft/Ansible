@@ -43,10 +43,10 @@ storm_control_multicast_level : '5.00'
 storm_control_unicast_level : '5.00'
 
 # SNMP
-snmp_group: solardynamics.eu
-snmp_user: solaire
-snmp_pass: Solar-Dynamics-2025
-snmp_privpass: Solar-Dynamics-2025
+snmp_group: {{ domain_name }}
+snmp_user: {{ ansible_user }}
+snmp_pass: {{ ansible_password }}
+snmp_privpass: {{ snmp_pass }}
 snmp_trap_host: 10.0.70.11
 snmp_auth: "md5"
 snmp_priv: "des"
