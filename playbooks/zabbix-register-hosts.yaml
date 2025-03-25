@@ -84,6 +84,8 @@
               authprotocol: "{{ hostvars[item].snmp_auth }}"
               privpassphrase: "{{ hostvars[item].snmp_privpass }}"
               privprotocol: "{{ hostvars[item].snmp_priv }}"
+              max_repetitions: 10
+              contextname: ''
               bulk: true
         status: enabled
         state: present
