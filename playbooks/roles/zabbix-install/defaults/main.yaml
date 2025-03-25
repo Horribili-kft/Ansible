@@ -7,6 +7,8 @@ zabbix_version: 7.2
 zabbix_release_url: "https://repo.zabbix.com/zabbix/{{ zabbix_version }}/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.2+debian{{ debian_version }}_all.deb"
 zabbix_release_deb_path: /tmp/zabbix.deb
 zabbix_server_name: zabbix.solardynamics.eu
+zabbix_conf_file: /etc/zabbix/zabbix_server.conf
+snmp_trapper_file: /tmp/zabbix_traps.tmp
 
 # Database
 postgresql_version_number: 15
@@ -17,5 +19,4 @@ zabbix_db_name: zabbix
 zabbix_db_password: zabbix_password
 
 timezone: Europe/Budapest
-
 

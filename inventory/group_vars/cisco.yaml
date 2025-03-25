@@ -41,3 +41,12 @@ dhcp_snoop_rate: 10
 storm_control_broadcast_level : '5.00'
 storm_control_multicast_level : '5.00'
 storm_control_unicast_level : '5.00'
+
+# SNMP
+snmp_group: "{{ domain_name }}"
+snmp_user: "{{ admin_name }}"
+snmp_pass: "{{ ansible_password }}"
+snmp_privpass: "{{ snmp_pass }}"
+snmp_trap_host: 10.0.70.11
+snmp_auth: "md5"
+snmp_priv: "des"

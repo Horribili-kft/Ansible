@@ -59,7 +59,14 @@
   tags:
     - interface
 
+- name: Save configurations
+  cisco.ios.ios_command:
+    commands:
+      - "write memory"
+
 - name: Print backup location
   ansible.builtin.debug:
     msg: "Backup location: {{ backup_ios_location }}"
+
+
 ...

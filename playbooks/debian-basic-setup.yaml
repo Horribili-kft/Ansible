@@ -74,4 +74,3 @@
     - name: Install zabbix-agent
       ansible.builtin.include_role:
         name: zabbix-agent
-        

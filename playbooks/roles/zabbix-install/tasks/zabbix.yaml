@@ -31,6 +31,33 @@
       - zabbix-agent
     state: present
 
+- name: Ensure SNMP Trapper is enabled in Zabbix configuration
+  become: true
+  lineinfile:
+    path: "{{ zabbix_conf_file }}"
+    regexp: "^#?StartSNMPTrapper="
+    line: "StartSNMPTrapper=1"
+    state: present
+  notify: Restart Zabbix Server
+
+- name: Ensure SNMP Trapper file is configured
+  become: true
+  lineinfile:
+    path: "{{ zabbix_conf_file }}"
+    regexp: "^#?SNMPTrapperFile="
+    line: "SNMPTrapperFile={{ snmp_trapper_file }}"
+    state: present
+  notify: Restart Zabbix Server
+
+- name: Ensure the SNMP Trapper file exists
+  become: true
+  file:
+    path: "{{ snmp_trapper_file }}"
+    state: touch
+    owner: zabbix
+    group: zabbix
+    mode: '0644'
+
 # --- Zabbix Database Configuration ---
 - name: Create Zabbix user in PostgreSQL
   become: true
