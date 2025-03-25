@@ -28,6 +28,7 @@
         - Routers
         - Switches
         - Multilayer Switches
+        - Unknown
       state: present
 
   - name: Add Linux hosts to Zabbix
@@ -65,7 +66,7 @@
         host_groups:
           - "Cisco"
           - "Ansible"
-          - "{{ 'Routers' if 'router' in item else 'Switches' if 'switch' in item else 'Multilayer Switches' if 'mls' in item else '' }}"
+          - "{{ 'Routers' if 'router' in hostvars.[item].group_names else 'Switches' if 'switch' in hostvars.[item].group_names else 'Multilayer Switches' if 'mls' in hostvars.[item].group_names else 'Unknown' }}"
         link_templates:
           - "Cisco IOS by SNMP"
         inventory_mode: manual
