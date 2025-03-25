@@ -66,7 +66,7 @@
         host_groups:
           - "Cisco"
           - "Ansible"
-          - "{{ 'Routers' if 'router' in hostvars[item].group_names else 'Switches' if 'switch' in hostvars[item].group_names else 'Multilayer Switches' if 'mls' in hostvars[item].group_names else 'Unknown' }}"
+          - "{{ 'Routers' if 'routers' in hostvars[item].group_names else 'Switches' if 'switches' in hostvars[item].group_names else 'Multilayer Switches' if 'mls' in hostvars[item].group_names else 'Unknown' }}"
         link_templates:
           - "Cisco IOS by SNMP"
         inventory_mode: manual
