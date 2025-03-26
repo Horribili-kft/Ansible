@@ -10,6 +10,10 @@
   apt:
     deb: "{{ zabbix_release_deb_path }}"
 
+- name: Update APT package cache
+  ansible.builtin.apt:
+    update_cache: true
+    
 # --- Zabbix Installation ---
 - name: Install Zabbix server and frontend
   become: true
