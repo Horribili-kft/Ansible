@@ -59,6 +59,11 @@
   tags:
     - interface
 
+- name: Configure SNMP"
+  cisco.ios.ios_config:
+    src: snmp.j2
+    diff_against: running
+
 - name: Save configurations
   cisco.ios.ios_command:
     commands:
