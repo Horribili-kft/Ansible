@@ -29,4 +29,4 @@ eigrp:
   redistribute_static: true
 
 static_routes:
-  { destination: 0.0.0.0/0, via: 85.16.100.3}
+  - { destination: 0.0.0.0/0, via: 85.16.100.3}
