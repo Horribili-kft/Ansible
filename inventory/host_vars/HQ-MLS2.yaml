@@ -44,4 +44,4 @@ interfaces:
 eigrp:
   router_id: 2.2.2.2
   networks: [10.0.0.0/16, 172.16.0.2/31, 172.16.0.6/31, 172.16.0.8/31]
-  non_passive_interfaces: [FastEthernet0/0, FastEthernet0/1, Port-channel 1]
+  non_passive_interfaces: [FastEthernet0/1, FastEthernet0/2, Port-channel 1]
