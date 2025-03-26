@@ -1,8 +1,9 @@
 {% from 'calculate_ipv6.j2' import calculate_ipv6 %}
 {% for vlan in site_vlans %}
 
-    {% set device_vlan = (vlan_interfaces | selectattr('id', 'equalto', vlan.id) | list | first) %}
+    {% set device_vlan = (interfaces.vlan | selectattr('id', 'equalto', vlan.id) | list | first) %}
     {% set vlan = vlan | combine(device_vlan, recursive=True) %}
+{% if 'mls' in group_names %}
     {# Calculate HSRP addresses #}
     {% set hsrp_ip = vlan.network | ipaddr('last_usable') %}
     {% set ipv4_octets = hsrp_ip.split('.') %}
@@ -31,5 +32,11 @@ interface vlan {{ vlan.id }}
     standby {{ 2000 + vlan.id }} preempt
     {% endif %}
     no shutdown
-    
+{% elif 'switches' in group_names %}
+interface vlan {{ vlan.id }}
+    ip address {{ vlan.ip.split('/')[0] }} {{ vlan.ip | ipaddr('netmask') }}
+    ipv6 address {{ calculate_ipv6(ipv6_prefix, vlan.ip) | trim }}/64
+    no shutdown
+
+{% endif %}    
 {% endfor %}
