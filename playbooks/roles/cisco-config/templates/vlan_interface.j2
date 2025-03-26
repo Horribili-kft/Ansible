@@ -19,7 +19,7 @@ interface vlan {{ vlan.id }}
     ipv6 address {{ calculate_ipv6(ipv6_prefix, vlan.ip) | trim }}/64
     ipv6 eigrp {{ site_eigrp_address }}
     ip helper-address {{ ip_helper_address }}
-    ipv6 dhcp relay destination {{ ipv6_relay_dest }}
+    {# ipv6 dhcp relay destination {{ ipv6_relay_dest }} #}
     {% if hsrp_version == 2 %}
     standby version {{ hsrp_version }}
     {% endif %}
