@@ -36,7 +36,7 @@
         state: started
         enabled: true
 
-    - name: Enable UFW and allow OpenSSH
+    - name: Allow OpenSSH
       community.general.ufw:
         rule: allow
         name: OpenSSH
@@ -60,8 +60,18 @@
     - name: Display user group information
       ansible.builtin.debug:
         msg: "User '{{ admin_name }}' is in groups: {{ user_check.stdout }}"
-  roles:
+        
+  # This is run after the rest of the playbook
   # All Linux servers will have zabbix-agent, resolv.conf configured, and chrony client (or server) configured and installed.
-    - resolv.conf
-    - zabbix-agent
-    - ntp
+
+    - name: Configure ntp
+      ansible.builtin.include_role:
+        name: ntp
+
+    - name: Install zabbix-agent
+      ansible.builtin.include_role:
+        name: zabbix-agent
+        
+    - name: Configure DNS
+      ansible.builtin.include_role:
+        name: resolv.conf

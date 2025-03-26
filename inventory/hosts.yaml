@@ -156,7 +156,7 @@ all:
                 domain_name: tb.solardynamics.eu
                 site_number: 3
             hosts:
-                TB-RT:
+                TB-R:
 
                 TB-EM2-IRODA:
                 TB-EM1-LOGI:
