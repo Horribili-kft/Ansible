@@ -22,11 +22,11 @@
       - banner exec \#{{ banner_text }}\#
     diff_against: running
 
-- name: Configure NTP server
-  cisco.ios.ios_config:
-    commands:
-      - ntp server ip {{ ntp_server }}
-    diff_against: running
+#- name: Configure NTP server
+#  cisco.ios.ios_config:
+#    commands:
+#      - ntp server ip {{ ntp_server }}
+#    diff_against: running
 
 - name: Conifgure DNS server
   cisco.ios.ios_config:
