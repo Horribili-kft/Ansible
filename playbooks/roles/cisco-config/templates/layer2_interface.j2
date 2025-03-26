@@ -8,7 +8,9 @@ interface {{ interface.name }}
     {% endif %}
     {# Trunk configuration #}
     {% if interface.mode == 'trunk' %}
+    {% if 'mls' in group_names %}
     switchport trunk encapsulation {{ interface.encapsulation }}
+    {% endif %}
     switchport mode trunk
     switchport nonegotiate
     switchport trunk native vlan {{ native_vlan }}
