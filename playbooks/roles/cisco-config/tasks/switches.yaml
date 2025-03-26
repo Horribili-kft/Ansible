@@ -34,4 +34,5 @@
 - name: Configure default gateway
   cisco.ios.config:
     commands:
-      - ip default-gateway {{ site_vlans | selectattr('id', 'equalto', 252) | first | map(attribute='network') | first | ipaddr('last_usable') }}
+      - ip default-gateway {{ site_vlans | selectattr('id', 'equalto', 252) | map(attribute='network') | first | ipaddr('last_usable') }}
+
