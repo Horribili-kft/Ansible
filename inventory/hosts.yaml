@@ -76,11 +76,8 @@ all:
                         # HQ
                         HQ-OFFICE-S1:
                         HQ-OFFICE-S2:
-                            ansible_host: 10.0.254.2
                         HQ-WS-S1:
-                            ansible_host: 10.0.254.3
                         HQ-WS-S2:
-                            ansible_host: 10.0.254.4
 
                         # SzF
                         SzF_SW:

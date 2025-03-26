@@ -1,4 +1,13 @@
 {% from 'calculate_ipv6.j2' import calculate_ipv6 %}
+{% if 'switches' in group_names %}
+{% for vlan in interfaces.vlan %}
+
+interface vlan {{ vlan.id }}
+    ip address {{ vlan.ip.split('/')[0] }} {{ vlan.ip | ipaddr('netmask') }}
+    ipv6 address {{ calculate_ipv6(ipv6_prefix, vlan.ip) | trim }}/64
+    no shutdown
+{% endif %}
+
 {% for vlan in site_vlans %}
 
     {% set device_vlan = (interfaces.vlan | selectattr('id', 'equalto', vlan.id) | list | first) %}
@@ -32,11 +41,5 @@ interface vlan {{ vlan.id }}
     standby {{ 2000 + vlan.id }} preempt
     {% endif %}
     no shutdown
-{% elif 'switches' in group_names %}
-interface vlan {{ vlan.id }}
-    ip address {{ vlan.ip.split('/')[0] }} {{ vlan.ip | ipaddr('netmask') }}
-    ipv6 address {{ calculate_ipv6(ipv6_prefix, vlan.ip) | trim }}/64
-    no shutdown
-
 {% endif %}    
 {% endfor %}
