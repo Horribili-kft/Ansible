@@ -7,6 +7,7 @@ all:
         ntp_server: "sd-hq-lin1.solardynamics.eu"
         dns_servers: 
             - 10.0.70.20
+            - 193.225.219.34
             - 1.1.1.1
             
     children:
