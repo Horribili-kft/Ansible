@@ -12,9 +12,9 @@ access_lists:
   - { name: SD-ACL-external-client, permit: [10.0.100.0/22, 10.0.104.0/22, 10.0.160.0/22] }
 
 nat:
-  pools:
-    - { name: SD-internal-client-pool, acl: SD-ACL-internal-client, interface: GigabitEthernet0/1/0 }
-    - { name: SD-external-client-pool, acl: SD-ACL-external-client, interface: GigabitEthernet0/1/0 }
+  overload_interfaces:
+    - { acl: SD-ACL-internal-client, name: GigabitEthernet0/1/0 }
+    - { acl: SD-ACL-external-client, name: GigabitEthernet0/1/0 }
 
 dmvpn:
   role: hub
