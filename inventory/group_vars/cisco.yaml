@@ -17,7 +17,7 @@ banner_text: "WARNING: Unauthorized access is strictly prohibited. This device i
 
 # protocol versions
 vtp_version: 2
-hsrp_version: 2
+hsrp_version: 1
 
 # layer 2 things
 vtp_mode: 'client'
