@@ -62,7 +62,7 @@
   cisco.ios.ios_config:
     src: vlan_interface.j2
     diff_against: running
-  when: vlan_interfaces is defined
+  when: interfaces.vlan is defined
   tags: interface
 
   # regiester: result

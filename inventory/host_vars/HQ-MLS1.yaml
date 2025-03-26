@@ -25,71 +25,25 @@ interfaces:
     - { name: FastEthernet0/14, mode: access, access_vlan: 252,       description: 'Link to SD-HQ-PVE1 (and all other HQ server by extension)' }
     - { name: Port-channel 2,     mode: trunk,  encapsulation: dot1q, description: 'Layer 2 link to MLS2'  }
 
-vlan_interfaces:
-  # HSRP group and IPv6 are inferred
-  # Read by playbooks/roles/cisco-config/templates/vlan_interface.j2.
-  - { id: 10,  ip: 10.0.10.1/24,  hsrp_priority: 90 }
-  - { id: 15,  ip: 10.0.15.1/24,  hsrp_priority: 90 }
-  - { id: 20,  ip: 10.0.20.1/24,  hsrp_priority: 90 }
-  - { id: 25,  ip: 10.0.25.1/24,  hsrp_priority: 90 }
-  - { id: 50,  ip: 10.0.50.1/24,  hsrp_priority: 90 }
-  - { id: 51,  ip: 10.0.51.1/24,  hsrp_priority: 90 }
-  - { id: 70,  ip: 10.0.70.1/24,  hsrp_priority: 110 }
-  - { id: 100, ip: 10.0.100.1/22, hsrp_priority: 90 }
-  - { id: 104, ip: 10.0.104.1/24, hsrp_priority: 90 }
-  - { id: 160, ip: 10.0.160.1/22, hsrp_priority: 90 }
-  - { id: 200, ip: 10.0.200.1/24, hsrp_priority: 110 }
-  - { id: 220, ip: 10.0.220.1/24, hsrp_priority: 90 }
-  - { id: 252, ip: 10.0.253.1/22, hsrp_priority: 90 }
+  vlan:
+    # HSRP group and IPv6 are inferred
+    # Read by playbooks/roles/cisco-config/templates/vlan_interface.j2.
+    - { id: 10,  ip: 10.0.10.1/24,  hsrp_priority: 90 }
+    - { id: 15,  ip: 10.0.15.1/24,  hsrp_priority: 90 }
+    - { id: 20,  ip: 10.0.20.1/24,  hsrp_priority: 90 }
+    - { id: 25,  ip: 10.0.25.1/24,  hsrp_priority: 90 }
+    - { id: 50,  ip: 10.0.50.1/24,  hsrp_priority: 90 }
+    - { id: 51,  ip: 10.0.51.1/24,  hsrp_priority: 90 }
+    - { id: 70,  ip: 10.0.70.1/24,  hsrp_priority: 110 }
+    - { id: 100, ip: 10.0.100.1/22, hsrp_priority: 90 }
+    - { id: 104, ip: 10.0.104.1/24, hsrp_priority: 90 }
+    - { id: 160, ip: 10.0.160.1/22, hsrp_priority: 90 }
+    - { id: 200, ip: 10.0.200.1/24, hsrp_priority: 110 }
+    - { id: 220, ip: 10.0.220.1/24, hsrp_priority: 90 }
+    - { id: 252, ip: 10.0.253.1/22, hsrp_priority: 90 }
 
 eigrp:
   router_id: 1.1.1.1
   networks: [10.0.0.0/16, 172.16.0.0/31, 172.16.0.4/31, 172.16.0.8/31]
   non_passive_interfaces: [FastEthernet0/0, FastEthernet0/1, Port-channel 1]
   
-
-
-# Fizikai konfig
-# vtp_mode: 'server'
-# lacp:
-#   - { interfaces: FastEthernet0/22-24, switchport: false ,mode: active, channel_group: 1 }
-#   - { interfaces: FastEthernet0/21-22, switchport: true,  mode: active, channel_group: 2 }
-# 
-# interfaces:
-#   layer3:
-#   - { name: FastEthernet0/1, ip: 172.16.0.1/31, ipv6_link_local_only: true, description: 'Link to HQ-R1' }
-#   - { name: FastEthernet0/2, ip: 172.16.0.5/31, ipv6_link_local_only: true, description: 'Link to HQ-R2' }
-#   - { name: Port-channel 1,     ip: 172.16.0.8/31, ipv6_link_local_only: true, description: 'Layer 3 link to MLS2'  }
-#  
-#   layer2:
-#   - { name: FastEthernet0/3, mode: trunk,  encapsulation: dot1q, allowed_vlans: [10, 15, 100, 220, 200, 252] , description: 'Link to HQ-OFFICE-S1'}
-#   - { name: FastEthernet0/4, mode: trunk,  encapsulation: dot1q, allowed_vlans: [20, 25, 100, 160, 200, 252] , description: 'Link to HQ-OFFICE-S2' }
-#   - { name: FastEthernet0/5, mode: trunk,  encapsulation: dot1q, allowed_vlans: [50, 104, 200, 252] ,          description: 'Link to HQ-WS-S1' }
-#   - { name: FastEthernet0/6, mode: trunk,  encapsulation: dot1q, allowed_vlans: [51, 104, 200, 252] ,          description: 'Link to HQ-WS-S2' }
-#   - { name: FastEthernet0/13, mode: access, access_vlan: 70, description: 'Link to SD-HQ-PVE1 (and all other HQ server by extension)' }
-#   - { name: Port-channel 2,     mode: trunk,  encapsulation: dot1q, description: 'Layer 2 link to MLS2'  }
-# 
-# vlan_interfaces:
-#   # HSRP group and IPv6 are inferred
-#   # Read by playbooks/roles/cisco-config/templates/vlan_interface.j2.
-#   - { id: 10,  ip: 10.0.10.1/24,  hsrp_priority: 90 }
-#   - { id: 15,  ip: 10.0.15.1/24,  hsrp_priority: 90 }
-#   - { id: 20,  ip: 10.0.20.1/24,  hsrp_priority: 90 }
-#   - { id: 25,  ip: 10.0.25.1/24,  hsrp_priority: 90 }
-#   - { id: 50,  ip: 10.0.50.1/24,  hsrp_priority: 90 }
-#   - { id: 51,  ip: 10.0.51.1/24,  hsrp_priority: 90 }
-#   - { id: 70,  ip: 10.0.70.1/24,  hsrp_priority: 110 }
-#   - { id: 100, ip: 10.0.100.1/22, hsrp_priority: 90 }
-#   - { id: 104, ip: 10.0.104.1/24, hsrp_priority: 90 }
-#   - { id: 160, ip: 10.0.160.1/22, hsrp_priority: 90 }
-#   - { id: 200, ip: 10.0.200.1/24, hsrp_priority: 110 }
-#   - { id: 220, ip: 10.0.220.1/24, hsrp_priority: 90 }
-#   - { id: 252, ip: 10.0.253.1/22, hsrp_priority: 90 }
-#   
-# eigrp:
-#   router_id: 1.1.1.1
-#   networks: [10.0.0.0/16, 172.16.0.0/31, 172.16.0.4/31, 172.16.0.8/31]
-#   non_passive_interfaces: [FastEthernet0/1, FastEthernet0/2, Port-channel 1]
-# 
-# 
-

@@ -28,7 +28,7 @@
 - name: Configure VLAN interfaces
   cisco.ios.ios_config:
     src: vlan_interface.j2
-  when: vlan_interfaces is defined
+  when: interfaces.vlan is defined
   tags: interface
 
 - name: Configure default gateway

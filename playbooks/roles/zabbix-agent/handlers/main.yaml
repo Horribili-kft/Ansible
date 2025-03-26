@@ -1,4 +1,8 @@
 - name: Restart Zabbix Agent
-  service:
+  ansible.builtin.service:
     name: zabbix-agent
     state: restarted
+
+- name: Register new host
+  ansible.builtin.import_playbook:
+    name: zabbix-register-hosts.yaml
