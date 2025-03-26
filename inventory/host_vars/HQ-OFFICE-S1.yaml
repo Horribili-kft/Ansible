@@ -6,6 +6,16 @@ interfaces:
   - { name: GigabitEthernet0/1, mode: trunk, encapsulation: dot1q,  dhcp_snooping: { trust: true }, description: 'Link to HQ-MLS-1' }
   - { name: GigabitEthernet0/2, mode: trunk, encapsulation: dot1q,  dhcp_snooping: { trust: true }, description: 'Link to HQ-MLS-2' }
   - { name: FastEthernet0/1, mode: access, access_vlan: 10,  dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 10: Vezetoseg' }
+  - { name: FastEthernet0/5, mode: access, access_vlan: 10,  dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 10: Vezetoseg' }
+  - { name: FastEthernet0/6, mode: access, access_vlan: 10,  dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 10: Vezetoseg' }
+  - { name: FastEthernet0/7, mode: access, access_vlan: 10,  dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 10: Vezetoseg' }
+  - { name: FastEthernet0/8, mode: access, access_vlan: 10,  dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 10: Vezetoseg' }
+  - { name: FastEthernet0/9, mode: access, access_vlan: 10,  dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 10: Vezetoseg' }
+  - { name: FastEthernet0/10, mode: access, access_vlan: 10,  dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 10: Vezetoseg' }
+  - { name: FastEthernet0/11, mode: access, access_vlan: 10,  dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 10: Vezetoseg' }
+  - { name: FastEthernet0/12, mode: access, access_vlan: 10,  dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 10: Vezetoseg' }
+  - { name: FastEthernet0/13, mode: access, access_vlan: 10,  dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 10: Vezetoseg' }
+
   # These are unused, but still configured
   - { name: FastEthernet0/2, mode: access, access_vlan: 220, dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 220: Nyomtatok'}
   - { name: FastEthernet0/3, mode: access, access_vlan: 15,  dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 15: Vezetoseg' }
