@@ -16,7 +16,7 @@
     state: touch
     owner: zabbix
     group: zabbix
-    mode: '0644'
+    mode: '0777' #Unsafe quick fix
 
 - name: Deploy Zabbix Agent configuration file
   become: true
