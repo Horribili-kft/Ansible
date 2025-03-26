@@ -6,8 +6,8 @@ interface vlan {{ vlan.id }}
     ip address {{ vlan.ip.split('/')[0] }} {{ vlan.ip | ipaddr('netmask') }}
     ipv6 address {{ calculate_ipv6(ipv6_prefix, vlan.ip) | trim }}/64
     no shutdown
+{% endfor %}
 {% endif %}
-
 {% for vlan in site_vlans %}
 
     {% set device_vlan = (interfaces.vlan | selectattr('id', 'equalto', vlan.id) | list | first) %}
