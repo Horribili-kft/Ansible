@@ -1,21 +1,16 @@
 ---
-- name: Ping all Linux servers
-  hosts: linux_servers
+- name: Ping Windows server from all devices
+  hosts: linux_servers, cisco
   tasks:
     - name: Ping Linux servers
       ansible.builtin.ping:
+        dest: 10.0.70.20    
 
-- name: Ping all Windows servers
-  hosts: windows_servers
-  ignore_unreachable: true
+- name: Ping SD-HQ-WIN1.solardynamics.eu from all devices 
+  hosts: linux_servers, cisco
   tasks:
-    - name: Ping Windows servers
-      ansible.windows.win_ping:
+    - name: Ping Linux servers
+      ansible.builtin.ping:
+        dest: SD-HQ-WIN1.solardynamics.eu
 
-- name: Ping control node from all Cisco devices
-  hosts: cisco
-  tasks:
-    - name: Ping control node by IP
-      cisco.ios.ios_ping:
-        dest: 10.0.70.11
 ...
