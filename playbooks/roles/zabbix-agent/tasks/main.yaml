@@ -4,6 +4,12 @@
     name: "{{ zabbix_agent_package }}"
     state: present
 
+- name: Create log directory if it does not exist
+  ansible.builtin.file:
+    path: /var/log/zabbix
+    state: directory
+    mode: '0755'
+
 - name: Ensure /var/log/zabbix/zabbix_agend.log file exists
   file:
     path: /var/log/zabbix/zabbix_agend.log
