@@ -22,11 +22,13 @@
       register: ssh_key_status
 
     - name: Generate SSH key pair if not present
+      become: false
       community.crypto.openssh_keypair:
         path: "{{ ssh_key_path }}"
         type: rsa
         size: 2048
         mode: '0600'
+        
       when: not ssh_key_status.stat.exists
       notify: Display public key content
 
