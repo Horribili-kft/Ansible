@@ -36,8 +36,7 @@ server {
 server {
     listen 80;
     server_name www.{{ webserver_name }} {{ webserver_name }};
-    
-    root /var/www;
+    root /var/www/{{webserver_folder_name}};
     index index.html index.htm;
 
     location / {
