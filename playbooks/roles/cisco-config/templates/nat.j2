@@ -6,6 +6,14 @@ ip nat inside source static {{ entry.internal }} {{ entry.external }}
 {% if nat.pools is defined %}
 {% for pool in nat.pools %}
 ip nat pool {{ pool.name }} {{ pool.range.start }} {{ pool.range.end }} netmask {{ pool.netmask }}
+
 ip nat inside source list {{ pool.acl }} pool {{ pool.name }} {% if pool.overload %}overload{% endif %}
+
+{% endfor %}
+{% endif %}
+{% if nat.overload_interfaces is defined %}
+{% for interface in nat.overload_interfaces %}
+ip nat inside source list {{ interface.acl }} interface {{interface.name}} overload
+
 {% endfor %}
 {% endif %}

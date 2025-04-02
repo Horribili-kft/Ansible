@@ -3,7 +3,7 @@ router eigrp {{ site_eigrp_address }}
     network {{ network.split('/')[0] }} {{ network | ipaddr('hostmask') }}
     {% endfor %}
     no auto-summary
-    router-id {{ eigrp.router_id }}
+    {# router-id {{ eigrp.router_id }} #}
     passive-interface default
     {% if eigrp.redistribute_static is defined and eigrp.redistribute_static %}
     redistribute static metric 10000 100 255 1 1500

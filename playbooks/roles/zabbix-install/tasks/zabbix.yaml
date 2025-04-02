@@ -1,23 +1,19 @@
 # --- Zabbix repo configuration ---
-- name: Check if Zabbix is installed
-  command: dpkg-query -W zabbix-server-pgsql
-  register: zabbix_installed
-  failed_when: zabbix_installed.rc > 1
-  changed_when: zabbix_installed.rc == 1
-
 - name: Download Zabbix release package
   become: true
   get_url:
     url: "{{ zabbix_release_url }}"
     dest: "{{ zabbix_release_deb_path }}"
-  when: zabbix_installed.rc == 1
 
 - name: Install Zabbix release package
   become: true
   apt:
     deb: "{{ zabbix_release_deb_path }}"
-  when: zabbix_installed.rc == 1
 
+- name: Update APT package cache
+  ansible.builtin.apt:
+    update_cache: true
+    
 # --- Zabbix Installation ---
 - name: Install Zabbix server and frontend
   become: true

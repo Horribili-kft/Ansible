@@ -61,8 +61,8 @@
       ansible.builtin.debug:
         msg: "User '{{ admin_name }}' is in groups: {{ user_check.stdout }}"
         
-  # This is run after the rest of the playbook
-  # All Linux servers will have zabbix-agent, resolv.conf configured, and chrony client (or server) configured and installed.
+    # This is run after the rest of the playbook
+    # All Linux servers will have zabbix-agent, resolv.conf configured, and chrony client (or server) configured and installed.
 
     - name: Configure ntp
       ansible.builtin.include_role:

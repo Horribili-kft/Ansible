@@ -21,7 +21,8 @@ interfaces:
     - { name: FastEthernet0/4, mode: trunk,  encapsulation: dot1q,  allowed_vlans: [20, 25, 100, 160, 200, 252], description: 'Link to HQ-OFFICE-S2' }
     - { name: FastEthernet0/5, mode: trunk,  encapsulation: dot1q,  allowed_vlans: [50, 104, 200, 252],          description: 'Link to HQ-WS-S1' }
     - { name: FastEthernet0/6, mode: trunk,  encapsulation: dot1q,  allowed_vlans: [51, 104, 200, 252],          description: 'Link to HQ-WS-S2' }
-    - { name: FastEthernet0/13, mode: access, access_vlan: 70,      description: 'Link to SD-HQ-PVE1 (and all other HQ server by extension)' }
+    - { name: FastEthernet0/13, mode: access, access_vlan: 70,        description: 'Link to SD-HQ-PVE1 (and all other HQ server by extension)' }
+    - { name: FastEthernet0/14, mode: access, access_vlan: 252,       description: 'Link to Admin PC' }
     - { name: Port-channel 2,     mode: trunk,  encapsulation: dot1q, description: 'Layer 2 link to MLS1' }
 
   vlan:
@@ -44,4 +45,4 @@ interfaces:
 eigrp:
   router_id: 2.2.2.2
   networks: [10.0.0.0/16, 172.16.0.2/31, 172.16.0.6/31, 172.16.0.8/31]
-  non_passive_interfaces: [FastEthernet0/0, FastEthernet0/1, Port-channel 1]
+  non_passive_interfaces: [FastEthernet0/1, FastEthernet0/2, Port-channel 1]

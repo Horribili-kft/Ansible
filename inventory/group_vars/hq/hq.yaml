@@ -6,12 +6,12 @@ site_vlans:
   - { id: 15,  name: HR,            network: 10.0.15.0/24 }
   - { id: 20,  name: Marketing,     network: 10.0.20.0/24 }
   - { id: 25,  name: Ertekesítes,   network: 10.0.25.0/24 }
-  - { id: 50,  name: Fejlesztok 1,  network: 10.0.50.0/24 }
-  - { id: 51,  name: Fejlesztok 2,  network: 10.0.51.0/24 }
+  - { id: 50,  name: Fejlesztok_1,  network: 10.0.50.0/24 }
+  - { id: 51,  name: Fejlesztok_2,  network: 10.0.51.0/24 }
   - { id: 70,  name: Szerver,       network: 10.0.70.0/24 }
-  - { id: 100, name: Iroda WLAN,    network: 10.0.100.0/22 }
-  - { id: 104, name: Workshop WLAN, network: 10.0.104.0/22 }
-  - { id: 160, name: Vendég WLAN,   network: 10.0.160.0/22 }
+  - { id: 100, name: Iroda_WLAN,    network: 10.0.100.0/22 }
+  - { id: 104, name: Workshop_WLAN, network: 10.0.104.0/22 }
+  - { id: 160, name: Vendég_WLAN,   network: 10.0.160.0/22 }
   - { id: 200, name: Voice,         network: 10.0.200.0/24 }
   - { id: 220, name: Nyomtatok,     network: 10.0.220.0/24 }
   - { id: 252, name: Management,    network: 10.0.252.0/22 }

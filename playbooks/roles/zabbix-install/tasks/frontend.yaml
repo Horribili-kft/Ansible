@@ -14,8 +14,14 @@
   lineinfile:
     path: /etc/zabbix/nginx.conf
     regexp: '^\s*(#\s*)?listen'
-    line: 'listen 8080 default_server;'
+    line: 'listen 80 default_server;'
     state: present
+  notify: Restart nginx
+
+- name: Remove default site configuration (if exists)
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
   notify: Restart nginx
 
 - name: Configure server_name directive for Zabbix frontend

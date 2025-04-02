@@ -25,13 +25,14 @@
   when: interfaces is defined
   tags: interface
 
-- name: Configure VLAN interfaces
-  cisco.ios.ios_config:
-    src: vlan_interface.j2
-  when: interfaces.vlan is defined
-  tags: interface
+#- name: Configure VLAN interfaces
+#  cisco.ios.ios_config:
+#    src: vlan_interface.j2
+#  when: interfaces.vlan is defined
+#  tags: interface
 
 - name: Configure default gateway
   cisco.ios.config:
     commands:
-      - ip default-gateway {{ site_vlans | selectattr('id', 'equalto', 252) | first | map(attribute='network') | first | ipaddr('last_usable') }}
+      - ip default-gateway {{ site_vlans | selectattr('id', 'equalto', 252) | map(attribute='network') | first | ipaddr('last_usable') }}
+

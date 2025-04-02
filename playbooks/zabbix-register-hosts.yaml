@@ -3,11 +3,10 @@
   gather_facts: no
   vars:
     ansible_httpapi_validate_certs: false
-    zabbix_template_name: "Template OS Linux"
-    zabbix_api_token: "8bcddfb1672d63ed31830fc61dc9fcdc64962ec68e540448d46ded1211e9c99c"
+    zabbix_api_token: "5d49109f0ad8a62c804d27682ba247178ba723453ed744134b9a9cae0e97134f"
     ansible_network_os: zabbix.zabbix.zabbix
     ansible_connection: httpapi
-    ansible_httpapi_port: 8080
+    ansible_httpapi_port: 80
     ansible_zabbix_url_path: ''
 
   tasks:
