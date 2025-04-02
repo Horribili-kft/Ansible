@@ -1,0 +1,166 @@
+---
+all:
+    vars:
+        company_name: "Solar Dynamics"
+        domain_name: solardynamics.eu
+        admin_name: "solaire"
+        ntp_server: "sd-hq-lin1.solardynamics.eu"
+        dns_servers: 
+            - 10.0.70.20
+            - 1.1.1.1
+            
+    children:
+        proxmox_servers:
+            hosts:
+                SD-HQ-PVE1:
+                # Variables in /inventory/host_vars/SD-HQ-PVE1.yaml
+        
+        linux_servers:
+        # Group-wide variables in /inventory/group_vars/linux_servers.yaml
+            hosts:
+                SD-HQ-LIN1:
+                # Variables in ./host_vars/SD-HQ-LIN1.yaml
+                SD-HQ-LIN2:
+                # Variables in ./host_vars/SD-HQ-LIN2.yaml
+                SD-HQ-NMS:
+                # Variables in ./host_vars/SD-HQ-NMS.yaml
+                SD-HQ-PVE1:
+                # Variables in /inventory/host_vars/SD-HQ-PVE1.yaml
+                # SD-BP-LIN1:
+                # Variables in /inventory/host_vars/SD-BP-LIN1.yaml
+
+        windows_servers:
+            # Group-wide variables in /inventory/group_vars/windows_servers.yaml
+            hosts: 
+                SD-HQ-WIN1:
+                # Variables in /inventory/host_vars/SD-HQ-WIN1.yaml
+
+
+        cisco:
+            # Group-wide variables in /inventory/group_vars/cisco/cisco.yaml
+            children:
+                routers:
+                    hosts:
+                        HQ-R1:
+                            # Publikus cím:
+                            # ansible_host: 82.136.79.1
+                            ansible_host: 172.16.0.0
+                            
+                        HQ-R2:
+                            # Publikus cím
+                            # ansible_host: 85.16.100.3
+                            ansible_host: 172.16.0.4
+
+                        SzF_R:
+                            ansible_host: 82.1.79.129
+                        
+                        BP-R:
+                            ansible_host: 82.1.79.33
+
+                        TB-R:
+                            ansible_host: 82.1.79.145
+
+                mls:
+                    hosts:
+                        HQ-MLS1:
+                        HQ-MLS2:
+
+                        BP-MLS1:
+                            ansible_host: 10.2.253.2
+                        BP-MLS2:
+                            ansible_host: 10.2.253.3
+                            
+                switches:
+                    hosts:
+                        # HQ
+                        HQ-OFFICE-S1:
+                        HQ-OFFICE-S2:
+                            ansible_host: 10.0.254.2
+                        HQ-WS-S1:
+                            ansible_host: 10.0.254.3
+                        HQ-WS-S2:
+                            ansible_host: 10.0.254.4
+
+                        # SzF
+                        SzF_SW:
+                            ansible_host: 10.1.254.1
+                        SzF_SW2:
+                            ansible_host: 10.1.254.2
+
+                        # BP
+                        BP-EM1-SW:
+                            ansible_host: 10.2.254.1
+                        BP-EM2-SW:
+                            ansible_host: 10.2.254.2
+                        BP-EM3-SW:
+                            ansible_host: 10.2.254.3
+
+                        # TB
+                        TB-EM2-IRODA:
+                            ansible_host: 10.3.254.1
+                        TB-EM1-LOGI:
+                            ansible_host: 10.3.254.2
+                        TB-EM3-PARTNER:
+                            ansible_host: 10.3.254.3
+                        
+        hq:
+            vars:
+                domain_name: hq.solardynamics.eu
+                site_number: 0        
+            hosts:
+                SD-HQ-LIN1:
+                SD-HQ-LIN2:
+                SD-HQ-WIN1:
+                SD-HQ-NMS:
+                SD-HQ-PVE1:
+
+                HQ-R1:
+                HQ-R2:
+
+                HQ-MLS1:
+                HQ-MLS2:
+
+                HQ-OFFICE-S1:
+                HQ-OFFICE-S2:
+                HQ-WS-S1:
+                HQ-WS-S2:
+
+        szf:
+            vars:
+                domain_name: szf.solardynamics.eu
+                site_number: 1
+            hosts:
+                SzF_R:
+
+                SzF_SW:
+                SzF_SW2:
+                SzF_WR:
+
+        bp:
+            vars:
+                domain_name: bp.solardynamics.eu
+                site_number: 2
+
+            hosts:
+                BP-R:
+                    
+                BP-MLS1:
+                BP-MLS2:
+
+                BP-EM1-SW:
+                BP-EM2-SW:
+                BP-EM3-SW:
+                    
+        tb:
+            vars:
+                domain_name: tb.solardynamics.eu
+                site_number: 3
+            hosts:
+                TB-R:
+
+                TB-EM2-IRODA:
+                TB-EM1-LOGI:
+                TB-EM3-PARTNER:
+
+                TB-WIFI-VARO:
+...
