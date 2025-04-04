@@ -28,19 +28,19 @@ interfaces:
   vlan:
     # HSRP group and IPv6 are inferred
     # Read by playbooks/roles/cisco-config/templates/vlan_interface.j2.
-    - { id: 10,  ip: 10.0.10.1/24,  hsrp_priority: 90 }
-    - { id: 15,  ip: 10.0.15.1/24,  hsrp_priority: 90 }
-    - { id: 20,  ip: 10.0.20.1/24,  hsrp_priority: 90 }
-    - { id: 25,  ip: 10.0.25.1/24,  hsrp_priority: 90 }
-    - { id: 50,  ip: 10.0.50.1/24,  hsrp_priority: 90 }
-    - { id: 51,  ip: 10.0.51.1/24,  hsrp_priority: 90 }
+    - { id: 10,  ip: 10.0.10.1/24,  hsrp_priority: 90  }
+    - { id: 15,  ip: 10.0.15.1/24,  hsrp_priority: 90  }
+    - { id: 20,  ip: 10.0.20.1/24,  hsrp_priority: 90  }
+    - { id: 25,  ip: 10.0.25.1/24,  hsrp_priority: 90  }
+    - { id: 50,  ip: 10.0.50.1/24,  hsrp_priority: 90  }
+    - { id: 51,  ip: 10.0.51.1/24,  hsrp_priority: 90  }
     - { id: 70,  ip: 10.0.70.1/24,  hsrp_priority: 110 }
-    - { id: 100, ip: 10.0.100.1/22, hsrp_priority: 90 }
-    - { id: 104, ip: 10.0.104.1/24, hsrp_priority: 90 }
-    - { id: 160, ip: 10.0.160.1/22, hsrp_priority: 90 }
+    - { id: 100, ip: 10.0.100.1/22, hsrp_priority: 90  }
+    - { id: 104, ip: 10.0.104.1/24, hsrp_priority: 90  }
+    - { id: 160, ip: 10.0.160.1/22, hsrp_priority: 90  }
     - { id: 200, ip: 10.0.200.1/24, hsrp_priority: 110 }
-    - { id: 220, ip: 10.0.220.1/24, hsrp_priority: 90 }
-    - { id: 252, ip: 10.0.253.1/22, hsrp_priority: 90 }
+    - { id: 220, ip: 10.0.220.1/24, hsrp_priority: 90  }
+    - { id: 252, ip: 10.0.253.1/22, hsrp_priority: 90  }
 
 eigrp:
   router_id: 1.1.1.1
