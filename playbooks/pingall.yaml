@@ -1,24 +1,35 @@
 ---
-- name: Ping Windows server from Cisco devices
-  hosts: cisco
+- name: Solar Dynamics network ping test
+  ignore_errors: true
+  vars: 
+    ipaddresses:
+    - 1.1.1.1
+    - 10.0.70.20
+    - 10.0.70.10
+    - 10.0.70.11
+    - 10.0.70.12
+
+    hostnames:
+    - SD-HQ-WIN1.solardynamics.eu
+    
   tasks:
     - name: Ping control node by IP
+      hosts: cisco
       cisco.ios.ios_ping:
-        dest: 10.0.70.20
-      
-- name: Ping Windows server from Cisco devices
-  hosts: cisco
-  tasks:
-    - name: Ping control node by IP
-      ping:
-        dest: 10.0.70.20
+        dest: {{ item }}
+      loop: {{ ipaddresses }}
 
-- name: Ping Windows server from Cisco by hostname
-  hosts: cisco
-  tasks:
     - name: Ping control node by IP
+      hosts: linux_servers
       ping:
-        dest: SD-HQ-WIN1.solardynamics.eu
+        dest: {{ item }}
+      loop: {{ ipaddresses }}
 
+    - name: Ping control node by IP
+      hosts: linux_servers
+      ping:
+        dest: {{ item }}
+      loop: hostnames
+    
 ...
 
