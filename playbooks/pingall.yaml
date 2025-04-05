@@ -18,16 +18,15 @@
       register: cisco_ping
       ignore_errors: true
 
-    - name: Build Cisco ping summary
+    - name: Build Cisco ping summary fact
       set_fact:
         ping_results_summary: >-
           {{
-            (ping_results_summary | default([]))
-            +
+            (ping_results_summary | default([])) +
             [ {
                 "source": inventory_hostname,
                 "destination": item.0,
-                "status": ( "SUCCESS" if item.1.failed is not defined and item.1.rc == 0 else "FAIL" )
+                "status": ( "SUCCESS" if (item.1.rc is defined and item.1.rc == 0) else "FAIL" )
               } ]
           }}
       loop: "{{ ipaddresses | zip(cisco_ping.results) | list }}"
@@ -49,12 +48,11 @@
       register: linux_ping
       ignore_errors: true
 
-    - name: Build Linux ping summary
+    - name: Build Linux ping summary fact for IPs
       set_fact:
         ping_results_summary: >-
           {{
-            (ping_results_summary | default([]))
-            +
+            (ping_results_summary | default([])) +
             [ {
                 "source": inventory_hostname,
                 "destination": item.0,
@@ -76,12 +74,11 @@
       register: hostname_ping
       ignore_errors: true
 
-    - name: Build hostname ping summary
+    - name: Build Linux ping summary fact for hostnames
       set_fact:
         ping_results_summary: >-
           {{
-            (ping_results_summary | default([]))
-            +
+            (ping_results_summary | default([])) +
             [ {
                 "source": inventory_hostname,
                 "destination": item.0,
@@ -90,11 +87,11 @@
           }}
       loop: "{{ hostnames | zip(hostname_ping.results) | list }}"
 
-- name: Aggregate and display ping results from all hosts
+- name: Aggregate all ping results and write CSV
   hosts: localhost
   gather_facts: false
   tasks:
-    - name: Gather all ping summaries from Cisco and Linux hosts
+    - name: Aggregate ping summaries from all hosts
       set_fact:
         all_ping_results: >-
           {{
@@ -104,14 +101,12 @@
       loop: "{{ groups['cisco'] + groups['linux_servers'] }}"
       run_once: true
 
-    - name: Display ping results table
-      debug:
-        msg: |
-          ===============================================
-          | Source           | Destination      | Status  |
-          ===============================================
+    - name: Write ping results to CSV file
+      copy:
+        dest: "./ping_results.csv"
+        content: |
+          source,destination,result
           {% for result in all_ping_results %}
-          | {{ result.source | string | ljust(16) }} | {{ result.destination | string | ljust(16) }} | {{ result.status | string | ljust(7) }} |
+          {{ result.source }},{{ result.destination }},{{ result.status }}
           {% endfor %}
-          ===============================================
       run_once: true
