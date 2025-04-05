@@ -3,11 +3,11 @@
   ignore_errors: true
   vars: 
     ipaddresses:
-    - 1.1.1.1
-    - 10.0.70.20
-    - 10.0.70.10
-    - 10.0.70.11
-    - 10.0.70.12
+      - 1.1.1.1
+      - 10.0.70.20
+      - 10.0.70.10
+      - 10.0.70.11
+      - 10.0.70.12
 
     hostnames:
     - SD-HQ-WIN1.solardynamics.eu
@@ -21,13 +21,13 @@
 
     - name: Ping control node by IP
       hosts: linux_servers
-      ping:
+      ansible.builtin.ping:
         dest: {{ item }}
       loop: {{ ipaddresses }}
 
     - name: Ping control node by IP
       hosts: linux_servers
-      ping:
+      ansible.builtin.ping:
         dest: {{ item }}
       loop: hostnames
     
