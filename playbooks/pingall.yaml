@@ -1,105 +1,35 @@
 ---
-- name: Ping IP addresses from Cisco devices
-  hosts: cisco
-  gather_facts: true
+- name: Network Reachability Tests
+  hosts: all
+  gather_facts: false
   vars:
-    ipaddresses:
+    target_hosts:  # Add your list of target IPs/hostnames here
       - 1.1.1.1
       - 10.0.70.20
       - 10.0.70.10
       - 10.0.70.11
       - 10.0.70.12
   tasks:
-    - name: Send ping command from Cisco device
-      cisco.ios.ios_command:
-        commands:
-          - "ping {{ item }}"
-      loop: "{{ ipaddresses }}"
-      register: cisco_ping
-      ignore_errors: true
+    - name: Test reachability from Cisco devices
+      cisco.ios.ios_ping:
+        dest: "{{ item }}"
+        count: 5
+        state: present
+      loop: "{{ target_hosts }}"
+      when: inventory_hostname in groups['cisco']
 
-    - name: Build Cisco ping summary fact
-      set_fact:
-        ping_results_summary: "{{ ping_results_summary | default([]) + [ {
-            'source': inventory_hostname,
-            'destination': item.0,
-            'status': ( 'SUCCESS' if (item.1.stdout[0] is search('Success rate is 100 percent')) else 'FAIL' )
-          } ] }}"
-        loop: "{{ ipaddresses | zip(cisco_ping.results) | list }}"
+    - name: Test reachability from Linux servers
+      ansible.builtin.command:
+        cmd: "ping -c 5 -W 2 {{ item }}"
+      register: ping_results
+      loop: "{{ target_hosts }}"
+      ignore_errors: yes
+      changed_when: false
+      when: inventory_hostname in groups['linux_servers']
 
-
-- name: Ping from Linux servers (IPs and hostnames)
-  hosts: linux_servers
-  gather_facts: false
-  vars:
-    ipaddresses:
-      - 1.1.1.1
-      - 10.0.70.1
-      - 10.0.70.2
-      - 10.0.70.200
-      - 10.0.70.20
-      - 10.0.70.10
-      - 10.0.70.11
-      - 10.0.70.12
-    hostnames:
-      - SD-HQ-WIN1.solardynamics.eu
-  tasks:
-    - name: Ping IP addresses
-      command: "ping -c 2 -W 1 {{ item }}"
-      loop: "{{ ipaddresses }}"
-      register: linux_ip_ping
-      ignore_errors: true
-
-    - name: Build Linux IP ping summary fact
-      set_fact:
-        ping_results_summary: "{{ ping_results_summary | default([]) + [ {
-            'source': inventory_hostname,
-            'destination': item.0,
-            'status': ( 'SUCCESS' if item.1.rc == 0 else 'FAIL' )
-          } ] }}"
-      loop: "{{ ipaddresses | zip(linux_ip_ping.results) | list }}"
-
-    - name: Ping hostnames
-      command: "ping -c 2 -W 1 {{ item }}"
-      loop: "{{ hostnames }}"
-      register: linux_hostname_ping
-      ignore_errors: true
-
-    - name: Build Linux hostname ping summary fact
-      set_fact:
-        ping_results_summary: "{{ ping_results_summary | default([]) + [ {
-            'source': inventory_hostname,
-            'destination': item.0,
-            'status': ( 'SUCCESS' if item.1.rc == 0 else 'FAIL' )
-          } ] }}"
-      loop: "{{ hostnames | zip(linux_hostname_ping.results) | list }}"
-
-- name: Aggregate and export ping results
-  hosts: SD-HQ-NMS
-  gather_facts: false
-  tasks:
-    - name: Aggregate ping summaries from all hosts
-      set_fact:
-        all_ping_results: "{{ all_ping_results | default([]) + ( hostvars[item].ping_results_summary | default([]) ) }}"
-      loop: "{{ groups['cisco'] + groups['linux_servers'] }}"
-      run_once: true
-
-    - name: Write all ping results to CSV file
-      copy:
-        dest: "~/ping_results.csv"
-        content: |
-          source,destination,result
-          {% for result in all_ping_results %}
-          {{ result.source }},{{ result.destination }},{{ result.status }}
-          {% endfor %}
-      run_once: true
-
-    - name: Write failed ping results to CSV file
-      copy:
-        dest: "~/failed_ping_results.csv"
-        content: |
-          source,destination,result
-          {% for result in all_ping_results if result.status == 'FAIL' %}
-          {{ result.source }},{{ result.destination }},{{ result.status }}
-          {% endfor %}
-      run_once: true
+    - name: Show ping results for Linux devices
+      ansible.builtin.debug:
+        var: ping_results.results[].stdout_lines
+      when: 
+        - inventory_hostname in groups['linux_servers']
+        - ping_results is defined
