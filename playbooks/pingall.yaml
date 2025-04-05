@@ -13,14 +13,12 @@
     - name: Test reachability from Cisco devices
       cisco.ios.ios_ping:
         dest: "{{ item }}"
-        count: 5
-        state: present
       loop: "{{ target_hosts }}"
       when: inventory_hostname in groups['cisco']
 
     - name: Test reachability from Linux servers
       ansible.builtin.command:
-        cmd: "ping -c 5 -W 2 {{ item }}"
+        cmd: "ping -c 3 -W 2 {{ item }}"
       register: ping_results
       loop: "{{ target_hosts }}"
       ignore_errors: yes
