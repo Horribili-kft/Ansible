@@ -28,8 +28,8 @@
       - 10.0.70.12
   tasks:
     - name: Ping IPs using built-in ping module
-      ansible.builtin.command:
-        cmd: "ping -c 1 {{ item }}"
+      ansible.netcommon.net_ping:
+        dest: {{ item }}
       loop: "{{ ipaddresses }}"
       ignore_errors: true
 
@@ -40,8 +40,8 @@
     hostnames:
       - SD-HQ-WIN1.solardynamics.eu
   tasks:
-    - name: Ping hostnames using built-in ping module
-      ansible.builtin.command:
-        cmd: "ping -c 1 {{ item }}"
+    - name: Ping IPs using built-in ping module
+      ansible.netcommon.net_ping:
+        dest: {{ item }}
       loop: "{{ hostnames }}"
       ignore_errors: true
