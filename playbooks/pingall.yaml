@@ -23,7 +23,7 @@
         ping_results_summary: "{{ ping_results_summary | default([]) + [ {
             'source': inventory_hostname,
             'destination': item.0,
-            'status': ( 'SUCCESS' if (item.1.rc is defined and item.1.rc == 0) else 'FAIL' )
+            'status': ( 'SUCCESS' if (item.1.rc is defined and item.1.rc|int == 0) else 'FAIL' )
           } ] }}"
       loop: "{{ ipaddresses | zip(cisco_ping.results) | list }}"
 
@@ -51,7 +51,7 @@
         ping_results_summary: "{{ ping_results_summary | default([]) + [ {
             'source': inventory_hostname,
             'destination': item.0,
-            'status': ( 'SUCCESS' if item.1.rc == 0 else 'FAIL' )
+            'status': ( 'SUCCESS' if (item.1.rc is defined and item.1.rc|int == 0) else 'FAIL' )
           } ] }}"
       loop: "{{ ipaddresses | zip(linux_ip_ping.results) | list }}"
 
@@ -66,7 +66,7 @@
         ping_results_summary: "{{ ping_results_summary | default([]) + [ {
             'source': inventory_hostname,
             'destination': item.0,
-            'status': ( 'SUCCESS' if item.1.rc == 0 else 'FAIL' )
+            'status': ( 'SUCCESS' if (item.1.rc is defined and item.1.rc|int == 0) else 'FAIL' )
           } ] }}"
       loop: "{{ hostnames | zip(linux_hostname_ping.results) | list }}"
 
@@ -78,6 +78,11 @@
       set_fact:
         all_ping_results: "{{ all_ping_results | default([]) + ( hostvars[item].ping_results_summary | default([]) ) }}"
       loop: "{{ groups['cisco'] + groups['linux_servers'] }}"
+      run_once: true
+
+    - name: Debug: Show aggregated ping results
+      debug:
+        var: all_ping_results
       run_once: true
 
     - name: Write all ping results to CSV file
