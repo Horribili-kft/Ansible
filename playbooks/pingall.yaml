@@ -1,35 +1,47 @@
 ---
-- name: Solar Dynamics network ping test
-  ignore_errors: true
-  vars: 
+- name: Ping IP addresses from Cisco devices
+  hosts: cisco
+  gather_facts: false
+  vars:
     ipaddresses:
       - 1.1.1.1
       - 10.0.70.20
       - 10.0.70.10
       - 10.0.70.11
       - 10.0.70.12
-
-    hostnames:
-    - SD-HQ-WIN1.solardynamics.eu
-    
   tasks:
-    - name: Ping control node by IP
-      hosts: cisco
+    - name: Ping IPs from Cisco devices
       cisco.ios.ios_ping:
         dest: "{{ item }}"
       loop: "{{ ipaddresses }}"
+      ignore_errors: true
 
-    - name: Ping control node by IP
-      hosts: linux_servers
-      ansible.builtin.ping:
-        dest: "{{ item }}"
+- name: Ping IP addresses from Linux servers
+  hosts: linux_servers
+  gather_facts: false
+  vars:
+    ipaddresses:
+      - 1.1.1.1
+      - 10.0.70.20
+      - 10.0.70.10
+      - 10.0.70.11
+      - 10.0.70.12
+  tasks:
+    - name: Ping IPs using built-in ping module
+      ansible.builtin.command:
+        cmd: "ping -c 1 {{ item }}"
       loop: "{{ ipaddresses }}"
+      ignore_errors: true
 
-    - name: Ping control node by IP
-      hosts: linux_servers
-      ansible.builtin.ping:
-        dest: "{{ item }}"
-      loop: hostnames
-    
-...
-
+- name: Ping hostnames from Linux servers
+  hosts: linux_servers
+  gather_facts: false
+  vars:
+    hostnames:
+      - SD-HQ-WIN1.solardynamics.eu
+  tasks:
+    - name: Ping hostnames using built-in ping module
+      ansible.builtin.command:
+        cmd: "ping -c 1 {{ item }}"
+      loop: "{{ hostnames }}"
+      ignore_errors: true
