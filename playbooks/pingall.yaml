@@ -29,7 +29,7 @@
   tasks:
     - name: Ping IPs using built-in ping module
       ansible.netcommon.net_ping:
-        dest: {{ item }}
+        dest: "{{ item }}"
       loop: "{{ ipaddresses }}"
       ignore_errors: true
 
@@ -42,6 +42,6 @@
   tasks:
     - name: Ping IPs using built-in ping module
       ansible.netcommon.net_ping:
-        dest: {{ item }}
+        dest: "{{ item }}"
       loop: "{{ hostnames }}"
       ignore_errors: true
