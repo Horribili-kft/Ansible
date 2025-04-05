@@ -103,7 +103,7 @@
 
     - name: Write ping results to CSV file
       copy:
-        dest: "./ping_results.csv"
+        dest: "~/ping_results.csv"
         content: |
           source,destination,result
           {% for result in all_ping_results %}
