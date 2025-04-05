@@ -23,9 +23,10 @@
         ping_results_summary: "{{ ping_results_summary | default([]) + [ {
             'source': inventory_hostname,
             'destination': item.0,
-            'status': ( 'SUCCESS' if (item.1.rc is defined and item.1.rc == 0) else 'FAIL' )
+            'status': ( 'SUCCESS' if (item.1.stdout[0] is search('Success rate is 100 percent')) else 'FAIL' )
           } ] }}"
-      loop: "{{ ipaddresses | zip(cisco_ping.results) | list }}"
+        loop: "{{ ipaddresses | zip(cisco_ping.results) | list }}"
+
 
 - name: Ping from Linux servers (IPs and hostnames)
   hosts: linux_servers
