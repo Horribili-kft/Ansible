@@ -87,7 +87,7 @@
           }}
       loop: "{{ hostnames | zip(hostname_ping.results) | list }}"
 
-- name: Aggregate all ping results and write CSV
+- name: Aggregate all ping results and write CSV files
   hosts: SD-HQ-NMS
   gather_facts: false
   tasks:
@@ -101,12 +101,22 @@
       loop: "{{ groups['cisco'] + groups['linux_servers'] }}"
       run_once: true
 
-    - name: Write ping results to CSV file
+    - name: Write all ping results to CSV file
       copy:
         dest: "~/ping_results.csv"
         content: |
           source,destination,result
           {% for result in all_ping_results %}
+          {{ result.source }},{{ result.destination }},{{ result.status }}
+          {% endfor %}
+      run_once: true
+
+    - name: Write failed ping results to CSV file
+      copy:
+        dest: "~/failed_ping_results.csv"
+        content: |
+          source,destination,result
+          {% for result in all_ping_results if result.status == 'FAIL' %}
           {{ result.source }},{{ result.destination }},{{ result.status }}
           {% endfor %}
       run_once: true
