@@ -16,19 +16,19 @@
     - name: Ping control node by IP
       hosts: cisco
       cisco.ios.ios_ping:
-        dest: {{ item }}
-      loop: {{ ipaddresses }}
+        dest: "{{ item }}"
+      loop: "{{ ipaddresses }}"
 
     - name: Ping control node by IP
       hosts: linux_servers
       ansible.builtin.ping:
-        dest: {{ item }}
-      loop: {{ ipaddresses }}
+        dest: "{{ item }}"
+      loop: "{{ ipaddresses }}"
 
     - name: Ping control node by IP
       hosts: linux_servers
       ansible.builtin.ping:
-        dest: {{ item }}
+        dest: "{{ item }}"
       loop: hostnames
     
 ...
