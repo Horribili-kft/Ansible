@@ -3,7 +3,7 @@
   gather_facts: no
   vars:
     ansible_httpapi_validate_certs: false
-    zabbix_api_token: "5d49109f0ad8a62c804d27682ba247178ba723453ed744134b9a9cae0e97134f"
+    zabbix_api_token: {{ zabbix_api_token }}
     ansible_network_os: zabbix.zabbix.zabbix
     ansible_connection: httpapi
     ansible_httpapi_port: 80
