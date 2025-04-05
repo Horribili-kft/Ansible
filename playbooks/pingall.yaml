@@ -1,7 +1,7 @@
 ---
 - name: Ping IP addresses from Cisco devices
   hosts: cisco
-  gather_facts: false
+  gather_facts: true
   vars:
     ipaddresses:
       - 1.1.1.1
@@ -33,6 +33,9 @@
   vars:
     ipaddresses:
       - 1.1.1.1
+      - 10.0.70.1
+      - 10.0.70.2
+      - 10.0.70.200
       - 10.0.70.20
       - 10.0.70.10
       - 10.0.70.11
