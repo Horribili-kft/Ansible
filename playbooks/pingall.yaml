@@ -28,4 +28,4 @@
         label: "{{ item.name }}"
 
     - ansible.builtin.debug:
-        msg: {{ ping_result }}
+        msg: "{{ ping_result }}"
