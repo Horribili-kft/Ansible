@@ -1,5 +1,5 @@
 ---
-- name: Ping selected hosts from Linux servers
+- name: Ping selected hosts from Linux servers and create CSV
   hosts: linux_servers
   gather_facts: no
   vars:
@@ -27,7 +27,9 @@
       loop_control:
         label: "{{ item.name }}"
 
-    - name: Print final summary of results
-      ansible.builtin.debug:
-        msg: "Source: {{ inventory_hostname }}; Destination: {{ item.item.target }}; Result: {{ (item.stdout_lines | join(' ')) if item.stdout_lines is defined else 'Failed' }}"
-      loop: "{{ ping_result.results }}"
+    - name: Write CSV results to /tmp/ping_results.csv
+      ansible.builtin.template:
+        src: ping_results.csv.j2
+        dest: /tmp/ping_results.csv
+      # Uncomment the next line if you want the CSV created only once (e.g. when running on multiple hosts)
+      # run_once: true
