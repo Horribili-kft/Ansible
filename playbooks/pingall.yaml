@@ -22,6 +22,7 @@
         cmd: "ping -c 3 {{ item.target }}"
       register: ping_result
       ignore_errors: yes
+      changed_when: false
       loop: "{{ ping_targets }}"
       loop_control:
         label: "{{ item.name }}"
