@@ -13,7 +13,7 @@
 #      - { name: "Székesfehérvár", target: "82.1.79.129" }
 #      - { name: "Tatabánya", target: "82.1.79.145" }
 #      - { name: "Győr HQ Backup ISP", target: "85.16.100.3" }
-#      - { name: "Private DNS resolution", target: "sd-hq-win1.solardynamics.eu" }
+      - { name: "Private DNS resolution", target: "sd-hq-win1.solardynamics.eu" }
       - { name: "Public DNS resolution", target: "linux.org" }
 
   tasks:
@@ -27,3 +27,5 @@
       loop_control:
         label: "{{ item.name }}"
 
+    - ansible.builtin.debug:
+        msg: {{ ping_result }}
