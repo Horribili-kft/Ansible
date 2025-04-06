@@ -1,7 +1,7 @@
 ---
 - name: Ping from Linux servers
   hosts: all
-  gather_facts: false
+  gather_facts: true
   vars:
     display_skipped_hosts: false
     ping_targets:
