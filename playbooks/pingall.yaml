@@ -1,5 +1,5 @@
 ---
-- name: Ping selected hosts from Linux servers and create CSV
+- name: Ping selected hosts from Linux servers
   hosts: linux_servers
   gather_facts: no
   vars:
@@ -27,9 +27,17 @@
       loop_control:
         label: "{{ item.name }}"
 
-    - name: Write CSV results to /tmp/ping_results.csv
-      ansible.builtin.template:
-        src: ping_results.csv.j2
+- name: Aggregate ping results and write CSV
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Write aggregated CSV results to /tmp/ping_results.csv
+      ansible.builtin.copy:
         dest: /tmp/ping_results.csv
-      delegate_to: SD-HQ-NMS
-      run_once: true
+        content: |
+          source,destination,result
+          {%- for host in groups['linux_servers'] if hostvars[host].ping_result is defined %}
+            {%- for item in hostvars[host].ping_result.results %}
+          {{ host }},{{ item.item.target }},{{ 'success' if item.rc == 0 else 'fail' }}
+            {%- endfor %}
+          {%- endfor %}
