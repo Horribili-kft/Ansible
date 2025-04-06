@@ -31,5 +31,5 @@
       ansible.builtin.template:
         src: ping_results.csv.j2
         dest: /tmp/ping_results.csv
-      # Uncomment the next line if you want the CSV created only once (e.g. when running on multiple hosts)
-      # run_once: true
+      run_once: true
+      delegate_to: SD-HQ-NMS
