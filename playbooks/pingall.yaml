@@ -17,7 +17,7 @@
       - { name: "Public DNS resolution", target: "linux.org" }
 
   tasks:
-    - name: Ping from Linux servers
+    - name: Ping each target from Linux servers
       ansible.builtin.command:
         cmd: "ping -c 3 {{ item.target }}"
       register: ping_result
@@ -26,7 +26,7 @@
       loop_control:
         label: "{{ item.name }}"
 
-    - name: Show concise results
+    - name: Print final summary of results
       ansible.builtin.debug:
-        msg: "Target: {{ item.item.name }} ({{ item.item.target }}) - Result: {{ item.stdout_lines | join(' ') if item.stdout_lines is defined else 'Failed' }}"
+        msg: "Source: {{ inventory_hostname }}; Destination: {{ item.item.target }}; Result: {{ (item.stdout_lines | join(' ')) if item.stdout_lines is defined else 'Failed' }}"
       loop: "{{ ping_result.results }}"
