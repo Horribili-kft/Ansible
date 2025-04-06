@@ -31,5 +31,4 @@
       ansible.builtin.template:
         src: ping_results.csv.j2
         dest: /tmp/ping_results.csv
-      run_once: true
       delegate_to: SD-HQ-NMS
