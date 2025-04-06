@@ -32,3 +32,4 @@
         src: ping_results.csv.j2
         dest: /tmp/ping_results.csv
       delegate_to: SD-HQ-NMS
+      run_once: true
