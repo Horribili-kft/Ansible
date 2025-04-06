@@ -21,46 +21,23 @@
       ansible.builtin.command:
         cmd: "ping -c 3 {{ item.target }}"
       register: ping_result
-      ignore_errors: yes
+      ignore_errors: true
       changed_when: false
       loop: "{{ ping_targets }}"
       loop_control:
         label: "{{ item.name }}"
+      when: "'linux_servers' in group_names"
 
-    - ansible.builtin.debug:
-        msg: "{{ ping_result }}"
-
-    
-- name: Ping from Cisco devices
-  hosts: cisco
-  gather_facts: no
-  vars:
-    ping_targets:
-      - { name: "Publikus Internet 1", target: "1.1.1.1" }
-#      - { name: "Publikus Internet 2", target: "8.8.8.8" }
-#      - { name: "SD-HQ-WIN1", target: "10.0.70.20" }
-      - { name: "SD-HQ-LIN1", target: "10.0.70.10" }
-#      - { name: "SD-HQ-LIN2", target: "10.0.70.12" }
-#      - { name: "Budapest", target: "82.1.79.33" }
-#      - { name: "Székesfehérvár", target: "82.1.79.129" }
-#      - { name: "Tatabánya", target: "82.1.79.145" }
-#      - { name: "Győr HQ Backup ISP", target: "85.16.100.3" }
-      - { name: "Private DNS resolution", target: "sd-hq-win1.solardynamics.eu" }
-#      - { name: "Public DNS resolution", target: "linux.org" }
-
-  tasks:
-    - name: Ping each target from Cisco devices
+    - name: Ping each target from Cisco device
       cisco.ios.ios_ping:
         dest: "{{ item.target }}"
       register: ping_result
-      ignore_errors: yes
+      ignore_errors: true
       changed_when: false
       loop: "{{ ping_targets }}"
       loop_control:
         label: "{{ item.name }}"
-      
+      when: "'cisco' in group_names"
 
-    - ansible.builtin.debug:
-        msg: "{{ ping_result }}"
 
     
