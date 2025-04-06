@@ -1,4 +1,4 @@
 source,destination,result
 {% for item in ping_result.results -%}
-{{ inventory_hostname }},{{ item.item.target }},{{ (item.stdout_lines | join(' ')) if item.stdout_lines is defined else 'Failed' }}
+{{ inventory_hostname }},{{ item.item.target }},{{ 'success' if item.rc == 0 else 'fail' }}
 {% endfor %}
