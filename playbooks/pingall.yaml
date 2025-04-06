@@ -1,8 +1,9 @@
 ---
 - name: Ping from Linux servers
-  hosts: linux_servers
-  gather_facts: no
+  hosts: all
+  gather_facts: false
   vars:
+    display_skipped_hosts: false
     ping_targets:
       - { name: "Publikus Internet 1", target: "1.1.1.1" }
 #      - { name: "Publikus Internet 2", target: "8.8.8.8" }
