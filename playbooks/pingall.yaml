@@ -20,7 +20,7 @@
   tasks:
     - name: Ping each target from Linux servers
       ansible.builtin.command:
-        cmd: "ping -c 3 {{ item.target }}"
+        cmd: "ping -4 -c 3 {{ item.target }}"
       register: ping_result
       ignore_errors: true
       changed_when: false
