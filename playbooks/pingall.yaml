@@ -28,7 +28,7 @@
         label: "{{ item.name }}"
 
 - name: Aggregate ping results and write CSV
-  hosts: localhost
+  hosts: SD-HQ-NMS
   gather_facts: no
   tasks:
     - name: Write aggregated CSV results to /tmp/ping_results.csv
