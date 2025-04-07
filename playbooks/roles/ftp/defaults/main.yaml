@@ -1,0 +1,4 @@
+---
+ftp_users_csv: "users.csv"
+ftp_home_dir: "/home/ftpusers"
+ftp_shell: "/usr/sbin/nologin"

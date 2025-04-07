@@ -1,0 +1,19 @@
+- name: Install vsftpd
+  ansible.builtin.package:
+    name: vsftpd
+    state: present
+  become: true
+
+- name: Configure vsftpd
+  ansible.builtin.template:
+    src: vsftpd.conf.j2
+    dest: /etc/vsftpd.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart vsftpd
+
+
+- name: Create FTP users
+  ansible.builtin.import_tasks:
+    file: users.yaml

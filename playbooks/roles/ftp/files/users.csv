@@ -1,0 +1,152 @@
+Unnamed: 0,SamAccountName,UserPrincipalName,GivenName,Surname,DisplayName,Title,Password,City
+0,ervinaranyló,ervinaranyló@solartest.eu,Aranyló,Ervin,Ervin Aranyló,Vezető,Password123,Győr
+1,szilágyirózsa,szilágyirózsa@solartest.eu,Rózsa,Szilágyi,Szilágyi Rózsa,Vezető,Password123,Győr
+2,vargaistván,vargaistván@solartest.eu,István,Varga,Varga István,Vezető,Password123,Győr
+3,kocsisblanka,kocsisblanka@solartest.eu,Blanka,Kocsis,Kocsis Blanka,Vezető,Password123,Győr
+4,nagyviktor,nagyviktor@solartest.eu,Viktor,Nagy,Nagy Viktor,Vezető,Password123,Győr
+5,farkaslaura,farkaslaura@solartest.eu,Laura,Farkas,Farkas Laura,Vezető,Password123,Győr
+6,kovácsmagdolna,kovácsmagdolna@solartest.eu,Magdolna,Kovács,Kovács Magdolna,HR,Password123,Győr
+7,tóthgábor,tóthgábor@solartest.eu,Gábor,Tóth,Tóth Gábor,HR,Password123,Győr
+8,hertelendianna,hertelendianna@solartest.eu,Anna,Hertelendi,Hertelendi Anna,HR,Password123,Győr
+9,szendreipéter,szendreipéter@solartest.eu,Péter,Szendrei,Szendrei Péter,HR,Password123,Győr
+10,kissmiklós,kissmiklós@solartest.eu,Miklós,Kiss,Kiss Miklós,Marketing,Password123,Győr
+11,péterzoltán,péterzoltán@solartest.eu,Zoltán,Péter,Péter Zoltán,Marketing,Password123,Győr
+12,gergelykatalin,gergelykatalin@solartest.eu,Katalin,Gergely,Gergely Katalin,Marketing,Password123,Győr
+13,kovácsgergely,kovácsgergely@solartest.eu,Gergely,Kovács,Kovács Gergely,Marketing,Password123,Győr
+14,takácszsolt,takácszsolt@solartest.eu,Zsolt,Takács,Takács Zsolt,Értekesítés,Password123,Győr
+15,váradyerzsébet,váradyerzsébet@solartest.eu,Erzsébet,Várady,Várady Erzsébet,Értekesítés,Password123,Győr
+16,fazekaslászló,fazekaslászló@solartest.eu,László,Fazekas,Fazekas László,Értekesítés,Password123,Győr
+17,bálinttamás,bálinttamás@solartest.eu,Tamás,Bálint,Bálint Tamás,Értekesítés,Password123,Győr
+18,vargajózsef,vargajózsef@solartest.eu,József,Varga,Varga József,Értekesítés,Password123,Győr
+19,szabóandrás,szabóandrás@solartest.eu,András,Szabó,Szabó András,Értekesítés,Password123,Győr
+20,tóthnóra,tóthnóra@solartest.eu,Nóra,Tóth,Tóth Nóra,Értekesítés,Password123,Győr
+21,nagysándor,nagysándor@solartest.eu,Sándor,Nagy,Nagy Sándor,Értekesítés,Password123,Győr
+22,kovácskrisztina,kovácskrisztina@solartest.eu,Krisztina,Kovács,Kovács Krisztina,Fejlesztő,Password123,Győr
+23,hernádiádám,hernádiádám@solartest.eu,Ádám,Hernádi,Hernádi Ádám,Fejlesztő,Password123,Győr
+24,vargagábor,vargagábor@solartest.eu,Gábor,Varga,Varga Gábor,Fejlesztő,Password123,Győr
+25,lukácsbence,lukácsbence@solartest.eu,Bence,Lukács,Lukács Bence,Fejlesztő,Password123,Győr
+26,tóthlevente,tóthlevente@solartest.eu,Levente,Tóth,Tóth Levente,Fejlesztő,Password123,Győr
+27,bognárjudit,bognárjudit@solartest.eu,Judit,Bognár,Bognár Judit,Fejlesztő,Password123,Győr
+28,lantoslászló,lantoslászló@solartest.eu,László,Lantos,Lantos László,Fejlesztő,Password123,Győr
+29,józseffanni,józseffanni@solartest.eu,Fanni,József,József Fanni,Fejlesztő,Password123,Győr
+30,kissdóra,kissdóra@solartest.eu,Dóra,Kiss,Kiss Dóra,Fejlesztő,Password123,Győr
+31,tóthmáté,tóthmáté@solartest.eu,Máté,Tóth,Tóth Máté,Fejlesztő,Password123,Győr
+32,székelypál,székelypál@solartest.eu,Pál,Székely,Székely Pál,Fejlesztő,Password123,Győr
+33,dávidzsófia,dávidzsófia@solartest.eu,Zsófia,Dávid,Dávid Zsófia,Fejlesztő,Password123,Győr
+34,farkaslili,farkaslili@solartest.eu,Lili,Farkas,Farkas Lili,Fejlesztő,Password123,Győr
+35,hodossyzsófia,hodossyzsófia@solartest.eu,Zsófia,Hodossy,Hodossy Zsófia,Fejlesztő,Password123,Győr
+36,némethróbert,némethróbert@solartest.eu,Róbert,Németh,Németh Róbert,Fejlesztő,Password123,Győr
+37,tóthgyörgy,tóthgyörgy@solartest.eu,György,Tóth,Tóth György,Fejlesztő,Password123,Győr
+38,benkőkornél,benkőkornél@solartest.eu,Kornél,Benkő,Benkő Kornél,Fejlesztő,Password123,Győr
+39,kisslaura,kisslaura@solartest.eu,Laura,Kiss,Kiss Laura,Fejlesztő,Password123,Győr
+40,kisskatalin,kisskatalin@solartest.eu,Katalin,Kiss,Kiss Katalin,Fejlesztő,Password123,Győr
+41,kovácsmária,kovácsmária@solartest.eu,Mária,Kovács,Kovács Mária,Fejlesztő,Password123,Győr
+42,székelysára,székelysára@solartest.eu,Sára,Székely,Székely Sára,Fejlesztő,Password123,Győr
+43,fehéralexandra,fehéralexandra@solartest.eu,Alexandra,Fehér,Fehér Alexandra,Fejlesztő,Password123,Győr
+44,vargazoltán,vargazoltán@solartest.eu,Zoltán,Varga,Varga Zoltán,Fejlesztő,Password123,Győr
+45,tóthlászló,tóthlászló@solartest.eu,László,Tóth,Tóth László,Fejlesztő,Password123,Győr
+46,némethpéter,némethpéter@solartest.eu,Péter,Németh,Németh Péter,Fejlesztő,Password123,Győr
+47,kovácsadél,kovácsadél@solartest.eu,Adél,Kovács,Kovács Adél,Fejlesztő,Password123,Győr
+48,fazekasmihály,fazekasmihály@solartest.eu,Mihály,Fazekas,Fazekas Mihály,Fejlesztő,Password123,Győr
+49,páleszter,páleszter@solartest.eu,Eszter,Pál,Pál Eszter,Fejlesztő,Password123,Győr
+50,kocsisildikó,kocsisildikó@solartest.eu,Ildikó,Kocsis,Kocsis Ildikó,Fejlesztő,Password123,Győr
+51,kissmóni,kissmóni@solartest.eu,Móni,Kiss,Kiss Móni,Fejlesztő,Password123,Győr
+52,vargaerika,vargaerika@solartest.eu,Erika,Varga,Varga Erika,Fejlesztő,Password123,Győr
+53,molnárnóra,molnárnóra@solartest.eu,Nóra,Molnár,Molnár Nóra,Fejlesztő,Password123,Győr
+54,szalaikitti,szalaikitti@solartest.eu,Kitti,Szalai,Szalai Kitti,Fejlesztő,Password123,Győr
+55,lázáremese,lázáremese@solartest.eu,Emese,Lázár,Lázár Emese,Fejlesztő,Password123,Győr
+56,horváthtamara,horváthtamara@solartest.eu,Tamara,Horváth,Horváth Tamara,Fejlesztő,Password123,Győr
+57,pálorsolya,pálorsolya@solartest.eu,Orsolya,Pál,Pál Orsolya,Fejlesztő,Password123,Győr
+58,szabóolga,szabóolga@solartest.eu,Olga,Szabó,Szabó Olga,Fejlesztő,Password123,Győr
+59,zsigaalíz,zsigaalíz@solartest.eu,Alíz,Zsiga,Zsiga Alíz,Fejlesztő,Password123,Győr
+60,kocsiszsuzsa,kocsiszsuzsa@solartest.eu,Zsuzsa,Kocsis,Kocsis Zsuzsa,Fejlesztő,Password123,Győr
+61,bélalivia,bélalivia@solartest.eu,Livia,Béla,Béla Livia,Fejlesztő,Password123,Győr
+62,mészárosanna,mészárosanna@solartest.eu,Anna,Mészáros,Mészáros Anna,Fejlesztő,Password123,Székesfehérvár
+63,kovácszsófia,kovácszsófia@solartest.eu,Zsófia,Kovács,Kovács Zsófia,Fejlesztő,Password123,Székesfehérvár
+64,hámoriervin,hámoriervin@solartest.eu,Ervin,Hámori,Hámori Ervin,Fejlesztő,Password123,Székesfehérvár
+65,kovácsszilvia,kovácsszilvia@solartest.eu,Szilvia,Kovács,Kovács Szilvia,Fejlesztő,Password123,Székesfehérvár
+66,veresádám,veresádám@solartest.eu,Ádám,Veres,Veres Ádám,Fejlesztő,Password123,Székesfehérvár
+67,fazekaskrisztina,fazekaskrisztina@solartest.eu,Krisztina,Fazekas,Fazekas Krisztina,Fejlesztő,Password123,Székesfehérvár
+68,horváthmiklós,horváthmiklós@solartest.eu,Miklós,Horváth,Horváth Miklós,Fejlesztő,Password123,Székesfehérvár
+69,lukácshanna,lukácshanna@solartest.eu,Hanna,Lukács,Lukács Hanna,Tesztelő,Password123,Székesfehérvár
+70,ráczlaura,ráczlaura@solartest.eu,Laura,Rácz,Rácz Laura,Tesztelő,Password123,Székesfehérvár
+71,szabódániel,szabódániel@solartest.eu,Dániel,Szabó,Szabó Dániel,Tesztelő,Password123,Székesfehérvár
+72,kovácspéter,kovácspéter@solartest.eu,Péter,Kovács,Kovács Péter,Tesztelő,Password123,Székesfehérvár
+73,baloghzoltán,baloghzoltán@solartest.eu,Zoltán,Balogh,Balogh Zoltán,Tesztelő,Password123,Székesfehérvár
+74,sándortímea,sándortímea@solartest.eu,Tímea,Sándor,Sándor Tímea,Tesztelő,Password123,Székesfehérvár
+75,juhászgábor,juhászgábor@solartest.eu,Gábor,Juhász,Juhász Gábor,Tesztelő,Password123,Székesfehérvár
+76,szilágyiágnes,szilágyiágnes@solartest.eu,Ágnes,Szilágyi,Szilágyi Ágnes,Vezető,Password123,Székesfehérvár
+77,nagyboglárka,nagyboglárka@solartest.eu,Boglárka,Nagy,Nagy Boglárka,Vezető,Password123,Székesfehérvár
+78,kovácsróbert,kovácsróbert@solartest.eu,Róbert,Kovács,Kovács Róbert,Vezető,Password123,Tatabánya
+79,kósasándor,kósasándor@solartest.eu,Sándor,Kósa,Kósa Sándor,Vezető,Password123,Tatabánya
+80,vargafanni,vargafanni@solartest.eu,Fanni,Varga,Varga Fanni,Vezető,Password123,Tatabánya
+81,kisimre,kisimre@solartest.eu,Imre,Kis,Kis Imre,Gépész,Password123,Tatabánya
+82,hegedűsattila,hegedűsattila@solartest.eu,Attila,Hegedűs,Hegedűs Attila,Gépész,Password123,Tatabánya
+83,nagyeszter,nagyeszter@solartest.eu,Eszter,Nagy,Nagy Eszter,Gépész,Password123,Tatabánya
+84,kovácslevente,kovácslevente@solartest.eu,Levente,Kovács,Kovács Levente,Gépész,Password123,Tatabánya
+85,feketebálint,feketebálint@solartest.eu,Bálint,Fekete,Fekete Bálint,Gépész,Password123,Tatabánya
+86,tóthmárton,tóthmárton@solartest.eu,Márton,Tóth,Tóth Márton,Gépész,Password123,Tatabánya
+87,szabolcsmária,szabolcsmária@solartest.eu,Mária,Szabolcs,Szabolcs Mária,Gépész,Password123,Tatabánya
+88,hegedűsandrea,hegedűsandrea@solartest.eu,Andrea,Hegedűs,Hegedűs Andrea,Gépész,Password123,Tatabánya
+89,némethjózsef,némethjózsef@solartest.eu,József,Németh,Németh József,Gépész,Password123,Tatabánya
+90,hernáditamás,hernáditamás@solartest.eu,Tamás,Hernádi,Hernádi Tamás,Gépész,Password123,Tatabánya
+91,jánoságnes,jánoságnes@solartest.eu,Ágnes,János,János Ágnes,Gépész,Password123,Budapest
+92,jankópéter,jankópéter@solartest.eu,Péter,Jankó,Jankó Péter,Gépész,Password123,Tatabánya
+93,kisslászló,kisslászló@solartest.eu,László,Kiss,Kiss László,Gépész,Password123,Tatabánya
+94,vargajudit,vargajudit@solartest.eu,Judit,Varga,Varga Judit,Gépész,Password123,Tatabánya
+95,hoffmannlászló,hoffmannlászló@solartest.eu,László,Hoffmann,Hoffmann László,Gépész,Password123,Tatabánya
+96,ervinbence,ervinbence@solartest.eu,Bence,Ervin,Ervin Bence,Gépész,Password123,Tatabánya
+97,szilágyikatalin,szilágyikatalin@solartest.eu,Katalin,Szilágyi,Szilágyi Katalin,Gépész,Password123,Tatabánya
+98,vargaandrás,vargaandrás@solartest.eu,András,Varga,Varga András,Portás,Password123,Tatabánya
+99,kocsislili,kocsislili@solartest.eu,Lili,Kocsis,Kocsis Lili,Portás,Password123,Tatabánya
+100,kovácsandrás,kovácsandrás@solartest.eu,András,Kovács,Kovács András,Fejlesztő,Password123,Tatabánya
+101,solaireastora,solaire@solartest.eu,Astora,Solaire,Solaire Astora,Rendszergazda,Password123,Budapest
+102,szabóbence,szabóbence@solartest.eu,Bence,Szabó,Szabó Bence,Fejlesztő,Password123,Tatabánya
+103,tóthcsaba,tóthcsaba@solartest.eu,Csaba,Tóth,Tóth Csaba,Fejlesztő,Password123,Tatabánya
+104,vargadénes,vargadénes@solartest.eu,Dénes,Varga,Varga Dénes,Fejlesztő,Password123,Tatabánya
+105,horvátherik,horvátherik@solartest.eu,Erik,Horváth,Horváth Erik,Fejlesztő,Password123,Tatabánya
+106,kissferenc,kissferenc@solartest.eu,Ferenc,Kiss,Kiss Ferenc,Fejlesztő,Password123,Tatabánya
+107,molnárgábor,molnárgábor@solartest.eu,Gábor,Molnár,Molnár Gábor,Fejlesztő,Password123,Tatabánya
+108,nagyhunor,nagyhunor@solartest.eu,Hunor,Nagy,Nagy Hunor,Fejlesztő,Password123,Tatabánya
+109,baloghistván,baloghistván@solartest.eu,István,Balogh,Balogh István,Fejlesztő,Password123,Tatabánya
+110,farkasjános,farkasjános@solartest.eu,János,Farkas,Farkas János,Fejlesztő,Password123,Tatabánya
+111,pappkrisztián,pappkrisztián@solartest.eu,Krisztián,Papp,Papp Krisztián,Vezető,Password123,Budapest
+112,takácslászló,takácslászló@solartest.eu,László,Takács,Takács László,Vezető,Password123,Budapest
+113,juhászmiklós,juhászmiklós@solartest.eu,Miklós,Juhász,Juhász Miklós,Vezető,Password123,Budapest
+114,mészárosnorbert,mészárosnorbert@solartest.eu,Norbert,Mészáros,Mészáros Norbert,Technikai ügyfélszolgálatos,Password123,Budapest
+115,németholivér,németholivér@solartest.eu,Olivér,Németh,Németh Olivér,Technikai ügyfélszolgálatos,Password123,Budapest
+116,oláhpéter,oláhpéter@solartest.eu,Péter,Oláh,Oláh Péter,Technikai ügyfélszolgálatos,Password123,Budapest
+117,simonróbert,simonróbert@solartest.eu,Róbert,Simon,Simon Róbert,Technikai ügyfélszolgálatos,Password123,Budapest
+118,ráczszabolcs,ráczszabolcs@solartest.eu,Szabolcs,Rácz,Rácz Szabolcs,Technikai ügyfélszolgálatos,Password123,Budapest
+119,feketetamás,feketetamás@solartest.eu,Tamás,Fekete,Fekete Tamás,Technikai ügyfélszolgálatos,Password123,Budapest
+120,fehérzoltán,fehérzoltán@solartest.eu,Zoltán,Fehér,Fehér Zoltán,Technikai ügyfélszolgálatos,Password123,Budapest
+121,bodnárzsombor,bodnárzsombor@solartest.eu,Zsombor,Bodnár,Bodnár Zsombor,Kereskedelmi ügyfélszolgálatos,Password123,Budapest
+122,bognárgergő,bognárgergő@solartest.eu,Gergő,Bognár,Bognár Gergő,Kereskedelmi ügyfélszolgálatos,Password123,Budapest
+123,gálbalázs,gálbalázs@solartest.eu,Balázs,Gál,Gál Balázs,Kereskedelmi ügyfélszolgálatos,Password123,Budapest
+124,hajdúádám,hajdúádám@solartest.eu,Ádám,Hajdú,Hajdú Ádám,Kereskedelmi ügyfélszolgálatos,Password123,Budapest
+125,illésattila,illésattila@solartest.eu,Attila,Illés,Illés Attila,Kereskedelmi ügyfélszolgálatos,Password123,Budapest
+126,kelemenbarnabás,kelemenbarnabás@solartest.eu,Barnabás,Kelemen,Kelemen Barnabás,Kereskedelmi ügyfélszolgálatos,Password123,Budapest
+127,lakatosdávid,lakatosdávid@solartest.eu,Dávid,Lakatos,Lakatos Dávid,Ügyfélszolgálati menedzser,Password123,Budapest
+128,majorendre,majorendre@solartest.eu,Endre,Major,Major Endre,Ügyfélszolgálati menedzser,Password123,Budapest
+129,nádorgyula,nádorgyula@solartest.eu,Gyula,Nádor,Nádor Gyula,Ügyfélszolgálati menedzser,Password123,Budapest
+130,oroszimre,oroszimre@solartest.eu,Imre,Orosz,Orosz Imre,Nemzetközi kapcsolattartó,Password123,Budapest
+131,páljenő,páljenő@solartest.eu,Jenő,Pál,Pál Jenő,Nemzetközi kapcsolattartó,Password123,Budapest
+132,siposkároly,siposkároly@solartest.eu,Károly,Sipos,Sipos Károly,Nemzetközi kapcsolattartó,Password123,Budapest
+133,szűcslőrinc,szűcslőrinc@solartest.eu,Lőrinc,Szűcs,Szűcs Lőrinc,Nemzetközi kapcsolattartó,Password123,Budapest
+134,veresmátyás,veresmátyás@solartest.eu,Mátyás,Veres,Veres Mátyás,Nemzetközi kapcsolattartó,Password123,Budapest
+135,zsigmondnándor,zsigmondnándor@solartest.eu,Nándor,Zsigmond,Zsigmond Nándor,Nemzetközi kapcsolattartó,Password123,Budapest
+136,béresoszkár,béresoszkár@solartest.eu,Oszkár,Béres,Béres Oszkár,Nemzetközi kapcsolattartó,Password123,Budapest
+137,vinczerudolf,vinczerudolf@solartest.eu,Rudolf,Vincze,Vincze Rudolf,Nemzetközi kapcsolattartó,Password123,Budapest
+138,bartasándor,bartasándor@solartest.eu,Sándor,Barta,Barta Sándor,Nemzetközi kapcsolattartó,Password123,Budapest
+139,hegedűstivadar,hegedűstivadar@solartest.eu,Tivadar,Hegedűs,Hegedűs Tivadar,Nemzetközi kapcsolattartó,Password123,Budapest
+140,csabaivilmos,csabaivilmos@solartest.eu,Vilmos,Csabai,Csabai Vilmos,Nemzetközi kapcsolattartó,Password123,Budapest
+141,somogyizénó,somogyizénó@solartest.eu,Zénó,Somogyi,Somogyi Zénó,Nemzetközi kapcsolattartó vezető,Password123,Budapest
+142,törökhuba,törökhuba@solartest.eu,Huba,Török,Török Huba,Nemzetközi kapcsolattartó vezető,Password123,Budapest
+143,vidovicsákos,vidovicsákos@solartest.eu,Ákos,Vidovics,Vidovics Ákos,Nemzetközi kapcsolattartó vezető,Password123,Budapest
+144,gulyásdorián,gulyásdorián@solartest.eu,Dorián,Gulyás,Gulyás Dorián,Rendszergazda,Password123,Budapest
+145,boroskevin,boroskevin@solartest.eu,Kevin,Boros,Boros Kevin,Rendszergazda,Password123,Budapest
+146,dienesszilárd,dienesszilárd@solartest.eu,Szilárd,Dienes,Dienes Szilárd,Rendszergazda,Password123,Budapest
+147,székelyroland,székelyroland@solartest.eu,Roland,Székely,Székely Roland,Rendszergazda,Password123,Budapest
+148,győrielemér,győrielemér@solartest.eu,Elemér,Győri,Győri Elemér,Rendszergazda,Password123,Budapest
+149,bányailóránt,bányailóránt@solartest.eu,Lóránt,Bányai,Bányai Lóránt,Rendszergazda,Password123,Budapest
+150,patakimárton,patakimárton@solartest.eu,Márton,Pataki,Pataki Márton,Rendszergazda,Password123,Budapest

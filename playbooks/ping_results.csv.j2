@@ -1,4 +1,0 @@
-source,destination,result
-{% for item in ping_result.results -%}
-{{ inventory_hostname }},{{ item.item.target }},{{ 'success' if failed == false else 'fail' }}
-{% endfor %}

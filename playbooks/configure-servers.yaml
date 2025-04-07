@@ -8,6 +8,7 @@
     - zabbix-agent
     - resolv.conf
     - ntp
+    - sftp
 
 - name: SD-HQ-LIN2 configuration
   hosts: SD-HQ-LIN2
