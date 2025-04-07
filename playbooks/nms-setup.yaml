@@ -55,6 +55,8 @@
           - psycopg2-binary
           # This is for tempalting subnet masks easier
           - netaddr
+          # This is for password hashing for user creation
+          - passlib
         virtualenv: "{{ lookup('env', 'HOME') }}/ansible-venv"
 
     # === NESSUS ===
