@@ -2,7 +2,7 @@
   community.general.read_csv:
     path: "{{ ftp_users_csv }}"
   register: ftp_user_list
-  delegate_to: localhost
+  delegate_to: SD-HQ-NMS
 
 - name: Create FTP home directory
   file:
