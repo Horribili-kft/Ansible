@@ -15,7 +15,7 @@
   gather_facts: true 
   become: true
   roles:
-    - mail
+#    - mail
     - zabbix-agent
     - resolv.conf
     - ntp
