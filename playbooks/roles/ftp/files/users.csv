@@ -1,4 +1,4 @@
-Unnamed: 0,SamAccountName,UserPrincipalName,GivenName,Surname,DisplayName,Title,Password,City
+id,SamAccountName,UserPrincipalName,GivenName,Surname,DisplayName,Title,Password,City
 0,ervinaranyló,ervinaranyló@solartest.eu,Aranyló,Ervin,Ervin Aranyló,Vezető,Password123,Győr
 1,szilágyirózsa,szilágyirózsa@solartest.eu,Rózsa,Szilágyi,Szilágyi Rózsa,Vezető,Password123,Győr
 2,vargaistván,vargaistván@solartest.eu,István,Varga,Varga István,Vezető,Password123,Győr
