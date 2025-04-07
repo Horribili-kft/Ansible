@@ -13,6 +13,7 @@
 - name: Add FTP users
   ansible.builtin.user:
     name: "{{ item.SamAccountName }}"
+    comment: "{{ item.DisplayName | default('') }}"
     password: "{{ item.Password | password_hash('sha512') }}"
     shell: "{{ ftp_shell }}"
     home: "{{ ftp_home_dir }}/{{ item.SamAccountName }}"
