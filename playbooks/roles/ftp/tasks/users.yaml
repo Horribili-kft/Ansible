@@ -16,6 +16,8 @@
     password: "{{ item.Password | password_hash('sha512') }}"
     shell: "{{ ftp_shell }}"
     home: "{{ ftp_home_dir }}/{{ item.SamAccountName }}"
+    append: true
+    groups: "ftp"
     create_home: true
   loop: "{{ ftp_user_list.list }}"
   loop_control:
