@@ -1,4 +1,0 @@
----
-ftp_users_csv: "/home/solaire/Ansible/playbooks/files/users.csv"
-ftp_home_dir: "/home/ftpusers"
-ftp_shell: "/bin/bash"

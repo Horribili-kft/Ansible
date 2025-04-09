@@ -1,0 +1,2 @@
+---
+create_users_csv: "/home/solaire/Ansible/playbooks/files/users.csv"
