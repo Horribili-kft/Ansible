@@ -22,4 +22,3 @@
     name: vsftpd
     state: started
     enabled: true
-E
