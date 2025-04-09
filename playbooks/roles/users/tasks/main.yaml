@@ -17,7 +17,7 @@
   loop_control:
     label: "{{ item.SamAccountName }}"
 
-- name: Create Maildir manually for each user
+- name: Create Maildir for each user
   ansible.builtin.file:
     path: "/home/{{ item.0.SamAccountName }}/Maildir/{{ item.1 }}"
     state: directory
