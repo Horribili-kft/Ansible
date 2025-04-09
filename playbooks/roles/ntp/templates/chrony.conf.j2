@@ -1,11 +1,9 @@
-# Configuration for both server and client
-
 {% if ntp_role == 'server' %}
-# Allow NTP requests from this network (assuming a private network)
+# Allow NTP requests from the Solar Dynamics network
 allow {{ ntp_server_allow_network | default('10.0.0.0/16') }}
-pool ntp.solardynamics.eu iburst
-{% else %}
 pool pool.ntp.org iburst
+{% else %}
+pool ntp.solardynamics.eu iburst
 {% endif %}
 # Optimized defaults (https://www.redhat.com/en/blog/chrony-time-services-linux)
 driftfile /var/lib/chrony/drift
