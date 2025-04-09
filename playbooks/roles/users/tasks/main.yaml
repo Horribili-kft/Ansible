@@ -16,3 +16,14 @@
   loop: "{{ user_list.list }}"
   loop_control:
     label: "{{ item.SamAccountName }}"
+
+- name: Ensure Maildir exists for each user
+  become: true
+  become_user: "{{ item.SamAccountName }}"
+  ansible.builtin.command: maildirmake.dovecot ~/Maildir
+  args:
+    creates: "/home/{{ item.SamAccountName }}/Maildir"
+  loop: "{{ user_list.list }}"
+  loop_control:
+    label: "{{ item.SamAccountName }}"
+  tags: maildir
