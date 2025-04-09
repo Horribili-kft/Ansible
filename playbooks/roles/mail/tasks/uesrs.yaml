@@ -1,0 +1,36 @@
+- name: Read FTP users CSV
+  community.general.read_csv:
+    path: "{{ ftp_users_csv }}"
+  register: ftp_user_list
+  delegate_to: SD-HQ-NMS
+
+- name: Create FTP home directory
+  file:
+    path: "{{ ftp_home_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Add FTP users
+  ansible.builtin.user:
+    name: "{{ item.SamAccountName }}"
+    comment: "{{ item.DisplayName | default('') }}"
+    password: "{{ item.Password | password_hash('sha512') }}"
+    shell: "{{ ftp_shell }}"
+    home: "{{ ftp_home_dir }}/{{ item.SamAccountName }}"
+    append: true
+    groups: "ftp"
+    create_home: true
+  loop: "{{ ftp_user_list.list }}"
+  loop_control:
+    label: "{{ item.SamAccountName }}"
+
+- name: Set permissions on FTP user home directories
+  ansible.builtin.file:
+    path: "{{ ftp_home_dir }}/{{ item.SamAccountName }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ item.SamAccountName }}"
+    group: "{{ item.SamAccountName }}"
+  loop: "{{ ftp_user_list.list }}"
+  loop_control:
+    label: "{{ item.SamAccountName }}"

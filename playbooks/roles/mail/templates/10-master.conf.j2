@@ -1,0 +1,18 @@
+service imap-login {
+  inet_listener imap {
+    port = 143
+  }
+}
+
+service auth {
+  unix_listener auth-userdb {
+    mode = 0600
+    user = dovecot
+  }
+
+  unix_listener /var/spool/postfix/private/auth {
+    mode = 0660
+    user = postfix
+    group = postfix
+  }
+}

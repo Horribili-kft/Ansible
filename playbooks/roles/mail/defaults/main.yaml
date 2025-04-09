@@ -1,0 +1,7 @@
+# roles/mailserver/defaults/main.yml
+---
+mail_domain: "solardynamics.eu"
+mail_hostname_aliases:
+  - "mail.solardynamics.eu"
+  - "sd-hq-lin2.solardynamics.eu"
+mail_user_home_format: "/home/%u/Maildir"

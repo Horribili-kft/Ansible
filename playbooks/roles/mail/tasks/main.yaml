@@ -1,0 +1,7 @@
+# roles/mailserver/tasks/main.yml
+---
+- name: Configure Postfix
+  ansible.builtin.import_tasks: postfix.yml
+
+- name: Configure Dovecot
+  ansible.builtin.import_tasks: dovecot.yml
