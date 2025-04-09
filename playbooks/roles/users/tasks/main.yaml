@@ -8,11 +8,11 @@
   ansible.builtin.user:
     name: "{{ item.SamAccountName }}"
     comment: "{{ item.DisplayName | default('') }}"
+    update_password: on_create
     password: "{{ item.Password | password_hash('sha512') }}"
     append: true
     groups: "ansible"
     create_home: true
-    update_password: on_create
   loop: "{{ user_list.list }}"
   loop_control:
     label: "{{ item.SamAccountName }}"
