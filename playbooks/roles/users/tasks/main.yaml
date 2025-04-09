@@ -19,17 +19,17 @@
 
 - name: Create Maildir manually for each user
   ansible.builtin.file:
-    path: "/home/{{ item.SamAccountName }}/Maildir/{{ subdir }}"
+    path: "/home/{{ item.0.SamAccountName }}/Maildir/{{ item.1 }}"
     state: directory
-    owner: "{{ item.SamAccountName }}"
-    group: "{{ item.SamAccountName }}"
-    mode: "0755"
-  loop: "{{ user_list.list | subelements('maildir_subdirs') }}"
-  loop_control:
-    label: "{{ item.0.SamAccountName }}/{{ item.1 }}"
+    owner: "{{ item.0.SamAccountName }}"
+    group: "{{ item.0.SamAccountName }}"
+    mode: "0700"
+  loop: "{{ user_list.list | product(maildir_subdirs) | list }}"
   vars:
     maildir_subdirs:
       - ""
       - "cur"
       - "new"
       - "tmp"
+  loop_control:
+    label: "{{ item.0.SamAccountName }}/{{ item.1 }}"
