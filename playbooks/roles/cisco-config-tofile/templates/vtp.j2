@@ -1,0 +1,10 @@
+{% if 'switches' in group_names or 'mls' in group_names %}
+{% if vtp_mode == 'server' %}
+vtp mode server
+{% else %}
+vtp mode {{ vtp_mode }}
+{% endif %}
+vtp domain {{ vtp_domain }}
+vtp version {{ vtp_version }}
+vtp password {{ vtp_password }}
+{% endif %}

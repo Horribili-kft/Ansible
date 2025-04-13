@@ -4,7 +4,6 @@ ansible_host: 10.0.253.1
 spanning_tree_primary: [70, 200]
 spanning_tree_secondary: [10,15,20,50,100,160,255]
 
-# GNS3 tesztelős konfig
 vtp_mode: 'server'
 lacp:
   - { interfaces: FastEthernet0/23-24, switchport: false, mode: active, channel_group: 1 }

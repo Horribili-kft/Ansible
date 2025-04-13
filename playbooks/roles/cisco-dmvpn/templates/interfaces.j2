@@ -1,29 +1,30 @@
+
 interface {{ dmvpn.tunnel.name }}
     ip address {{ dmvpn.tunnel.ip.split('/')[0] }} {{ dmvpn.tunnel.ip | ipaddr('netmask') }}
-    {# EIGRP fixes#}
+{# EIGRP fixes#}
     no ip redirects
     no ip next-hop-self eigrp {{ site_eigrp_address }}
     no ip split-horizon eigrp {{ site_eigrp_address }}
-    {# NHRP #}
+{# NHRP #}
     ip nhrp authentication {{ nhrp_auth_password }}
     ip nhrp network-id 1
     ip nhrp holdtime 600
-    {% if dmvpn.role == 'hub' %}
+{% if dmvpn.role == 'hub' %}
     ip nhrp map multicast dynamic
-    {% else %}
-    {% for entry in dmvpn_hub_ips %}
+{% else %}
+{% for entry in dmvpn_hubs %}
     ip nhrp map multicast {{ entry.tunnel_ip }}
     ip nhrp map {{ entry.tunnel_ip }} {{ entry.public_ip }}
     ip nhrp nhs {{ entry.tunnel_ip }} 
-    {% endfor %}
-    {% endif %}
+{% endfor %}
+{% endif %}
     tunnel source {{ public_ip }}
     tunnel mode gre multipoint
     tunnel key 123
     tunnel protection ipsec profile DMVPN-PROFILE
-    {# Performance optimizations, these are not needed #}
+{# Performance optimizations, these are not needed #}
     ip mtu 1400
     ip tcp adjust-mss 1360
     bandwidth 1000000
-
     no shutdown
+

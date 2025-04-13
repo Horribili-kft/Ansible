@@ -1,7 +1,7 @@
 hostname: HQ-MLS2
 ansible_host: 10.0.253.2
 
-spanning_tree_primary: [10, 15, 20, 50, 100, 160, 255]
+spanning_tree_primary: [10, 15, 20, 50, 100, 160, 252]
 spanning_tree_secondary: [70, 200]
 
 # GNS3 tesztelős konfig
@@ -24,24 +24,24 @@ interfaces:
     - { name: GigabitEthernet2/0, mode: access, access_vlan: 70,      description: 'Link to SD-HQ-PVE1 (and all other HQ server by extension)' }
     - { name: Port-channel 2,     mode: trunk,  encapsulation: dot1q, description: 'Layer 2 link to MLS1' }
 
-vlan_interfaces:
-  # HSRP group and IPv6 are inferred
-  # Read by playbooks/roles/cisco-config/templates/vlan_interface.j2.
-  - { id: 10,  ip: 10.0.10.2/24,  hsrp_priority: 110 }
-  - { id: 15,  ip: 10.0.15.2/24,  hsrp_priority: 110 }
-  - { id: 20,  ip: 10.0.20.2/24,  hsrp_priority: 110 }
-  - { id: 25,  ip: 10.0.25.2/24,  hsrp_priority: 110 }
-  - { id: 50,  ip: 10.0.50.2/24,  hsrp_priority: 110 }
-  - { id: 51,  ip: 10.0.51.2/24,  hsrp_priority: 110 }
-  - { id: 70,  ip: 10.0.70.2/24,  hsrp_priority: 90 }
-  - { id: 100, ip: 10.0.100.2/22, hsrp_priority: 110 }
-  - { id: 104, ip: 10.0.104.2/24, hsrp_priority: 110 }
-  - { id: 160, ip: 10.0.160.2/22, hsrp_priority: 110 }
-  - { id: 200, ip: 10.0.200.2/24, hsrp_priority: 90 }
-  - { id: 220, ip: 10.0.220.2/24, hsrp_priority: 110 }
-  - { id: 252, ip: 10.0.253.2/22, hsrp_priority: 110 }
+  vlan:
+    # HSRP group and IPv6 are inferred
+    # Read by playbooks/roles/cisco-config/templates/vlan_interface.j2.
+    - { id: 10,  ip: 10.0.10.2/24,  hsrp_priority: 110 }
+    - { id: 15,  ip: 10.0.15.2/24,  hsrp_priority: 110 }
+    - { id: 20,  ip: 10.0.20.2/24,  hsrp_priority: 110 }
+    - { id: 25,  ip: 10.0.25.2/24,  hsrp_priority: 110 }
+    - { id: 50,  ip: 10.0.50.2/24,  hsrp_priority: 110 }
+    - { id: 51,  ip: 10.0.51.2/24,  hsrp_priority: 110 }
+    - { id: 70,  ip: 10.0.70.2/24,  hsrp_priority: 90 }
+    - { id: 100, ip: 10.0.100.2/22, hsrp_priority: 110 }
+    - { id: 104, ip: 10.0.104.2/24, hsrp_priority: 110 }
+    - { id: 160, ip: 10.0.160.2/22, hsrp_priority: 110 }
+    - { id: 200, ip: 10.0.200.2/24, hsrp_priority: 90 }
+    - { id: 220, ip: 10.0.220.2/24, hsrp_priority: 110 }
+    - { id: 252, ip: 10.0.253.2/22, hsrp_priority: 110 }
 
 eigrp:
-  router_id: 2.2.2.2
+  router_id: 0.0.0.2
   networks: [10.0.0.0/16, 172.16.0.2/31, 172.16.0.6/31, 172.16.0.8/31]
   non_passive_interfaces: [GigabitEthernet0/0, GigabitEthernet0/1, Port-channel 1]

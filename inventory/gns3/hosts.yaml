@@ -51,7 +51,7 @@ all:
                             # ansible_host: 85.16.100.3
                             ansible_host: 172.16.0.4
 
-                        SzF_R:
+                        SzF-R:
                             ansible_host: 82.1.79.129
                         
                         BP-R:
@@ -82,9 +82,9 @@ all:
                             ansible_host: 10.0.254.4
 
                         # SzF
-                        SzF_SW:
+                        SzF-SW:
                             ansible_host: 10.1.254.1
-                        SzF_SW2:
+                        SzF-SW2:
                             ansible_host: 10.1.254.2
 
                         # BP
@@ -130,11 +130,11 @@ all:
                 domain_name: szf.solardynamics.eu
                 site_number: 1
             hosts:
-                SzF_R:
+                SzF-R:
 
-                SzF_SW:
-                SzF_SW2:
-                SzF_WR:
+                SzF-SW:
+                SzF-SW2:
+                SzF-WR:
 
         bp:
             vars:

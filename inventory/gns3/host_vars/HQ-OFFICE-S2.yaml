@@ -10,5 +10,5 @@ interfaces:
   - { name: GigabitEthernet1/2, mode: access, access_vlan: 20, dhcp_snooping: { trust: false }, voice: false, description: 'VLAN 20: Marketing' }
   - { name: GigabitEthernet1/3, mode: access, access_vlan: 25, dhcp_snooping: { trust: false }, voice: false, description: 'VLAN 25: Ertekesites' }
 
-vlan_interfaces:
-  - { id: 252, ip: 10.0.254.2/22 }
+  vlan:
+    - { id: 252, ip: 10.0.254.2/22 }

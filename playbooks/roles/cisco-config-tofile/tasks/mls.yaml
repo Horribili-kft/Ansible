@@ -1,0 +1,148 @@
+# === Routing and VLAN configuration (local file generation only) ===
+
+- name: Append routing configuration
+  copy:
+    dest: "/tmp/{{ inventory_hostname }}_routing.cfg"
+    content: |
+      ip routing
+      ipv6 unicast-routing
+  delegate_to: localhost
+
+- name: Add routing config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_routing.cfg >> configs/{{ inventory_hostname }}.cfg
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Render VTP config
+  template:
+    src: vtp.j2
+    dest: "/tmp/{{ inventory_hostname }}_vtp.cfg"
+  delegate_to: localhost
+
+- name: Append VTP config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_vtp.cfg >> configs/{{ inventory_hostname }}.cfg
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Conditionally render 'vtp primary' command (server mode only)
+  copy:
+    dest: "/tmp/{{ inventory_hostname }}_vtp_primary.cfg"
+    content: "vtp primary\n"
+  when: vtp_mode is defined and vtp_mode == 'server'
+  delegate_to: localhost
+
+- name: Append VTP primary to final file (server mode only)
+  shell: cat /tmp/{{ inventory_hostname }}_vtp_primary.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: vtp_mode is defined and vtp_mode == 'server'
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Render STP config
+  template:
+    src: stp.j2
+    dest: "/tmp/{{ inventory_hostname }}_stp.cfg"
+  delegate_to: localhost
+
+- name: Append STP config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_stp.cfg >> configs/{{ inventory_hostname }}.cfg
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Conditionally render Etherchannel config
+  template:
+    src: etherchannel.j2
+    dest: "/tmp/{{ inventory_hostname }}_etherchannel.cfg"
+  when: lacp is defined
+  delegate_to: localhost
+
+- name: Append Etherchannel config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_etherchannel.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: lacp is defined
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Conditionally enable native VLAN (server mode only)
+  copy:
+    dest: "/tmp/{{ inventory_hostname }}_native_vlan.cfg"
+    content: |
+      vlan {{ native_vlan }}
+  when: vtp_mode is defined and vtp_mode == 'server'
+  delegate_to: localhost
+
+- name: Append native VLAN config
+  shell: cat /tmp/{{ inventory_hostname }}_native_vlan.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: vtp_mode is defined and vtp_mode == 'server'
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Render VLAN config
+  template:
+    src: vlans.j2
+    dest: "/tmp/{{ inventory_hostname }}_vlans.cfg"
+  when: vtp_mode is defined and vtp_mode == 'server'
+  delegate_to: localhost
+
+- name: Append VLAN config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_vlans.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: vtp_mode is defined and vtp_mode == 'server'
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+# === Interface Configs ===
+
+- name: Render interface config
+  template:
+    src: interface.j2
+    dest: "/tmp/{{ inventory_hostname }}_interfaces.cfg"
+  when: interfaces is defined
+  vars:
+    ansible_command_timeout: 60
+  delegate_to: localhost
+  tags: interface
+
+- name: Append interface config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_interfaces.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: interfaces is defined
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+  tags: interface
+
+- name: Render VLAN interface config
+  template:
+    src: vlan_interface.j2
+    dest: "/tmp/{{ inventory_hostname }}_vlan_interfaces.cfg"
+  when: interfaces.vlan is defined
+  vars:
+    ansible_command_timeout: 120
+  delegate_to: localhost
+  tags: interface
+
+- name: Append VLAN interface config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_vlan_interfaces.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: interfaces.vlan is defined
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+  tags: interface
+
+# === Routing Protocol Config ===
+
+- name: Render EIGRP config
+  template:
+    src: eigrp.j2
+    dest: "/tmp/{{ inventory_hostname }}_eigrp.cfg"
+  delegate_to: localhost
+
+- name: Append EIGRP config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_eigrp.cfg >> configs/{{ inventory_hostname }}.cfg
+  args:
+    executable: /bin/bash
+  delegate_to: localhost

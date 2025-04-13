@@ -32,4 +32,7 @@ eigrp:
   redistribute_static: true
 
 static_routes:
-  - { destination: 0.0.0.0/0, via: 82.1.79.30}
+  ipv4:
+    - { destination: 0.0.0.0/0, via: 82.1.79.30}
+  ipv6:
+    - { destination: , via: 82.1.79.30}

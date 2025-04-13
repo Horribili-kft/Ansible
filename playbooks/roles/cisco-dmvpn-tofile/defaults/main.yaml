@@ -1,0 +1,29 @@
+# host variable examples:
+# dmvpn_address: 192.168.0.1/24
+# dmvpn_role: 'spoke'
+
+dmvpn_tunnel_interface: Tunnel0
+
+isakmp:
+  policy:
+    id: 10
+    encr: 'aes 256'
+    hash: 'sha256'
+    auth_method: 'pre-share'
+    diffie_hellman_group: 14
+  key: Solar-Dynamics-2025
+
+ipsec:
+  transform_set_name: DMVPN-TRANSFORM-SET
+  profile_name: DMVPN-PROFILE
+  encr: 'esp-aes 256'
+  hash: 'esp-sha256-hmac'
+
+# MAXIMUM 8 CHARACTERS LONG !!!
+nhrp_auth_password: Password
+
+dmvpn_hubs:
+  # HQ-R1
+  - { name: HQ-R1, public_ip: 82.1.79.1, tunnel_ip: 192.168.0.1}
+  # HQ-R2
+  - { name: HQ-R2, public_ip: 85.16.100.3, tunnel_ip: 192.168.0.2}

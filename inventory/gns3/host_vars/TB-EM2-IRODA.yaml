@@ -1,0 +1,11 @@
+hostname: TB-EM2-IRODA
+ansible_host: 10.3.254.2
+
+interfaces:
+  layer2:
+    - { name: GigabitEthernet0/1, mode: trunk, encapsulation: dot1q, description: 'Link to TB-EM1-LOGI' }
+    - { name: GigabitEthernet0/2, mode: trunk, encapsulation: dot1q, description: 'Link to TB-EM3-PARTNER' }
+    - { name: GigabitEthernet1/0, mode: access, access_vlan: 20, dhcp_snooping: { trust: false }, voice: true, description: 'VLAN 20: Iroda' }
+
+  vlan:
+    - { id: 252, ip: 10.3.254.2/22 }

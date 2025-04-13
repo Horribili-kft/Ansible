@@ -1,0 +1,121 @@
+---
+# === Common ===
+
+- name: Ensure config output directory exists
+  file:
+    path: "configs"
+    state: directory
+    mode: "0755"
+  delegate_to: localhost
+  run_once: true
+
+- name: Clear old config for this device (start clean)
+  file:
+    path: "configs/{{ inventory_hostname }}.cfg"
+    state: absent
+  delegate_to: localhost
+
+- name: Render hostname and domain config
+  copy:
+    dest: "/tmp/{{ inventory_hostname }}_hostname.cfg"
+    content: |
+      hostname {{ hostname }}
+      ip domain name {{ domain_name }}
+  delegate_to: localhost
+
+- name: Append hostname/domain config to device config
+  shell: cat /tmp/{{ inventory_hostname }}_hostname.cfg >> configs/{{ inventory_hostname }}.cfg
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Render banner config
+  copy:
+    dest: "/tmp/{{ inventory_hostname }}_banners.cfg"
+    content: |
+      banner login #{{ banner_text }}#
+      banner incoming #{{ banner_text }}#
+      banner exec #{{ banner_text }}#
+  delegate_to: localhost
+
+- name: Append banners config to device config
+  shell: cat /tmp/{{ inventory_hostname }}_banners.cfg >> configs/{{ inventory_hostname }}.cfg
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+# - name: Render NTP server config (uncomment when needed)
+#   copy:
+#     dest: "/tmp/{{ inventory_hostname }}_ntp.cfg"
+#     content: |
+#       ntp server {{ ntp_server }}
+#   delegate_to: localhost
+# 
+# - name: Append NTP config
+#   shell: cat /tmp/{{ inventory_hostname }}_ntp.cfg >> configs/{{ inventory_hostname }}.cfg
+#   args:
+#     executable: /bin/bash
+#   delegate_to: localhost
+
+- name: Render DNS config
+  copy:
+    dest: "/tmp/{{ inventory_hostname }}_dns.cfg"
+    content: |
+      ip name-server {{ dns_servers[0] }} {{ dns_servers[1] }}
+  delegate_to: localhost
+
+- name: Append DNS config
+  shell: cat /tmp/{{ inventory_hostname }}_dns.cfg >> configs/{{ inventory_hostname }}.cfg
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Enable IP domain lookup
+  copy:
+    dest: "/tmp/{{ inventory_hostname }}_domain_lookup.cfg"
+    content: |
+      ip domain lookup
+  delegate_to: localhost
+
+- name: Append domain lookup config
+  shell: cat /tmp/{{ inventory_hostname }}_domain_lookup.cfg >> configs/{{ inventory_hostname }}.cfg
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+# === Device specific ===
+- name: Include router config tasks
+  ansible.builtin.include_tasks: routers.yaml
+  when: "'routers' in group_names"
+  tags:
+    - interface
+
+- name: Include MLS config tasks
+  ansible.builtin.include_tasks: mls.yaml
+  when: "'mls' in group_names"
+  tags:
+    - interface
+
+- name: Include switch config tasks
+  ansible.builtin.include_tasks: switches.yaml
+  when: "'switches' in group_names"
+  tags:
+    - interface
+
+- name: Append SNMP config from template
+  template:
+    src: snmp.j2
+    dest: "/tmp/{{ inventory_hostname }}_snmp.cfg"
+  delegate_to: localhost
+
+- name: Append SNMP config to device config
+  shell: cat /tmp/{{ inventory_hostname }}_snmp.cfg >> configs/{{ inventory_hostname }}.cfg
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+# Skipping "write memory" and backup of running config since we’re not touching the device
+
+- name: Print config output file path
+  debug:
+    msg: "Generated config for {{ inventory_hostname }} at configs/{{ inventory_hostname }}.cfg"

@@ -1,3 +1,4 @@
+# Currently unused in project
 ---
 - name: Ping from Linux servers
   hosts: all

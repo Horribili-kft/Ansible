@@ -12,9 +12,9 @@ access_lists:
   - { name: SD-ACL-external-client, permit: [10.0.100.0/22, 10.0.104.0/22, 10.0.160.0/22] }
 
 nat:
-  pools:
-    - { name: SD-internal-client-pool, acl: SD-ACL-internal-client, interface: GigabitEthernet2/0 }
-    - { name: SD-external-client-pool, acl: SD-ACL-external-client, interface: GigabitEthernet2/0 }
+  overload_interfaces:
+    - { acl: SD-ACL-internal-client, name: GigabitEthernet2/0 }
+    - { acl: SD-ACL-external-client, name: GigabitEthernet2/0 }
 
 dmvpn:
   role: hub
@@ -23,10 +23,13 @@ dmvpn:
      ip: 192.168.0.2/24
 
 eigrp:
-  router_id: 4.4.4.4
+  router_id: 0.0.0.4
   networks: [172.16.0.4/31, 172.16.0.6/31, 192.168.0.0/24]
   non_passive_interfaces: [GigabitEthernet0/0, GigabitEthernet1/0, Tunnel0]
   redistribute_static: true
 
 static_routes:
-  { destination: 0.0.0.0/0, via: 85.16.100.3}
+  ipv4:
+    - { destination: 0.0.0.0/0, via: 85.16.100.3}
+  ipv6:
+    - { destination: "::/0", via: GigabitEthernet2/0 }

@@ -1,0 +1,37 @@
+hostname: BP-R1
+ansible_host: 82.1.79.33
+public_ip: 82.1.79.33
+interfaces:
+  layer3:
+    - { name: GigabitEthernet0/0, ip: 82.1.79.33/27, nat: outside, ipv6: 2a:1dc:7c0:02FF:82:1:79:33/64, description: 'Link to ISP' }
+    - { name: GigabitEthernet1/0, ip: 172.16.2.0/31, nat: inside, ipv6_link_local_only: true, description: 'Link to BP-MLS1' }
+    - { name: GigabitEthernet2/0, ip: 172.16.2.2/31, nat: inside, ipv6_link_local_only: true, description: 'Link to BP-MLS2' }
+
+access_lists:
+  - { name: BP-ACL-internal-client, permit: [10.2.10.0/24, 10.2.20.0/24, 10.2.30.0/24, 10.2.40.0/24, 10.2.45.0/24, 10.2.50.0/24, 10.2.55.0/24, 10.2.60.0/24, 10.0.70.0/24, 10.0.220.0/24] }
+  - { name: BP-ACL-external-client, permit: [10.2.150.0/24] }
+
+nat:
+#  static:
+#    - { internal: 10.2.70.10, external: 82.1.79.38 }
+  pools:
+    - { name: BP-internal-client-pool, range: { start: 82.1.79.40, end: 82.1.79.45 }, netmask: 255.255.255.224, acl: BP-ACL-internal-client, overload: true }
+    - { name: BP-external-client-pool, range: { start: 82.1.79.46, end: 82.1.79.50 }, netmask: 255.255.255.224, acl: BP-ACL-external-client, overload: true }
+
+dmvpn:
+  role: spoke
+  tunnel:
+     name: Tunnel0
+     ip: 192.168.0.4/24
+
+eigrp:
+  router_id: 0.2.0.1
+  networks: [172.16.2.0/31, 172.16.2.2/31, 192.168.0.0/24, 82.1.79.32/27]
+  non_passive_interfaces: [GigabitEthernet0/0, GigabitEthernet1/0, GigabitEthernet2/0, Tunnel0]
+  redistribute_static: true
+
+static_routes:
+  ipv4:
+    - { destination: 0.0.0.0/0, via: 82.1.79.62 }
+  ipv6:
+    - { destination: "::/0", via: GigabitEthernet2/0 }

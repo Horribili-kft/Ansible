@@ -1,0 +1,25 @@
+# === DMVPN Configuration ===
+
+- name: Render crypto config
+  template:
+    src: crypto.j2
+    dest: "/tmp/{{ inventory_hostname }}_crypto.cfg"
+  delegate_to: localhost
+
+- name: Append crypto config to final device file
+  shell: cat /tmp/{{ inventory_hostname }}_crypto.cfg >> configs/{{ inventory_hostname }}.cfg
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Render DMVPN tunnel interface config
+  template:
+    src: interfaces.j2
+    dest: "/tmp/{{ inventory_hostname }}_dmvpn_interfaces.cfg"
+  delegate_to: localhost
+
+- name: Append DMVPN interface config to final device file
+  shell: cat /tmp/{{ inventory_hostname }}_dmvpn_interfaces.cfg >> configs/{{ inventory_hostname }}.cfg
+  args:
+    executable: /bin/bash
+  delegate_to: localhost

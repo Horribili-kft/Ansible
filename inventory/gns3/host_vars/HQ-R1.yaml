@@ -26,10 +26,13 @@ dmvpn:
      ip: 192.168.0.1/24
 
 eigrp:
-  router_id: 3.3.3.3
+  router_id: 0.0.0.3
   networks: [172.16.0.0/31, 172.16.0.2/31, 192.168.0.0/24]
   non_passive_interfaces: [GigabitEthernet0/0, GigabitEthernet1/0, Tunnel0]
   redistribute_static: true
 
 static_routes:
-  - { destination: 0.0.0.0/0, via: 82.1.79.30}
+  ipv4:
+    - { destination: 0.0.0.0/0, via: 82.1.79.30}
+  ipv6:
+    - { destination: "::/0", via: GigabitEthernet2/0 }

@@ -10,5 +10,5 @@ interfaces:
   - { name: GigabitEthernet1/2, mode: access, access_vlan: 15,  dhcp_snooping: { trust: false }, voice: false,    description: 'VLAN 15: Vezetoseg' }
   - { name: GigabitEthernet1/3, mode: access, access_vlan: 220, dhcp_snooping: { limit_rate: 50, trust: false }, description: 'VLAN 100: Iroda WLAN'}
 
-vlan_interfaces:
-  - { id: 252, ip: 10.0.254.1/22 }
+  vlan:
+    - { id: 252, ip: 10.0.254.1/22 }

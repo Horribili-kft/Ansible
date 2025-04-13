@@ -1,0 +1,111 @@
+# === MLS-Specific Config Tasks ===
+
+- name: Render VTP config
+  template:
+    src: vtp.j2
+    dest: "/tmp/{{ inventory_hostname }}_vtp.cfg"
+  delegate_to: localhost
+
+- name: Append VTP config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_vtp.cfg >> configs/{{ inventory_hostname }}.cfg
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Render STP config
+  template:
+    src: stp.j2
+    dest: "/tmp/{{ inventory_hostname }}_stp.cfg"
+  delegate_to: localhost
+
+- name: Append STP config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_stp.cfg >> configs/{{ inventory_hostname }}.cfg
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Conditionally render Etherchannel config
+  template:
+    src: etherchannel.j2
+    dest: "/tmp/{{ inventory_hostname }}_etherchannel.cfg"
+  when: lacp is defined
+  delegate_to: localhost
+
+- name: Append Etherchannel config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_etherchannel.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: lacp is defined
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Conditionally render VLANs
+  template:
+    src: vlans.j2
+    dest: "/tmp/{{ inventory_hostname }}_vlans.cfg"
+  when: vtp_mode is defined and vtp_mode == 'server'
+  delegate_to: localhost
+
+- name: Append VLAN config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_vlans.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: vtp_mode is defined and vtp_mode == 'server'
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Render interface config
+  template:
+    src: interface.j2
+    dest: "/tmp/{{ inventory_hostname }}_interfaces.cfg"
+  when: interfaces is defined
+  vars:
+    ansible_command_timeout: 60
+  delegate_to: localhost
+  tags: interface
+
+- name: Append interface config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_interfaces.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: interfaces is defined
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+  tags: interface
+
+# VLAN interface block commented out — can add if needed
+- name: Render VLAN interfaces
+  template:
+    src: vlan_interface.j2
+    dest: "/tmp/{{ inventory_hostname }}_vlan_interfaces.cfg"
+  when: interfaces.vlan is defined
+  delegate_to: localhost
+  tags: interface
+
+- name: Append VLAN interfaces config
+  shell: cat /tmp/{{ inventory_hostname }}_vlan_interfaces.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: interfaces.vlan is defined
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+  tags: interface
+
+- name: Generate default gateway command
+  set_fact:
+    default_gateway_cmd: >-
+      ip default-gateway {{
+        site_vlans
+        | selectattr('id', 'equalto', 252)
+        | map(attribute='network')
+        | first
+        | ipaddr('last_usable')
+      }}
+
+- name: Write default gateway to temp file
+  copy:
+    dest: "/tmp/{{ inventory_hostname }}_default_gateway.cfg"
+    content: "{{ default_gateway_cmd }}\n"
+  delegate_to: localhost
+
+- name: Append default gateway to final file
+  shell: cat /tmp/{{ inventory_hostname }}_default_gateway.cfg >> configs/{{ inventory_hostname }}.cfg
+  args:
+    executable: /bin/bash
+  delegate_to: localhost

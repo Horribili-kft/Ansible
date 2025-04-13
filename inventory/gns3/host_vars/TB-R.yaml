@@ -1,0 +1,40 @@
+hostname: TB-R
+ansible_host: 82.1.79.145
+public_ip: 82.1.79.145
+interfaces:
+  layer3:
+    - { name: GigabitEthernet0/0, ip: 82.1.79.145/28, nat: outside, ipv6: 2a:1dc:7c0:03FF:82:1:79:145/64, description: 'Link to ISP' }
+
+  vlan:
+    - { id: 10, ip: 10.3.10.1/24, description: 'VLAN 10', port: GigabitEthernet1/0  }
+    - { id: 20, ip: 10.3.20.1/24, description: 'VLAN 20', port: GigabitEthernet1/0  }
+    - { id: 30, ip: 10.3.30.1/24, description: 'VLAN 30', port: GigabitEthernet1/0  }
+    - { id: 150, ip: 10.3.150.1/24, description: 'VLAN 150', port: GigabitEthernet1/0  }
+    - { id: 252, ip: 10.3.252.1/22, description: 'VLAN 252', port: GigabitEthernet1/0  }
+
+access_lists:
+  - { name: SD-ACL-internal-client, permit: [10.3.10.0/24, 10.3.20.0/24, 10.3.30.0/24, 10.3.252.0/22] }
+  - { name: SD-ACL-external-client, permit: [10.3.150.0/24] }
+
+nat:
+  pools:
+    - { name: SD-internal-client-pool, range: { start: 82.1.79.150, end: 82.1.79.155 }, netmask: 255.255.255.240, acl: SD-ACL-internal-client, overload: true }
+    - { name: SD-external-client-pool, range: { start: 82.1.79.156, end: 82.1.79.158 }, netmask: 255.255.255.240, acl: SD-ACL-external-client, overload: true }
+
+dmvpn:
+  role: spoke
+  tunnel:
+    name: Tunnel0
+    ip: 192.168.0.5/24
+
+eigrp:
+  router_id: 0.3.0.1
+  networks: [10.3.10.0/24, 10.3.20.0/24, 10.3.30.0/24, 10.3.150.0/24, 10.3.252.0/22, 192.168.0.0/24]
+  non_passive_interfaces: [GigabitEthernet0/0, GigabitEthernet1/0, Tunnel0]
+  redistribute_static: true
+
+static_routes:
+  ipv4:
+    - { destination: 0.0.0.0/0, via: 82.1.79.158 }
+  ipv6:
+    - { destination: "::/0", via: GigabitEthernet0/0}

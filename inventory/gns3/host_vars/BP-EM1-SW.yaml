@@ -1,0 +1,16 @@
+hostname: BP-EM1-SW
+ansible_host: 10.2.254.1
+
+lacp:
+  - { interfaces: GigabitEthernet2/0-1, switchport: true,  mode: active, channel_group: 1 }
+
+interfaces:
+  layer2:
+    - { name: GigabitEthernet0/0, mode: trunk, encapsulation: dot1q, description: 'Link to BP-MLS1' }
+    - { name: GigabitEthernet0/1, mode: trunk, encapsulation: dot1q, description: 'Link to BP-MLS2' }
+    - { name: GigabitEthernet1/0, mode: access, access_vlan: 10, dhcp_snooping: { trust: false }, voice: true, description: 'VLAN 10: Vezetoseg' }
+    - { name: GigabitEthernet1/1, mode: access, access_vlan: 20, dhcp_snooping: { trust: false }, voice: true, description: 'VLAN 20: Kereskedelmi ugyfelsz' }
+    - { name: Port-channel1, mode: trunk, encapsulation: dot1q, description: 'Link to BP-EM2-SW' }
+
+  vlan:
+    - { id: 252, ip: 10.2.254.1/22 }

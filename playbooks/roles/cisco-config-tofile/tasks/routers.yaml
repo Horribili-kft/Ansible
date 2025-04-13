@@ -1,0 +1,115 @@
+# === L3 Routing and ACLs ===
+
+- name: Enable IPv6 routing
+  copy:
+    dest: "/tmp/{{ inventory_hostname }}_ipv6.cfg"
+    content: "ipv6 unicast-routing\n"
+  delegate_to: localhost
+
+- name: Append IPv6 routing config to device file
+  shell: cat /tmp/{{ inventory_hostname }}_ipv6.cfg >> configs/{{ inventory_hostname }}.cfg
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Render interface config
+  template:
+    src: interface.j2
+    dest: "/tmp/{{ inventory_hostname }}_interfaces.cfg"
+  when: interfaces is defined
+  vars:
+    ansible_command_timeout: 60
+  delegate_to: localhost
+  tags: interface
+
+- name: Append interface config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_interfaces.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: interfaces is defined
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+  tags: interface
+
+- name: Display all variables/facts known for a host
+  ansible.builtin.debug:
+    var: hostvars[inventory_hostname]
+
+- name: Render static routes
+  template:
+    src: static_route.j2
+    dest: "/tmp/{{ inventory_hostname }}_static_routes.cfg"
+  when: static_routes is defined
+  delegate_to: localhost
+
+- name: Append static routes to final file
+  shell: cat /tmp/{{ inventory_hostname }}_static_routes.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: static_routes is defined
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Render standard ACLs
+  template:
+    src: standard_acl.j2
+    dest: "/tmp/{{ inventory_hostname }}_acl.cfg"
+  when: access_lists is defined
+  delegate_to: localhost
+
+- name: Append standard ACLs to final file
+  shell: cat /tmp/{{ inventory_hostname }}_acl.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: access_lists is defined
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+- name: Render NAT config
+  template:
+    src: nat.j2
+    dest: "/tmp/{{ inventory_hostname }}_nat.cfg"
+  when: nat is defined
+  delegate_to: localhost
+
+- name: Append NAT config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_nat.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: nat is defined
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+
+# VLAN interface block commented out — can add if needed
+- name: Render VLAN interfaces
+  template:
+    src: vlan_interface.j2
+    dest: "/tmp/{{ inventory_hostname }}_vlan_interfaces.cfg"
+  when: interfaces.vlan is defined
+  delegate_to: localhost
+  tags: interface
+
+- name: Append VLAN interfaces config
+  shell: cat /tmp/{{ inventory_hostname }}_vlan_interfaces.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: interfaces.vlan is defined
+  args:
+    executable: /bin/bash
+  delegate_to: localhost
+  tags: interface
+
+- name: Configure DMVPN (role logic preserved)
+  include_role:
+    name: cisco-dmvpn-tofile
+  when: dmvpn is defined
+
+# If this role writes config files too, make sure it appends to configs/{{ inventory_hostname }}.cfg as well.
+
+- name: Render EIGRP config
+  template:
+    src: eigrp.j2
+    dest: "/tmp/{{ inventory_hostname }}_eigrp.cfg"
+  when: eigrp is defined
+  delegate_to: localhost
+
+- name: Append EIGRP config to final file
+  shell: cat /tmp/{{ inventory_hostname }}_eigrp.cfg >> configs/{{ inventory_hostname }}.cfg
+  when: eigrp is defined
+  args:
+    executable: /bin/bash
+  delegate_to: localhost

@@ -1,0 +1,39 @@
+hostname: BP-MLS2
+ansible_host: 10.2.253.3
+
+spanning_tree_primary: [150, 252]
+spanning_tree_secondary: [10, 20, 30, 40, 45, 50, 55, 60, 70]
+
+vtp_mode: 'client'
+lacp:
+  - { interfaces: GigabitEthernet2/2-3, switchport: false, mode: active, channel_group: 1 }
+  - { interfaces: GigabitEthernet2/0-1, switchport: true,  mode: active, channel_group: 2 }
+
+interfaces:
+  layer3:
+    - { name: GigabitEthernet0/0, ip: 172.16.2.3/31, ipv6_link_local_only: true, description: 'Link to BP-R' }
+    - { name: Port-channel1, ip: 172.16.2.9/31, ipv6_link_local_only: true, description: 'Layer 3 link to BP-MLS1' }
+
+  layer2:
+    - { name: GigabitEthernet0/1, mode: trunk, encapsulation: dot1q, allowed_vlans: [10, 20, 252], description: 'Link to BP-EM1-SW' }
+    - { name: GigabitEthernet0/2, mode: trunk, encapsulation: dot1q, allowed_vlans: [30, 40, 45, 150, 252], description: 'Link to BP-EM2-SW' }
+    - { name: GigabitEthernet0/3, mode: trunk, encapsulation: dot1q, allowed_vlans: [50, 55, 60, 70, 252], description: 'Link to BP-EM3-SW' }
+    - { name: Port-channel2,      mode: trunk, encapsulation: dot1q, description: 'Layer 2 link to BP-MLS1' }
+
+  vlan:
+    - { id: 10, ip: 10.2.10.2/24, hsrp_priority: 100 }
+    - { id: 20, ip: 10.2.20.2/24, hsrp_priority: 100 }
+    - { id: 30, ip: 10.2.30.2/24, hsrp_priority: 100 }
+    - { id: 40, ip: 10.2.40.2/24, hsrp_priority: 100 }
+    - { id: 45, ip: 10.2.45.2/24, hsrp_priority: 100 }
+    - { id: 50, ip: 10.2.50.2/24, hsrp_priority: 100 }
+    - { id: 55, ip: 10.2.55.2/24, hsrp_priority: 100 }
+    - { id: 60, ip: 10.2.60.2/24, hsrp_priority: 100 }
+    - { id: 70, ip: 10.2.70.2/24, hsrp_priority: 100 }
+    - { id: 150, ip: 10.2.150.2/24, hsrp_priority: 90 }
+    - { id: 252, ip: 10.2.253.2/22, hsrp_priority: 90 }
+
+eigrp:
+  router_id: 0.2.0.3
+  networks: [172.16.2.3/31, 172.16.2.9/31, 10.2.0.0/16]
+  non_passive_interfaces: [GigabitEthernet0/0, Port-channel1]

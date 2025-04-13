@@ -1,0 +1,5 @@
+hostname: "{{ inventory_hostname }}"
+domain_name: "{{ domain_name }}"
+banner_text: "{{ banner_text }}"
+
+# Most default vars are expected to be in Cisco and the host configurations
